@@ -1,24 +1,19 @@
-# iSPY Project Plan
+# CSE 499: Senior Project
 
-**CSE 499 - Week 2 Activity Submission**
+## iSPY - Neighborhood Watch Mobile Application
 
----
-
-## Project Information
-
-**Project Name:** iSPY - Neighborhood Watch Mobile Application
+**Course:** CSE 499 - Senior Project  
+**Assignment:** W2-project-plan  
+**Date:** March 9, 2026
 
 **Team Members:**
 
-- Kendahl Chae Bingham (Project Lead)
-- Samuel Iyen Evbosaru (Backend Developer)
-- Brenden Taylor Lyon (Frontend Developer)
+- Kendahl Chae Bingham (Project Lead) - @kendychae
+- Samuel Iyen Evbosaru (Backend Developer) - @terrywhyte001
+- Brenden Taylor Lyon (Frontend Developer) - @richardlyonheart
 
-**Repository:** https://github.com/kendychae/i-SPY
-
+**Repository:** https://github.com/kendychae/i-SPY  
 **Project Board:** https://github.com/users/kendychae/projects/3/views/1?system_template=team_planning
-
-**Date:** March 9, 2026
 
 ---
 
@@ -28,7 +23,393 @@ iSPY is a mobile application designed to empower communities by providing a secu
 
 ---
 
-## 2. Problem Statement
+## 2. Requirements
+
+### 2.1 Core Requirements
+
+#### Core Requirement 1: User Authentication and Authorization
+
+**Description:** Secure user registration and login system that supports different user roles (citizens and law enforcement officers) with appropriate access controls.
+
+**User Stories:**
+
+- As a **citizen**, I want to create an account using my email and password so that I can access the app securely.
+- As a **citizen**, I want to login to my account so that I can submit and track my incident reports.
+- As an **officer**, I want to login with my law enforcement credentials so that I can access the officer dashboard and manage citizen reports.
+- As a **user**, I want to reset my password if I forget it so that I can regain access to my account.
+
+---
+
+#### Core Requirement 2: Incident Report Submission
+
+**Description:** Allow citizens to submit detailed incident reports with multimedia evidence (photos), location data, and categorization.
+
+**User Stories:**
+
+- As a **citizen**, I want to submit an incident report with a title, description, and category so that law enforcement knows what happened.
+- As a **citizen**, I want to attach up to 5 photos to my report so that I can provide visual evidence of the incident.
+- As a **citizen**, I want the app to automatically capture my GPS location so that officers know exactly where the incident occurred.
+- As a **citizen**, I want to manually enter an address if GPS is unavailable so that I can still specify the incident location.
+- As a **citizen**, I want to preview my report before submitting so that I can verify all information is correct.
+
+---
+
+#### Core Requirement 3: Report Status Tracking
+
+**Description:** Enable citizens to view all their submitted reports and track the current status of each report through its lifecycle.
+
+**User Stories:**
+
+- As a **citizen**, I want to see a list of all my submitted reports so that I can track their progress.
+- As a **citizen**, I want to view detailed information about each report including status, submission date, and any updates so that I know how my report is being handled.
+- As a **citizen**, I want to see status indicators (Submitted, Under Review, Investigating, Resolved, Closed) so that I understand where my report is in the process.
+- As a **citizen**, I want to receive notifications when my report status changes so that I stay informed without constantly checking the app.
+
+---
+
+#### Core Requirement 4: Law Enforcement Dashboard
+
+**Description:** Provide law enforcement officers with a dashboard to view, manage, and update citizen-submitted incident reports.
+
+**User Stories:**
+
+- As an **officer**, I want to see all submitted reports in a queue so that I can manage incoming incidents efficiently.
+- As an **officer**, I want to view full report details including photos, location, and citizen contact information so that I have all the information needed to respond.
+- As an **officer**, I want to update the status of reports so that citizens are informed of progress.
+- As an **officer**, I want to add comments to reports so that I can document actions taken and communicate with citizens.
+- As an **officer**, I want to filter and search reports by date, category, and status so that I can quickly find specific incidents.
+
+---
+
+#### Core Requirement 5: Push Notifications
+
+**Description:** Real-time notification system to alert citizens when their report status changes and keep them engaged with the investigation process.
+
+**User Stories:**
+
+- As a **citizen**, I want to receive push notifications when my report status changes so that I'm immediately informed of updates.
+- As a **citizen**, I want to control my notification preferences so that I can choose what types of alerts I receive.
+- As a **citizen**, I want to view a notification history in the app so that I can review past alerts even if I dismissed them.
+
+---
+
+### 2.2 Enhancement Requirements
+
+#### Enhancement 1: Interactive Map View
+
+**Description:** Visual map interface displaying all reported incidents with filtering capabilities and location-based insights.
+
+**User Stories:**
+
+- As a **citizen**, I want to view incidents on an interactive map so that I can see what's happening in my neighborhood visually.
+- As a **citizen**, I want to filter incidents by date range and category so that I can focus on specific types of activity.
+- As an **officer**, I want to see a heatmap of crime hotspots so that I can identify areas that need increased patrol.
+- As a **user**, I want to tap on map markers to see incident details so that I can learn more about specific reports.
+
+---
+
+#### Enhancement 2: Video Upload Support
+
+**Description:** Extend multimedia evidence capabilities to support video uploads in addition to photos.
+
+**User Stories:**
+
+- As a **citizen**, I want to upload videos up to 2 minutes long so that I can provide more detailed evidence than photos alone.
+- As a **citizen**, I want the app to compress videos automatically so that uploads don't take too long or use too much data.
+- As an **officer**, I want to view uploaded videos directly in the report detail screen so that I can review all evidence efficiently.
+
+---
+
+#### Enhancement 3: Advanced Analytics Dashboard
+
+**Description:** Data visualization and analytics tools for law enforcement to identify crime trends, patterns, and resource allocation opportunities.
+
+**User Stories:**
+
+- As an **officer**, I want to see graphs of incident trends over time so that I can identify if crime is increasing or decreasing.
+- As an **officer**, I want to view analytics by incident category so that I know which types of crimes are most common.
+- As a **senior officer**, I want to generate custom reports for specific date ranges and areas so that I can present data to stakeholders.
+- As an **officer**, I want to export analytics data so that I can perform additional analysis in other tools.
+
+---
+
+#### Enhancement 4: Anonymous Reporting
+
+**Description:** Allow users to submit incident reports anonymously without creating an account, lowering the barrier for sensitive reports.
+
+**User Stories:**
+
+- As a **concerned citizen**, I want to submit a report without creating an account so that I can report sensitive incidents while protecting my identity.
+- As an **anonymous reporter**, I want to receive a unique tracking code so that I can check on my report status later without logging in.
+- As an **officer**, I want to know which reports are anonymous so that I understand I cannot directly contact the reporter.
+
+---
+
+## 3. Project Schedule - 4 One-Week Sprints
+
+> **Note:** This schedule represents the core development phase of the semester. Additional sprints for testing, refinement, and enhancements will follow.
+
+### Sprint 1: Foundation and Authentication (Week 3)
+
+**Sprint Goal:** Establish development infrastructure and implement user authentication system.
+
+**Milestones:**
+
+- ✅ Database schema implemented with all tables, indexes, and triggers
+- ✅ Backend API server setup with authentication endpoints (register, login, password reset)
+- ✅ Mobile app project initialized with navigation structure
+- ✅ User registration and login screens functional
+- ✅ JWT-based authentication working end-to-end
+- ✅ Role-based access control implemented (citizen vs. officer roles)
+
+**Deliverables:**
+
+- PostgreSQL database with schema deployed
+- Authentication API endpoints tested and documented
+- Mobile app with working registration/login flow
+- Unit tests for authentication logic
+
+---
+
+### Sprint 2: Incident Report Submission (Week 4)
+
+**Sprint Goal:** Enable citizens to submit incident reports with photos and location data.
+
+**Milestones:**
+
+- Report submission form UI complete with all fields (title, description, category, date/time)
+- Photo upload functionality working (up to 5 photos per report)
+- GPS location capture and manual address entry implemented
+- Backend API endpoint for creating reports functional
+- Image storage solution implemented (local storage or cloud)
+- Form validation for all required fields
+
+**Deliverables:**
+
+- Fully functional report submission screen
+- Image picker and camera integration
+- Location services integration
+- Report creation API tested and documented
+- Database storing report and media data correctly
+
+---
+
+### Sprint 3: Report Tracking and Status Management (Week 5)
+
+**Sprint Goal:** Allow citizens to view their reports and officers to update report statuses.
+
+**Milestones:**
+
+- "My Reports" list screen showing all user's submissions
+- Report detail screen displaying full information and status
+- Status update capability for officers in dashboard
+- Backend API for fetching user reports
+- Backend API for updating report status
+- Status change history/timeline visible to users
+
+**Deliverables:**
+
+- Report list and detail screens for citizens
+- Officer dashboard with report queue
+- Status update functionality working
+- API endpoints for report management tested
+
+---
+
+### Sprint 4: Push Notifications and Dashboard Enhancements (Week 6)
+
+**Sprint Goal:** Implement real-time notifications and enhance officer dashboard features.
+
+**Milestones:**
+
+- Firebase Cloud Messaging integrated with mobile app
+- Push notifications sent when report status changes
+- Notification preferences screen for users
+- In-app notification center showing notification history
+- Officer dashboard enhanced with filtering and search
+- Comment system for officers to add notes to reports
+
+**Deliverables:**
+
+- Working push notification system
+- Notification preferences functionality
+- Enhanced officer dashboard with search/filter
+- Comment system for internal and public notes
+- All core features functional and integrated
+
+---
+
+## 4. Architecture
+
+### 4.1 System Architecture
+
+iSPY follows a **three-tier client-server architecture** with clear separation of concerns:
+
+**Presentation Tier (Mobile Client):**
+
+- React Native mobile application running on iOS and Android devices
+- Handles user interface, input validation, and user interactions
+- Communicates with backend via RESTful API over HTTPS
+- Manages local state and caching with AsyncStorage
+- Integrates with device capabilities (camera, GPS, push notifications)
+
+**Application Tier (Backend API Server):**
+
+- Node.js + Express.js REST API server
+- Processes business logic, authentication, and authorization
+- Handles file uploads and media processing
+- Manages database queries and transactions
+- Integrates with Firebase Cloud Messaging for push notifications
+- Enforces security policies and data validation
+
+**Data Tier (Database):**
+
+- PostgreSQL relational database
+- Stores user accounts, incident reports, media metadata, and audit logs
+- Implements data integrity constraints and triggers
+- Handles full-text search and geospatial queries
+- Maintains referential integrity between related entities
+
+### 4.2 Architectural Patterns
+
+**RESTful API Design:**
+
+- Stateless communication between client and server
+- Standard HTTP methods (GET, POST, PUT, DELETE)
+- JWT tokens for authentication and session management
+- JSON for data exchange
+
+**Model-View-Controller (MVC) Pattern:**
+
+- Models: Database schemas and ORM/query logic
+- Views: React Native components and screens
+- Controllers: Express.js route handlers and middleware
+
+**Role-Based Access Control (RBAC):**
+
+- Users assigned roles (citizen, officer, admin)
+- Middleware enforces authorization based on roles
+- Different API endpoints and UI components per role
+
+### 4.3 Data Flow Example (Report Submission)
+
+1. User fills out report form in mobile app
+2. App validates input locally before submission
+3. App captures GPS coordinates or manual address
+4. User selects photos from gallery or takes new photos
+5. App sends HTTPS POST request to `/api/v1/reports` with report data
+6. Backend authenticates user via JWT token
+7. Backend validates and sanitizes input data
+8. Backend uploads images to storage and saves metadata
+9. Backend inserts report record into PostgreSQL database
+10. Backend returns success response with report ID
+11. App displays confirmation and navigates to "My Reports" screen
+12. App optionally sends push notification to nearby officers (future enhancement)
+
+---
+
+## 5. Technology
+
+### 5.1 Frontend - Mobile Application
+
+**Primary Technology:** **React Native (Expo Framework)**
+
+**Why React Native?**
+
+- Single codebase for both iOS and Android platforms
+- JavaScript/TypeScript - consistent with backend
+- Large community and extensive library ecosystem
+- Hot reloading for faster development
+- Expo managed workflow simplifies build and deployment
+
+**Key Libraries:**
+
+- **React Navigation 6.x:** Screen navigation and routing
+- **Axios:** HTTP client for making API requests
+- **React Native Maps:** Displaying maps and location markers
+- **Expo Camera & Image Picker:** Capturing photos and selecting from gallery
+- **AsyncStorage:** Local data persistence and caching
+- **Firebase SDK:** Push notification client integration
+- **React Hook Form:** Form state management and validation
+
+### 5.2 Backend - API Server
+
+**Primary Technology:** **Node.js (v18+) with Express.js Framework**
+
+**Why Node.js + Express?**
+
+- JavaScript across entire stack (frontend and backend)
+- Non-blocking I/O ideal for handling multiple concurrent requests
+- Extensive npm package ecosystem
+- Lightweight and flexible Express framework
+- Easy to scale horizontally
+
+**Key Libraries:**
+
+- **pg (node-postgres):** PostgreSQL database client
+- **bcrypt:** Secure password hashing
+- **jsonwebtoken:** JWT creation and verification
+- **multer:** Multipart form data and file upload handling
+- **helmet:** Security headers middleware
+- **express-validator:** Request input validation
+- **cors:** Cross-Origin Resource Sharing configuration
+- **firebase-admin:** Server-side Firebase SDK for push notifications
+
+### 5.3 Database
+
+**Primary Technology:** **PostgreSQL (v14+)**
+
+**Why PostgreSQL?**
+
+- Robust, open-source relational database
+- ACID compliance for data integrity
+- Excellent support for complex queries and transactions
+- Built-in geospatial capabilities (PostGIS extension potential)
+- Strong community and extensive documentation
+- Free and well-supported in cloud environments
+
+**Schema Highlights:**
+
+- Users table with role-based access
+- Reports table with status tracking
+- Media table for photos/videos with foreign key relationships
+- Notifications table for push notification history
+- Audit logging with updated_at triggers
+
+### 5.4 Supporting Technologies
+
+**Push Notifications:** **Firebase Cloud Messaging (FCM)**
+
+- Free, reliable push notification service
+- Supports both iOS and Android
+- Integrates with React Native via Firebase SDK
+
+**Version Control:** **Git + GitHub**
+
+- Source code management
+- Pull request workflow for code review
+- GitHub Projects for task tracking
+
+**Development Tools:**
+
+- **VS Code:** Primary IDE
+- **Postman:** API testing
+- **pgAdmin:** Database management
+- **Expo Go:** Mobile app testing on physical devices
+
+**Code Quality:**
+
+- **ESLint:** JavaScript linting
+- **Prettier:** Code formatting
+- **Jest:** Unit testing framework
+
+---
+
+## 6. Additional Project Details
+
+> **Note:** This section provides supplementary information beyond the core project plan requirements. It offers deeper context for development and project management.
+
+### 6.1 Problem Statement
 
 ### Current Challenges
 
@@ -71,11 +452,11 @@ These challenges result in:
 
 ---
 
-## 3. Solution Overview
+### 6.2 Solution Overview
 
 iSPY addresses these challenges through a comprehensive mobile-first platform that provides:
 
-### For Citizens
+#### For Citizens
 
 - **Quick Report Submission:** Submit detailed incident reports in under 2 minutes
 - **Multimedia Support:** Attach photos and videos as evidence
@@ -84,7 +465,7 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 - **Push Notifications:** Receive alerts about nearby incidents
 - **Anonymous Reporting Option:** Report sensitively without revealing identity (future feature)
 
-### For Law Enforcement
+#### For Law Enforcement
 
 - **Centralized Dashboard:** View and manage all reports in one place
 - **Priority Queuing:** Automatically prioritize reports based on severity
@@ -95,9 +476,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 
 ---
 
-## 4. Project Goals and Objectives
+### 6.3 Project Goals and Objectives
 
-### Primary Goals
+#### Primary Goals
 
 1. **Improve Reporting Efficiency**
    - Reduce average report submission time to under 2 minutes
@@ -119,7 +500,7 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
    - Enable data-driven decision making
    - Reduce administrative burden
 
-### Success Metrics
+#### Success Metrics
 
 - **User Adoption:** 500+ registered users within 6 months of launch
 - **Report Volume:** 100+ incident reports per month
@@ -129,9 +510,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 
 ---
 
-## 5. Features and Requirements
+### 6.4 Detailed Feature Breakdown
 
-### Phase 1: Core Features (MVP - Semester 1)
+#### Phase 1: Core Features (MVP - Semester 1)
 
 #### 5.1 User Authentication & Management
 
@@ -192,9 +573,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
   - Priority assignment
   - Export report data
 
-### Phase 2: Enhanced Features (Semester 2)
+#### Phase 2: Enhanced Features (Semester 2)
 
-#### 5.6 Interactive Map
+##### 6.4.6 Interactive Map
 
 - **Priority:** Medium
 - **Description:** Visual map of reported incidents
@@ -235,7 +616,7 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
   - Easy addition of new languages
   - User language selection
 
-### Phase 3: Advanced Features (Future)
+#### Phase 3: Advanced Features (Future)
 
 - Anonymous reporting
 - Integration with CAD (Computer-Aided Dispatch) systems
@@ -245,9 +626,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 
 ---
 
-## 6. Technology Stack
+### 6.5 Technology Stack (Expanded)
 
-### Frontend - Mobile Application
+#### Frontend - Mobile Application
 
 **Framework:** React Native (Expo)
 
@@ -347,9 +728,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 
 ---
 
-## 7. Project Architecture
+### 6.6 Project Architecture (Expanded)
 
-### System Architecture
+#### System Architecture
 
 ```
 ┌─────────────────────────────────────────────────┐
@@ -399,9 +780,9 @@ iSPY addresses these challenges through a comprehensive mobile-first platform th
 
 ---
 
-## 8. Development Methodology
+### 6.7 Development Methodology
 
-### Agile Scrum Approach
+#### Agile Scrum Approach
 
 We will follow Agile Scrum methodology with the following structure:
 
@@ -453,9 +834,9 @@ We will follow Agile Scrum methodology with the following structure:
 
 ---
 
-## 9. Project Timeline
+### 6.8 Extended Project Timeline
 
-### Semester 1 (Weeks 1-16)
+#### Semester 1 (Weeks 1-16)
 
 #### Weeks 1-2: Project Setup & Planning
 
@@ -554,9 +935,9 @@ We will follow Agile Scrum methodology with the following structure:
 
 ---
 
-## 10. Risk Management
+### 6.9 Risk Management
 
-### Identified Risks
+#### Identified Risks
 
 #### Technical Risks
 
@@ -594,9 +975,9 @@ We will follow Agile Scrum methodology with the following structure:
 
 ---
 
-## 11. Testing Strategy
+### 6.10 Testing Strategy
 
-### Testing Levels
+#### Testing Levels
 
 #### Unit Testing
 
@@ -645,9 +1026,9 @@ We will follow Agile Scrum methodology with the following structure:
 
 ---
 
-## 12. Success Criteria
+### 6.11 Success Criteria
 
-### Project Completion Criteria
+#### Project Completion Criteria
 
 The project will be considered successful when:
 
@@ -693,9 +1074,9 @@ The project will be considered successful when:
 
 ---
 
-## 13. Team Roles and Responsibilities
+### 6.12 Team Roles and Responsibilities
 
-### Kendahl Chae Bingham - Project Lead & Full-Stack Developer
+#### Kendahl Chae Bingham - Project Lead & Full-Stack Developer
 
 **Responsibilities:**
 
@@ -763,9 +1144,9 @@ The project will be considered successful when:
 
 ---
 
-## 14. Communication Plan
+### 6.13 Communication Plan
 
-### Internal Team Communication
+#### Internal Team Communication
 
 **Daily Communication:**
 
@@ -802,9 +1183,9 @@ The project will be considered successful when:
 
 ---
 
-## 15. Budget and Resources
+### 6.14 Budget and Resources
 
-### Development Resources (Free/Educational Tier)
+#### Development Resources (Free/Educational Tier)
 
 | Resource        | Cost      | Purpose                                |
 | --------------- | --------- | -------------------------------------- |
@@ -831,11 +1212,11 @@ The project will be considered successful when:
 
 ---
 
-## 16. Future Roadmap
+### 6.15 Future Roadmap
 
-### Post-Semester Plans
+#### Post-Semester Plans
 
-#### Phase 1: Production Readiness (Months 1-2)
+##### Phase 1: Production Readiness (Months 1-2)
 
 - Complete security audit
 - Set up production infrastructure
@@ -866,9 +1247,9 @@ The project will be considered successful when:
 
 ---
 
-## 17. Appendices
+### 6.16 Appendices
 
-### Appendix A: User Stories
+#### Appendix A: User Stories
 
 #### Citizen User Stories
 
