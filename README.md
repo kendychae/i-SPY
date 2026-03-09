@@ -272,6 +272,11 @@ Track our progress on [GitHub Projects](https://github.com/users/kendychae/proje
 | **Samuel Iyen Evbosaru** | Backend Developer                   | [@terrywhyte001](https://github.com/terrywhyte001)       |
 | **Brenden Taylor Lyon**  | Frontend Developer                  | [@richardlyonheart](https://github.com/richardlyonheart) |
 
+### 💭 Team Quotes
+
+> *"The SILENCE of the good people is more DANGEROUS than the BRUTALITY of the bad people."*  
+> **— Dr. Martin Luther King, Jr.** (Kendahl Chae Bingham)
+
 ---
 
 ## 🤝 Contributing
