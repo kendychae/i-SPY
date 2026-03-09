@@ -1,0 +1,89 @@
+MIT License
+
+Copyright (c) 2026 iSPY Development Team
+Kendahl Cha Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Additional Terms for Production Use
+
+While this software is open source under the MIT License, the following terms
+apply for production deployments serving real communities:
+
+### Data Privacy and Security
+
+1. Any deployment handling real community safety data MUST implement appropriate
+   security measures including encryption, secure authentication, and regular
+   security audits.
+
+2. Deployments MUST comply with all applicable data privacy laws and regulations
+   including but not limited to GDPR, CCPA, and local privacy laws.
+
+3. User data, especially incident reports and location data, MUST be handled
+   with appropriate care and confidentiality.
+
+### Law Enforcement Integration
+
+1. Integration with law enforcement systems should only be performed with proper
+   authorization and legal agreements.
+
+2. The software should not be used to replace official emergency services (911).
+   All deployments should clearly communicate proper emergency procedures.
+
+### Liability Disclaimer
+
+The software is provided as-is for community safety enhancement purposes. The
+developers and contributors are not liable for:
+
+- Any incidents not reported or delayed reports
+- Any misuse of the platform
+- Any data breaches resulting from improper deployment or configuration
+- Any consequences of relying solely on this platform for community safety
+
+### Community Guidelines
+
+Deployments are encouraged to establish clear community guidelines regarding:
+
+- Appropriate use of the reporting system
+- Privacy expectations
+- Prohibited content
+- Consequences for misuse or false reporting
+
+---
+
+## Third-Party Licenses
+
+This project uses third-party libraries and services that are subject to their
+own licenses. Please review the package.json files in the frontend and backend
+directories for a complete list of dependencies and their respective licenses.
+
+Key dependencies include:
+
+- React Native (MIT License)
+- Node.js (MIT License)
+- Express.js (MIT License)
+- PostgreSQL (PostgreSQL License)
+- Firebase (Google Terms of Service)
+
+---
+
+For questions about licensing or commercial use, please contact:
+Kendahl Cha Bingham - Project Lead

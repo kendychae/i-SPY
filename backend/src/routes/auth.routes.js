@@ -1,0 +1,2 @@
+-- Placeholder for future routes
+-- Auth routes will be implemented here

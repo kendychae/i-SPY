@@ -1,0 +1,2 @@
+-- Placeholder for future routes
+-- Report routes will be implemented here
