@@ -274,7 +274,7 @@ Track our progress on [GitHub Projects](https://github.com/users/kendychae/proje
 
 ### 💭 Team Quotes
 
-> *"The SILENCE of the good people is more DANGEROUS than the BRUTALITY of the bad people."*  
+> _"The SILENCE of the good people is more DANGEROUS than the BRUTALITY of the bad people."_  
 > **— Dr. Martin Luther King, Jr.** (Kendahl Chae Bingham)
 
 ---
