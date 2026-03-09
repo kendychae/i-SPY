@@ -23,7 +23,7 @@ Open PowerShell/Terminal and run:
 
 ```powershell
 # Set your name
-git config --global user.name "Kendahl Cha Bingham"
+git config --global user.name "Kendahl Chae Bingham"
 
 # Set your email (use your GitHub email)
 git config --global user.email "your.email@example.com"
@@ -165,8 +165,8 @@ Repeat for `develop` branch.
 2. Click "Collaborators and teams"
 3. Click "Add people"
 4. Enter GitHub username or email for:
-   - Samuel Iyen Evbosaru
-   - Brenden Taylor Lyon
+   - Samuel Iyen Evbosaru (@terrywhyte001)
+   - Brenden Taylor Lyon (@richardlyonheart)
 5. Set permission to "Write"
 6. Send invitation
 

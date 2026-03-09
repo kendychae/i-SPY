@@ -266,11 +266,11 @@ Track our progress on [GitHub Projects](https://github.com/users/kendychae/proje
 
 **Development Team:**
 
-| Name                     | Role                                | GitHub                                     |
-| ------------------------ | ----------------------------------- | ------------------------------------------ |
-| **Kendahl Cha Bingham**  | Project Lead & Full-Stack Developer | [@kendychae](https://github.com/kendychae) |
-| **Samuel Iyen Evbosaru** | Backend Developer                   | TBD                                        |
-| **Brenden Taylor Lyon**  | Frontend Developer                  | TBD                                        |
+| Name                     | Role                                | GitHub                                                   |
+| ------------------------ | ----------------------------------- | -------------------------------------------------------- |
+| **Kendahl Chae Bingham** | Project Lead & Full-Stack Developer | [@kendychae](https://github.com/kendychae)               |
+| **Samuel Iyen Evbosaru** | Backend Developer                   | [@terrywhyte001](https://github.com/terrywhyte001)       |
+| **Brenden Taylor Lyon**  | Frontend Developer                  | [@richardlyonheart](https://github.com/richardlyonheart) |
 
 ---
 

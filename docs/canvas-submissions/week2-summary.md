@@ -6,7 +6,7 @@
 
 ## Student Information
 
-**Student Name:** Kendahl Cha Bingham  
+**Student Name:** Kendahl Chae Bingham  
 **Course:** CSE 499 - Software Engineering Capstone  
 **Assignment:** Week 2 Activities - Git Setup & Project Plan  
 **Date Submitted:** March 9, 2026
@@ -19,14 +19,14 @@
 
 **Team Members:**
 
-1. **Kendahl Cha Bingham** - Project Lead & Full-Stack Developer
+1. **Kendahl Chae Bingham** - Project Lead & Full-Stack Developer
    - GitHub: [@kendychae](https://github.com/kendychae)
    - Email: [Your Email]
 2. **Samuel Iyen Evbosaru** - Backend Developer
-   - GitHub: TBD
+   - GitHub: [@terrywhyte001](https://github.com/terrywhyte001)
    - Email: [His Email]
 3. **Brenden Taylor Lyon** - Frontend Developer
-   - GitHub: TBD
+   - GitHub: [@richardlyonheart](https://github.com/richardlyonheart)
    - Email: [His Email]
 
 ---
@@ -464,7 +464,7 @@ iSPY/
 
 ## Contact Information
 
-**Project Lead:** Kendahl Cha Bingham  
+**Project Lead:** Kendahl Chae Bingham  
 **Email:** [Your Email]  
 **GitHub:** [@kendychae](https://github.com/kendychae)  
 **Repository:** https://github.com/kendychae/i-SPY

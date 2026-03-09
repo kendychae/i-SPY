@@ -10,9 +10,9 @@
 
 **Team Members:**
 
-- Kendahl Cha Bingham (Project Lead) - GitHub: [@kendychae](https://github.com/kendychae)
-- Samuel Iyen Evbosaru (Backend Developer) - GitHub: TBD
-- Brenden Taylor Lyon (Frontend Developer) - GitHub: TBD
+- Kendahl Chae Bingham (Project Lead) - GitHub: [@kendychae](https://github.com/kendychae)
+- Samuel Iyen Evbosaru (Backend Developer) - GitHub: [@terrywhyte001](https://github.com/terrywhyte001)
+- Brenden Taylor Lyon (Frontend Developer) - GitHub: [@richardlyonheart](https://github.com/richardlyonheart)
 
 **Repository URL:** https://github.com/kendychae/i-SPY
 
@@ -79,9 +79,9 @@ i-SPY/
 
 **Current Collaborators:**
 
-- Kendahl Cha Bingham (Owner/Admin)
-- Samuel Iyen Evbosaru (To be added - Write access)
-- Brenden Taylor Lyon (To be added - Write access)
+- Kendahl Chae Bingham (Owner/Admin)
+- Samuel Iyen Evbosaru [@terrywhyte001](https://github.com/terrywhyte001) (Write access)
+- Brenden Taylor Lyon [@richardlyonheart](https://github.com/richardlyonheart) (Write access)
 
 **Adding Collaborators:**
 
@@ -884,7 +884,7 @@ git checkout -b feature/recovered abc123
 
 **Emergency Contact:**
 
-- Project Lead: Kendahl Cha Bingham
+- Project Lead: Kendahl Chae Bingham
 - Escalate in team chat if blocked
 
 ---
@@ -950,9 +950,9 @@ git checkout -b feature/recovered abc123
 
 ## 12. Revision History
 
-| Version | Date       | Author              | Changes                         |
-| ------- | ---------- | ------------------- | ------------------------------- |
-| 1.0     | 2026-03-09 | Kendahl Cha Bingham | Initial Git setup documentation |
+| Version | Date       | Author               | Changes                         |
+| ------- | ---------- | -------------------- | ------------------------------- |
+| 1.0     | 2026-03-09 | Kendahl Chae Bingham | Initial Git setup documentation |
 
 ---
 
@@ -962,9 +962,9 @@ This Git setup and workflow has been reviewed and approved by:
 
 **Team Members:**
 
-- Kendahl Cha Bingham - Project Lead ✅
-- Samuel Iyen Evbosaru - Backend Developer (Pending)
-- Brenden Taylor Lyon - Frontend Developer (Pending)
+- Kendahl Chae Bingham - Project Lead ✅
+- Samuel Iyen Evbosaru [@terrywhyte001](https://github.com/terrywhyte001) - Backend Developer ✅
+- Brenden Taylor Lyon [@richardlyonheart](https://github.com/richardlyonheart) - Frontend Developer ✅
 
 **Course Instructor:** (Pending Review)
 

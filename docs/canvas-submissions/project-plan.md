@@ -10,7 +10,7 @@
 
 **Team Members:**
 
-- Kendahl Cha Bingham (Project Lead)
+- Kendahl Chae Bingham (Project Lead)
 - Samuel Iyen Evbosaru (Backend Developer)
 - Brenden Taylor Lyon (Frontend Developer)
 
@@ -416,7 +416,7 @@ We will follow Agile Scrum methodology with the following structure:
 
 #### Roles
 
-- **Product Owner:** Kendahl Cha Bingham
+- **Product Owner:** Kendahl Chae Bingham
 - **Scrum Master:** Rotating among team members
 - **Development Team:** All team members
 
@@ -695,7 +695,7 @@ The project will be considered successful when:
 
 ## 13. Team Roles and Responsibilities
 
-### Kendahl Cha Bingham - Project Lead & Full-Stack Developer
+### Kendahl Chae Bingham - Project Lead & Full-Stack Developer
 
 **Responsibilities:**
 
@@ -910,9 +910,9 @@ The project will be considered successful when:
 
 ## Document History
 
-| Version | Date       | Author              | Changes                      |
-| ------- | ---------- | ------------------- | ---------------------------- |
-| 1.0     | 2026-03-09 | Kendahl Cha Bingham | Initial project plan created |
+| Version | Date       | Author               | Changes                      |
+| ------- | ---------- | -------------------- | ---------------------------- |
+| 1.0     | 2026-03-09 | Kendahl Chae Bingham | Initial project plan created |
 
 ---
 
@@ -922,7 +922,7 @@ This project plan has been reviewed and approved by:
 
 **Team Members:**
 
-- Kendahl Cha Bingham - Project Lead
+- Kendahl Chae Bingham - Project Lead
 - Samuel Iyen Evbosaru - Backend Developer
 - Brenden Taylor Lyon - Frontend Developer
 
