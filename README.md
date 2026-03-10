@@ -271,11 +271,15 @@ Track our progress on [GitHub Projects](https://github.com/users/kendychae/proje
 | **Kendahl Chae Bingham** | Project Lead & Full-Stack Developer | [@kendychae](https://github.com/kendychae)               |
 | **Samuel Iyen Evbosaru** | Backend Developer                   | [@terrywhyte001](https://github.com/terrywhyte001)       |
 | **Brenden Taylor Lyon**  | Frontend Developer                  | [@richardlyonheart](https://github.com/richardlyonheart) |
+| **Figuelia Ya'Sin**      | Full-Stack Developer                | [@figueliayasin](https://github.com/figueliayasin)       |
 
 ### 💭 Team Quotes
 
 > _"The SILENCE of the good people is more DANGEROUS than the BRUTALITY of the bad people."_  
 > **— Dr. Martin Luther King, Jr.** (Kendahl Chae Bingham)
+
+> _"Technology is best when it brings people together."_  
+> **— Matt Mullenweg** (Figuelia Ya'Sin)
 
 ---
 
