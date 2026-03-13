@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require('../config/database');
+const { pool } = require('../config/database');
 
 // Environment variables for JWT
 const JWT_SECRET = process.env.JWT_SECRET || 'ispy-secret-key-change-in-production';

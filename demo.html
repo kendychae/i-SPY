@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iSPY App Demo - Week 3</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMac SystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .success {
+            background: #10b981;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            margin-top: 20px;
+            display: none;
+        }
+        .error {
+            background: #ef4444;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            margin-top: 20px;
+            display: none;
+        }
+        .credentials {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .credentials strong {
+            color: #667eea;
+        }
+        .user-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+        .user-info div {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+        .user-info strong {
+            color: #667eea;
+        }
+        .logout-btn {
+            margin-top: 15px;
+            background: #ef4444;
+        }
+        .logout-btn:hover {
+            background: #dc2626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 iSPY</h1>
+        <p class="subtitle">Neighborhood Watch - Week 3 Demo</p>
+        
+        <div class="credentials">
+            <strong>Test Credentials:</strong><br>
+            Email: admin@ispy.app<br>
+            Password: Admin@123
+        </div>
+
+        <div id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="admin@ispy.app" value="admin@ispy.app">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" value="Admin@123">
+            </div>
+            <button onclick="login()">Login</button>
+        </div>
+
+        <div id="userDashboard" style="display: none;">
+            <h2 style="color: #10b981; margin-bottom: 15px;">✅ Logged In Successfully!</h2>
+            <div class="user-info" id="userInfo"></div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <div id="success" class="success"></div>
+        <div id="error" class="error"></div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/v1';
+        let accessToken = null;
+
+        async function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('error');
+            const successDiv = document.getElementById('success');
+
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    accessToken = data.accessToken;
+                    document.getElementById('loginForm').style.display = 'none';
+                    document.getElementById('userDashboard').style.display = 'block';
+                    
+                    document.getElementById('userInfo').innerHTML = `
+                        <div><strong>User ID:</strong> ${data.user.id}</div>
+                        <div><strong>Name:</strong> ${data.user.firstName} ${data.user.lastName}</div>
+                        <div><strong>Email:</strong> ${data.user.email}</div>
+                        <div><strong>Role:</strong> ${data.user.role}</div>
+                        <div><strong>Phone:</strong> ${data.user.phoneNumber || 'Not set'}</div>
+                        <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #ddd;">
+                            <strong>Access Token:</strong> ${accessToken.substring(0, 30)}...
+                        </div>
+                    `;
+                } else {
+                    errorDiv.textContent = data.error || 'Login failed';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Connection error. Is the backend running?';
+                errorDiv.style.display = 'block';
+                console.error('Login error:', error);
+            }
+        }
+
+        function logout() {
+            accessToken = null;
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('userDashboard').style.display = 'none';
+            document.getElementById('email').value = 'admin@ispy.app';
+            document.getElementById('password').value = 'Admin@123';
+        }
+
+        // Allow Enter key to login
+        document.getElementById('password').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') login();
+        });
+    </script>
+</body>
+</html>
