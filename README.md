@@ -369,6 +369,9 @@ Track our progress on [GitHub Projects](https://github.com/users/kendychae/proje
 > _"Technology is best when it brings people together."_  
 > **— Matt Mullenweg** (Figuelia Ya'Sin)
 
+> _"The wicked flee when no one pursueth, but the rightous are bold as a lion"_  
+> **— Proverbs 28:1** (Brenden Lyon)
+
 ---
 
 ## 🤝 Contributing
