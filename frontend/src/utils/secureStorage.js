@@ -1,10 +1,11 @@
 import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 /**
- * Secure token storage using Expo SecureStore
- * Data is encrypted and stored in:
- * - iOS: Keychain
- * - Android: EncryptedSharedPreferences
+ * Secure token storage
+ * - Web: localStorage
+ * - iOS: Keychain (via SecureStore)
+ * - Android: EncryptedSharedPreferences (via SecureStore)
  */
 
 const STORAGE_KEYS = {
@@ -13,12 +14,41 @@ const STORAGE_KEYS = {
   USER_DATA: 'ispy_user_data',
 };
 
+// Platform-specific storage helpers
+const setItem = async (key, value) => {
+  if (Platform.OS === 'web') {
+    localStorage.setItem(key, value);
+    return true;
+  } else {
+    await SecureStore.setItemAsync(key, value);
+    return true;
+  }
+};
+
+const getItem = async (key) => {
+  if (Platform.OS === 'web') {
+    return localStorage.getItem(key);
+  } else {
+    return await SecureStore.getItemAsync(key);
+  }
+};
+
+const deleteItem = async (key) => {
+  if (Platform.OS === 'web') {
+    localStorage.removeItem(key);
+    return true;
+  } else {
+    await SecureStore.deleteItemAsync(key);
+    return true;
+  }
+};
+
 /**
  * Store access token securely
  */
 export const storeAccessToken = async (token) => {
   try {
-    await SecureStore.setItemAsync(STORAGE_KEYS.ACCESS_TOKEN, token);
+    await setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
     return true;
   } catch (error) {
     console.error('Error storing access token:', error);
@@ -31,7 +61,7 @@ export const storeAccessToken = async (token) => {
  */
 export const storeRefreshToken = async (token) => {
   try {
-    await SecureStore.setItemAsync(STORAGE_KEYS.REFRESH_TOKEN, token);
+    await setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
     return true;
   } catch (error) {
     console.error('Error storing refresh token:', error);
@@ -44,7 +74,7 @@ export const storeRefreshToken = async (token) => {
  */
 export const storeUserData = async (userData) => {
   try {
-    await SecureStore.setItemAsync(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
+    await setItem(STORAGE_KEYS.USER_DATA, JSON.stringify(userData));
     return true;
   } catch (error) {
     console.error('Error storing user data:', error);
@@ -57,7 +87,7 @@ export const storeUserData = async (userData) => {
  */
 export const getAccessToken = async () => {
   try {
-    const token = await SecureStore.getItemAsync(STORAGE_KEYS.ACCESS_TOKEN);
+    const token = await getItem(STORAGE_KEYS.ACCESS_TOKEN);
     return token;
   } catch (error) {
     console.error('Error getting access token:', error);
@@ -70,7 +100,7 @@ export const getAccessToken = async () => {
  */
 export const getRefreshToken = async () => {
   try {
-    const token = await SecureStore.getItemAsync(STORAGE_KEYS.REFRESH_TOKEN);
+    const token = await getItem(STORAGE_KEYS.REFRESH_TOKEN);
     return token;
   } catch (error) {
     console.error('Error getting refresh token:', error);
@@ -114,9 +144,9 @@ export const storeAuthData = async (tokens, user) => {
 export const clearAuthData = async () => {
   try {
     await Promise.all([
-      SecureStore.deleteItemAsync(STORAGE_KEYS.ACCESS_TOKEN),
-      SecureStore.deleteItemAsync(STORAGE_KEYS.REFRESH_TOKEN),
-      SecureStore.deleteItemAsync(STORAGE_KEYS.USER_DATA),
+      deleteItem(STORAGE_KEYS.ACCESS_TOKEN),
+      deleteItem(STORAGE_KEYS.REFRESH_TOKEN),
+      deleteItem(STORAGE_KEYS.USER_DATA),
     ]);
     return true;
   } catch (error) {

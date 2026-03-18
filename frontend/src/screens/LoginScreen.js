@@ -30,18 +30,9 @@ const LoginScreen = ({ navigation }) => {
       const result = await authService.login(email.trim(), password);
 
       if (result.success) {
-        // Reload the app to trigger auth state check
-        Alert.alert('Success', 'Login successful!', [
-          {
-            text: 'OK',
-            onPress: () => {
-              // Force reload by reloading the window in web
-              if (Platform.OS === 'web') {
-                window.location.reload();
-              }
-            }
-          }
-        ]);
+        // Auth status will be detected automatically by the polling in App.js
+        // Just show success message
+        console.log('Login successful!', result.user);
       } else {
         Alert.alert('Login Failed', result.message || 'Invalid credentials');
       }
