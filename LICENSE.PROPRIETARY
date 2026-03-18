@@ -1,0 +1,116 @@
+# iSPY Proprietary License
+
+Copyright (c) 2026 iSPY Development Team
+Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+
+## LICENSE SUMMARY
+
+**This software is the proprietary intellectual property of the iSPY Development Team.**
+
+All rights reserved. This code is provided for **VIEWING AND EDUCATIONAL PURPOSES ONLY**.
+
+---
+
+## PERMITTED USES
+
+### ✅ You MAY:
+- View the source code for educational purposes
+- Fork the repository for personal learning
+- Study the architecture and implementation
+- Use code snippets for academic/educational projects with proper attribution
+
+### ❌ You MAY NOT:
+- Use this software in any commercial product or service
+- Deploy this software for production use without written permission
+- Redistribute, sublicense, or sell copies of this software
+- Create derivative works for commercial purposes
+- Remove, modify, or obscure any copyright notices
+- Use the iSPY name, branding, or trademarks without permission
+- Integrate this code into any product or service offered to third parties
+
+---
+
+## COMMERCIAL USE
+
+Any commercial use, production deployment, or integration requires a separate **Commercial License Agreement** from the iSPY Development Team.
+
+For commercial licensing inquiries, please contact:
+- Email: [Your contact email]
+- GitHub: https://github.com/kendychae/i-SPY
+
+---
+
+## ACADEMIC & EDUCATIONAL USE
+
+Educational institutions and students may use this software for:
+- Classroom instruction and demonstrations
+- Student projects and assignments
+- Academic research (with proper citation)
+
+**Required Attribution:**
+When using this software for educational purposes, you must include:
+```
+Based on iSPY by Kendahl Chae Bingham, Samuel Iyen Evbosaru, and Brenden Taylor Lyon
+Source: https://github.com/kendychae/i-SPY
+```
+
+---
+
+## OPEN SOURCE CONTRIBUTIONS
+
+While the core software is proprietary, we welcome contributions:
+- Bug reports and feature suggestions via GitHub Issues
+- Code contributions via Pull Requests (contributors retain copyright but grant us license to use)
+- Documentation improvements
+
+By submitting a contribution, you agree that:
+1. You retain copyright to your contribution
+2. You grant iSPY Development Team a perpetual, worldwide, non-exclusive, royalty-free license to use your contribution
+3. Your contribution does not violate any third-party rights
+
+---
+
+## INTELLECTUAL PROPERTY
+
+This software and its concept, architecture, and implementation are protected by:
+- Copyright law
+- Trade secret protections
+- Trademark protections (iSPY name and branding)
+
+Any unauthorized use may result in legal action.
+
+---
+
+## DATA PRIVACY & SECURITY
+
+Any deployment of this software MUST:
+1. Comply with all applicable data privacy laws (GDPR, CCPA, etc.)
+2. Implement appropriate security measures for user data
+3. Obtain proper legal authorization for law enforcement integration
+4. NOT be used as a replacement for official emergency services (911)
+
+---
+
+## WARRANTY DISCLAIMER
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## GOVERNING LAW
+
+This license shall be governed by and construed in accordance with the laws of [Your State/Country], without regard to its conflict of law provisions.
+
+---
+
+## EFFECTIVE DATE
+
+This license is effective as of March 18, 2026.
+
+For questions about this license, please contact the iSPY Development Team via GitHub.

@@ -114,23 +114,37 @@ iSPY addresses these challenges by creating a seamless, secure, and efficient re
 
 ## 🚀 Getting Started
 
-> **⚡ Quick Demo:** Want to test the app immediately? Open `demo.html` in your browser after starting the backend server. This provides a web-based demo of the authentication system while we resolve some React Native dependency issues.
->
-> **Steps:**
->
-> 1. Start backend: `cd backend && npm run dev`
-> 2. Open `demo.html` in your browser
-> 3. Login with: `admin@ispy.app` / `Admin@123`
+### Quick Options
+
+You have **two ways** to run iSPY:
+
+#### **Option 1: Quick Demo (Fastest - Web Only)**
+
+Test the authentication system instantly with the demo page:
+
+1. Start backend: `cd backend && npm run dev`
+2. Open `demo.html` in your browser
+3. Login with: `admin@ispy.app` / `Admin@123`
+
+#### **Option 2: Full React Native App (Web + Mobile)**
+
+Run the complete mobile-ready app:
+
+1. Start backend: `cd backend && npm run dev`
+2. Start frontend: `cd frontend && npx expo start --web`
+3. Open browser to `http://localhost:8081` OR scan QR code with Expo Go
+
+---
 
 ### Prerequisites
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js** (v18 or higher)
+- **Node.js** (v22 or higher) - [Download](https://nodejs.org/)
 - **npm** or **yarn**
-- **PostgreSQL** (v14 or higher)
-- **Expo CLI** (`npm install -g expo-cli`) _(optional for now, using demo)_
+- **PostgreSQL** (v14 or higher) - [Download](https://www.postgresql.org/download/)
 - **Git**
+- **Expo Go app** (optional, for mobile testing) - [iOS](https://apps.apple.com/app/apple-store/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent)
 
 ### Installation
 
@@ -177,12 +191,22 @@ Before you begin, ensure you have the following installed:
    # Server runs on http://localhost:3000
    ```
 
-   Frontend:
+   Frontend (React Native - Expo SDK 52):
 
    ```bash
    cd frontend
-   npm start
-   # Scan QR code or press 'i' for iOS, 'a' for Android
+   npx expo start --web
+   # Opens at http://localhost:8081
+   # Or scan QR code with Expo Go app for mobile testing
+   # Press 'w' for web, 'a' for Android, 'i' for iOS
+   ```
+
+   **Alternative - Quick Demo:**
+
+   ```bash
+   # Just open demo.html in your browser after starting backend
+   open demo.html  # macOS
+   start demo.html # Windows
    ```
 
 5. **Test the App**
@@ -190,6 +214,13 @@ Before you begin, ensure you have the following installed:
    Default login credentials:
    - Email: `admin@ispy.app`
    - Password: `Admin@123`
+
+   **Available Screens:**
+   - 🔐 Login & Registration
+   - 🏠 Home Dashboard
+   - 🗺️ Interactive Map
+   - 📝 Report Incidents
+   - 👤 User Profile
 
 ### Environment Configuration
 
