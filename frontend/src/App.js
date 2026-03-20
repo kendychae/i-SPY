@@ -147,6 +147,11 @@ const MainTabs = () => {
 /**
  * Root Navigator with Protected Routes
  */
+export const AuthContext = React.createContext({
+  isAuthenticated: false,
+  setIsAuthenticated: () => {},
+});
+
 const RootNavigator = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(null); // null = checking, true/false = result
   const [isLoading, setIsLoading] = useState(true);
@@ -183,31 +188,33 @@ const RootNavigator = () => {
   }
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-        // Fade animation for auth state transitions
-        cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
-      }}
-    >
-      {isAuthenticated ? (
-        <Stack.Screen 
-          name="Main" 
-          component={MainTabs}
-          options={{
-            animationEnabled: true,
-          }}
-        />
-      ) : (
-        <Stack.Screen 
-          name="Auth" 
-          component={AuthStack}
-          options={{
-            animationEnabled: true,
-          }}
-        />
-      )}
-    </Stack.Navigator>
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          // Fade animation for auth state transitions
+          cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
+        }}
+      >
+        {isAuthenticated ? (
+          <Stack.Screen 
+            name="Main" 
+            component={MainTabs}
+            options={{
+              animationEnabled: true,
+            }}
+          />
+        ) : (
+          <Stack.Screen 
+            name="Auth" 
+            component={AuthStack}
+            options={{
+              animationEnabled: true,
+            }}
+          />
+        )}
+      </Stack.Navigator>
+    </AuthContext.Provider>
   );
 };
 

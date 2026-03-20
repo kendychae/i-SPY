@@ -9,8 +9,11 @@ import {
   Alert,
 } from 'react-native';
 import { authService } from '../services/authService';
+import { useContext } from 'react';
+import { AuthContext } from '../App';
 
 const ProfileScreen = ({ navigation }) => {
+  const { setIsAuthenticated } = useContext(AuthContext);
   const [user, setUser] = React.useState(null);
 
   React.useEffect(() => {
@@ -33,7 +36,7 @@ const ProfileScreen = ({ navigation }) => {
           style: 'destructive',
           onPress: async () => {
             await authService.logout();
-            navigation.replace('Auth');
+            setIsAuthenticated(false);
           },
         },
       ]

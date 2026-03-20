@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -11,33 +11,52 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { authService } from '../services/authService';
+import { validateLogin } from '../utils/validation';
+import { AuthContext } from '../App';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState(''); // 'success' | 'error'
   const [loading, setLoading] = useState(false);
 
+  const { setIsAuthenticated } = useContext(AuthContext);
+
   const handleLogin = async () => {
-    // Validation
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Error', 'Please enter both email and password');
+    const { valid, errors: validationErrors } = validateLogin({ email, password });
+
+    if (!valid) {
+      setErrors(validationErrors);
+      setStatusMessage('Fix errors above to continue');
+      setStatusType('error');
       return;
     }
 
+    const emailValue = email.trim();
+    const passwordValue = password.trim();
+
+    setStatusMessage('Logging in...');
+    setStatusType('loading');
     setLoading(true);
 
     try {
-      const result = await authService.login(email.trim(), password);
+      const result = await authService.login(emailValue, passwordValue);
 
       if (result.success) {
-        // Auth status will be detected automatically by the polling in App.js
-        // Just show success message
-        console.log('Login successful!', result.user);
+        setIsAuthenticated(true);
+        setStatusMessage('Login successful! Redirecting...');
+        setStatusType('success');
       } else {
+        setStatusMessage(result.message || 'Invalid credentials');
+        setStatusType('error');
         Alert.alert('Login Failed', result.message || 'Invalid credentials');
       }
     } catch (error) {
-      Alert.alert('Error', 'An unexpected error occurred. Please try again.');
+      setStatusMessage('An unexpected error occurred. Please try again.');
+      setStatusType('error');
       console.error('Login error:', error);
     } finally {
       setLoading(false);
@@ -68,28 +87,56 @@ const LoginScreen = ({ navigation }) => {
         {/* Form Section */}
         <View style={styles.form}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, errors.email && styles.inputError]}
             placeholder="Email"
             placeholderTextColor="#999"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(value) => {
+              setEmail(value);
+              if (errors.email) {
+                setErrors((prev) => ({ ...prev, email: '' }));
+                setStatusMessage('');
+              }
+            }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
             editable={!loading}
           />
+          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            placeholderTextColor="#999"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            editable={!loading}
-          />
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              style={[
+                styles.input,
+                errors.password && styles.inputError,
+                { flex: 1 },
+              ]}
+              placeholder="Password"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={(value) => {
+                setPassword(value);
+                if (errors.password) {
+                  setErrors((prev) => ({ ...prev, password: '' }));
+                  setStatusMessage('');
+                }
+              }}
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              autoCorrect={false}
+              editable={!loading}
+            />
+
+            <TouchableOpacity
+              style={styles.passwordToggle}
+              onPress={() => setShowPassword((p) => !p)}
+              disabled={loading}
+            >
+              <Text style={styles.passwordToggleText}>{showPassword ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+          </View>
+          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
           <TouchableOpacity
             style={styles.forgotPassword}
@@ -98,6 +145,20 @@ const LoginScreen = ({ navigation }) => {
           >
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
+
+          {statusMessage ? (
+            <Text
+              style={
+                statusType === 'error'
+                  ? styles.statusError
+                  : statusType === 'success'
+                  ? styles.statusSuccess
+                  : styles.statusNeutral
+              }
+            >
+              {statusMessage}
+            </Text>
+          ) : null}
 
           <TouchableOpacity
             style={[styles.loginButton, loading && styles.loginButtonDisabled]}
@@ -178,6 +239,24 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#1a1a1a',
   },
+  inputError: {
+    borderColor: '#d9534f',
+  },
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  passwordToggle: {
+    marginLeft: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  passwordToggleText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   forgotPassword: {
     alignSelf: 'flex-end',
     marginBottom: 24,
@@ -227,6 +306,31 @@ const styles = StyleSheet.create({
     color: '#007AFF',
     fontSize: 16,
     fontWeight: '600',
+  },
+  statusSuccess: {
+    color: '#28a745',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statusError: {
+    color: '#d9534f',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statusNeutral: {
+    color: '#333',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: '#d9534f',
+    fontSize: 12,
+    marginTop: -12,
+    marginBottom: 12,
+    marginLeft: 4,
   },
   footer: {
     marginTop: 32,
