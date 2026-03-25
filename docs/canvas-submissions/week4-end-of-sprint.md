@@ -2,7 +2,7 @@
 
 **Sprint:** Week 4 (W04 Sprint 2)  
 **Name:** Kendahl Chae Bingham (Team Lead)  
-**Date:** March 23, 2026
+**Date:** March 25, 2026
 
 ---
 
@@ -10,7 +10,9 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/commit/[latest-week4-commit-hash]
+1. https://github.com/kendychae/i-SPY/commit/3e633cc (Merge iyen-samuel — final W4 API integration, March 25, 2026)
+2. https://github.com/kendychae/i-SPY/commit/acf0e36 (Merge Lyon's PR #43 — AuthContext, validation, show/hide password)
+3. https://github.com/kendychae/i-SPY/commit/c6ee0dd931d2a2c700550b00ca8e11770d10a610 (Complete Week 4 Sprint — image upload, compression, maps, media preview, March 20, 2026)
 
 ---
 
@@ -18,15 +20,17 @@ Enter the link to the most recent commit you have created for this sprint.
 
 Report on the tasks for which you were the lead person:
 
-| Task Name                              | Estimated Hours | Hours Worked | Percent Complete | Is this blocked by something outside of your control? If so, describe. |
-| -------------------------------------- | --------------- | ------------ | ---------------- | ---------------------------------------------------------------------- |
-| Design report submission API contracts | 5               | 5.5          | 100%             | No                                                                     |
-| Set up Jest testing framework          | 6               | 7            | 100%             | No                                                                     |
-| Define map marker clustering algorithm | 4               | 4.5          | 100%             | No                                                                     |
-| File validation rules and security     | 3               | 3            | 100%             | No                                                                     |
-| Team coordination and code reviews     | 3               | 4.5          | 100%             | No                                                                     |
+| Task Name                                | Estimated Hours | Hours Worked | Percent Complete | Is this blocked by something outside of your control? If so, describe. |
+| ---------------------------------------- | --------------- | ------------ | ---------------- | ---------------------------------------------------------------------- |
+| Design report submission API contracts   | 5               | 5.5          | 100%             | No                                                                     |
+| Set up Jest testing framework            | 6               | 7            | 100%             | No                                                                     |
+| Define map marker clustering algorithm   | 4               | 4.5          | 100%             | No                                                                     |
+| File validation rules and security       | 3               | 3            | 100%             | No                                                                     |
+| Team coordination and code reviews       | 3               | 4.5          | 100%             | No                                                                     |
+| Review & merge teammate PRs (Lyon, Iyen) | 2               | 3            | 100%             | No                                                                     |
+| Fix branch conflicts and security issues | 2               | 3            | 100%             | No                                                                     |
 
-**Total Hours:** Estimated: 21 | Actual: 24.5
+**Total Hours:** Estimated: 25 | Actual: 30.5
 
 ---
 
