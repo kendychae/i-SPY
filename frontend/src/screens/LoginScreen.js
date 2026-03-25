@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -8,37 +8,55 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { authService } from '../services/authService';
+import { validateLogin } from '../utils/validation';
+import { AuthContext } from '../App';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState(''); // 'success' | 'error'
+  const [loading, setLoading] = useState(false);
+
+  const { setIsAuthenticated } = useContext(AuthContext);
 
   const handleLogin = async () => {
-    setErrorMsg('');
+    const { valid, errors: validationErrors } = validateLogin({ email, password });
 
-    if (!email.trim() || !password.trim()) {
-      setErrorMsg('Please enter both email and password');
+    if (!valid) {
+      setErrors(validationErrors);
+      setStatusMessage('Fix errors above to continue');
+      setStatusType('error');
       return;
     }
 
+    const emailValue = email.trim();
+    const passwordValue = password.trim();
+
+    setStatusMessage('Logging in...');
+    setStatusType('loading');
     setLoading(true);
 
     try {
-      const result = await authService.login(email.trim(), password);
+      const result = await authService.login(emailValue, passwordValue);
 
       if (result.success) {
-        // Auth status will be detected automatically by the polling in App.js
-        console.log('Login successful!', result.user);
+        setIsAuthenticated(true);
+        setStatusMessage('Login successful! Redirecting...');
+        setStatusType('success');
       } else {
-        setErrorMsg(result.message || 'Invalid credentials');
+        setStatusMessage(result.message || 'Invalid credentials');
+        setStatusType('error');
+        Alert.alert('Login Failed', result.message || 'Invalid credentials');
       }
     } catch (error) {
-      setErrorMsg('Unable to connect to server. Please try again.');
+      setStatusMessage('An unexpected error occurred. Please try again.');
+      setStatusType('error');
       console.error('Login error:', error);
     } finally {
       setLoading(false);
@@ -69,37 +87,56 @@ const LoginScreen = ({ navigation }) => {
         {/* Form Section */}
         <View style={styles.form}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, errors.email && styles.inputError]}
             placeholder="Email"
             placeholderTextColor="#999"
             value={email}
-            onChangeText={setEmail}
+            onChangeText={(value) => {
+              setEmail(value);
+              if (errors.email) {
+                setErrors((prev) => ({ ...prev, email: '' }));
+                setStatusMessage('');
+              }
+            }}
             keyboardType="email-address"
             autoCapitalize="none"
             autoCorrect={false}
             editable={!loading}
           />
+          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
-          <View style={styles.passwordContainer}>
+          <View style={styles.passwordInputContainer}>
             <TextInput
-              style={styles.passwordInput}
+              style={[
+                styles.input,
+                errors.password && styles.inputError,
+                { flex: 1 },
+              ]}
               placeholder="Password"
               placeholderTextColor="#999"
               value={password}
-              onChangeText={setPassword}
+              onChangeText={(value) => {
+                setPassword(value);
+                if (errors.password) {
+                  setErrors((prev) => ({ ...prev, password: '' }));
+                  setStatusMessage('');
+                }
+              }}
               secureTextEntry={!showPassword}
               autoCapitalize="none"
               autoCorrect={false}
               editable={!loading}
             />
+
             <TouchableOpacity
-              style={styles.eyeButton}
-              onPress={() => setShowPassword(!showPassword)}
+              style={styles.passwordToggle}
+              onPress={() => setShowPassword((p) => !p)}
               disabled={loading}
             >
-              <Text style={styles.eyeIcon}>{showPassword ? '👁️' : '👁️‍🗨️'}</Text>
+              <Text style={styles.passwordToggleText}>{showPassword ? 'Hide' : 'Show'}</Text>
             </TouchableOpacity>
           </View>
+          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
           <TouchableOpacity
             style={styles.forgotPassword}
@@ -109,10 +146,18 @@ const LoginScreen = ({ navigation }) => {
             <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          {errorMsg ? (
-            <View style={styles.errorBanner}>
-              <Text style={styles.errorBannerText}>⚠️  {errorMsg}</Text>
-            </View>
+          {statusMessage ? (
+            <Text
+              style={
+                statusType === 'error'
+                  ? styles.statusError
+                  : statusType === 'success'
+                  ? styles.statusSuccess
+                  : styles.statusNeutral
+              }
+            >
+              {statusMessage}
+            </Text>
           ) : null}
 
           <TouchableOpacity
@@ -194,26 +239,23 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#1a1a1a',
   },
-  passwordContainer: {
+  inputError: {
+    borderColor: '#d9534f',
+  },
+  passwordInputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 12,
     marginBottom: 16,
   },
-  passwordInput: {
-    flex: 1,
-    padding: 16,
-    fontSize: 16,
-    color: '#1a1a1a',
+  passwordToggle: {
+    marginLeft: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
-  eyeButton: {
-    padding: 16,
-  },
-  eyeIcon: {
-    fontSize: 20,
+  passwordToggleText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
   },
   forgotPassword: {
     alignSelf: 'flex-end',
@@ -265,18 +307,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
-  errorBanner: {
-    backgroundColor: '#FFF0F0',
-    borderWidth: 1,
-    borderColor: '#FFCCCC',
-    borderRadius: 8,
-    padding: 12,
-    marginBottom: 16,
-  },
-  errorBannerText: {
-    color: '#CC0000',
+  statusSuccess: {
+    color: '#28a745',
     fontSize: 14,
+    marginBottom: 12,
     textAlign: 'center',
+  },
+  statusError: {
+    color: '#d9534f',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statusNeutral: {
+    color: '#333',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: '#d9534f',
+    fontSize: 12,
+    marginTop: -12,
+    marginBottom: 12,
+    marginLeft: 4,
   },
   footer: {
     marginTop: 32,
@@ -290,4 +344,3 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
-

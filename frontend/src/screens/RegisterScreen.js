@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -12,8 +12,12 @@ import {
   ScrollView,
 } from 'react-native';
 import { authService } from '../services/authService';
+import { validateRegister } from '../utils/validation';
+import { AuthContext } from '../App';
 
 const RegisterScreen = ({ navigation }) => {
+  const { setIsAuthenticated } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -22,40 +26,41 @@ const RegisterScreen = ({ navigation }) => {
     lastName: '',
     phoneNumber: '',
   });
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    firstName: '',
+    lastName: '',
+  });
+  const [statusMessage, setStatusMessage] = useState('');
+  const [statusType, setStatusType] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
-  const validateForm = () => {
-    if (!formData.email.trim() || !formData.password || !formData.firstName.trim() || !formData.lastName.trim()) {
-      Alert.alert('Error', 'Please fill in all required fields');
-      return false;
-    }
 
-    if (formData.password !== formData.confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return false;
-    }
-
-    if (formData.password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters long');
-      return false;
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      Alert.alert('Error', 'Please enter a valid email address');
-      return false;
-    }
-
-    return true;
-  };
 
   const handleRegister = async () => {
-    if (!validateForm()) return;
+    const { valid, errors: validationErrors } = validateRegister(formData);
 
+    if (!valid) {
+      setErrors(validationErrors);
+      setStatusMessage('Please fix the highlighted fields');
+      setStatusType('error');
+      Alert.alert('Error', 'Please fix the highlighted fields');
+      return;
+    }
+
+    setStatusMessage('Creating account...');
+    setStatusType('loading');
     setLoading(true);
 
     try {
@@ -69,12 +74,13 @@ const RegisterScreen = ({ navigation }) => {
       });
 
       if (result.success) {
-        Alert.alert(
-          'Success',
-          'Account created successfully!',
-          [{ text: 'OK', onPress: () => navigation.replace('Main') }]
-        );
+        setIsAuthenticated(true);
+        setStatusMessage('Account created successfully!');
+        setStatusType('success');
+        Alert.alert('Success', 'Account created successfully!');
       } else {
+        setStatusMessage(result.message || 'Unable to create account');
+        setStatusType('error');
         if (result.errors) {
           const errorMessages = result.errors.map(e => e.message).join('\n');
           Alert.alert('Registration Failed', errorMessages);
@@ -103,7 +109,7 @@ const RegisterScreen = ({ navigation }) => {
 
         <View style={styles.form}>
           <TextInput
-            style={styles.input}
+            style={[styles.input, errors.firstName && styles.inputError]}
             placeholder="First Name *"
             placeholderTextColor="#999"
             value={formData.firstName}
@@ -111,9 +117,10 @@ const RegisterScreen = ({ navigation }) => {
             autoCapitalize="words"
             editable={!loading}
           />
+          {errors.firstName ? <Text style={styles.errorText}>{errors.firstName}</Text> : null}
 
           <TextInput
-            style={styles.input}
+            style={[styles.input, errors.lastName && styles.inputError]}
             placeholder="Last Name *"
             placeholderTextColor="#999"
             value={formData.lastName}
@@ -121,9 +128,10 @@ const RegisterScreen = ({ navigation }) => {
             autoCapitalize="words"
             editable={!loading}
           />
+          {errors.lastName ? <Text style={styles.errorText}>{errors.lastName}</Text> : null}
 
           <TextInput
-            style={styles.input}
+            style={[styles.input, errors.email && styles.inputError]}
             placeholder="Email *"
             placeholderTextColor="#999"
             value={formData.email}
@@ -133,6 +141,7 @@ const RegisterScreen = ({ navigation }) => {
             autoCorrect={false}
             editable={!loading}
           />
+          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
 
           <TextInput
             style={styles.input}
@@ -144,27 +153,61 @@ const RegisterScreen = ({ navigation }) => {
             editable={!loading}
           />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Password *"
-            placeholderTextColor="#999"
-            value={formData.password}
-            onChangeText={(value) => updateField('password', value)}
-            secureTextEntry
-            autoCapitalize="none"
-            editable={!loading}
-          />
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              style={[styles.input, errors.password && styles.inputError, { flex: 1 }]}
+              placeholder="Password *"
+              placeholderTextColor="#999"
+              value={formData.password}
+              onChangeText={(value) => updateField('password', value)}
+              secureTextEntry={!showPassword}
+              autoCapitalize="none"
+              editable={!loading}
+            />
+            <TouchableOpacity
+              style={styles.passwordToggle}
+              onPress={() => setShowPassword((p) => !p)}
+              disabled={loading}
+            >
+              <Text style={styles.passwordToggleText}>{showPassword ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+          </View>
+          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
 
-          <TextInput
-            style={styles.input}
-            placeholder="Confirm Password *"
-            placeholderTextColor="#999"
-            value={formData.confirmPassword}
-            onChangeText={(value) => updateField('confirmPassword', value)}
-            secureTextEntry
-            autoCapitalize="none"
-            editable={!loading}
-          />
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              style={[styles.input, errors.confirmPassword && styles.inputError, { flex: 1 }]}
+              placeholder="Confirm Password *"
+              placeholderTextColor="#999"
+              value={formData.confirmPassword}
+              onChangeText={(value) => updateField('confirmPassword', value)}
+              secureTextEntry={!showConfirmPassword}
+              autoCapitalize="none"
+              editable={!loading}
+            />
+            <TouchableOpacity
+              style={styles.passwordToggle}
+              onPress={() => setShowConfirmPassword((p) => !p)}
+              disabled={loading}
+            >
+              <Text style={styles.passwordToggleText}>{showConfirmPassword ? 'Hide' : 'Show'}</Text>
+            </TouchableOpacity>
+          </View>
+          {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
+
+          {statusMessage ? (
+            <Text
+              style={
+                statusType === 'error'
+                  ? styles.statusError
+                  : statusType === 'success'
+                  ? styles.statusSuccess
+                  : styles.statusNeutral
+              }
+            >
+              {statusMessage}
+            </Text>
+          ) : null}
 
           <TouchableOpacity
             style={[styles.registerButton, loading && styles.registerButtonDisabled]}
@@ -229,6 +272,24 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#1a1a1a',
   },
+  inputError: {
+    borderColor: '#d9534f',
+  },
+  passwordInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  passwordToggle: {
+    marginLeft: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+  },
+  passwordToggleText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
   registerButton: {
     backgroundColor: '#007AFF',
     borderRadius: 12,
@@ -256,6 +317,31 @@ const styles = StyleSheet.create({
   loginLinkBold: {
     color: '#007AFF',
     fontWeight: '600',
+  },
+  statusSuccess: {
+    color: '#28a745',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statusError: {
+    color: '#d9534f',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  statusNeutral: {
+    color: '#333',
+    fontSize: 14,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  errorText: {
+    color: '#d9534f',
+    fontSize: 12,
+    marginTop: -10,
+    marginBottom: 12,
+    marginLeft: 4,
   },
 });
 
