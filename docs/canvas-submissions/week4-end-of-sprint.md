@@ -10,9 +10,10 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/commit/3e633cc (Merge iyen-samuel — final W4 API integration, March 25, 2026)
-2. https://github.com/kendychae/i-SPY/commit/acf0e36 (Merge Lyon's PR #43 — AuthContext, validation, show/hide password)
-3. https://github.com/kendychae/i-SPY/commit/c6ee0dd931d2a2c700550b00ca8e11770d10a610 (Complete Week 4 Sprint — image upload, compression, maps, media preview, March 20, 2026)
+1. https://github.com/kendychae/i-SPY/commit/a0ed329 (Merge figuelia-yasin — users table migration, GPS location service, reverse geocoding #11/#34/#35)
+2. https://github.com/kendychae/i-SPY/commit/3e633cc (Merge iyen-samuel — final W4 API integration, March 25, 2026)
+3. https://github.com/kendychae/i-SPY/commit/acf0e36 (Merge Lyon's PR #43 — AuthContext, validation, show/hide password)
+4. https://github.com/kendychae/i-SPY/commit/c6ee0dd931d2a2c700550b00ca8e11770d10a610 (Complete Week 4 Sprint — image upload, compression, maps, media preview, March 20, 2026)
 
 ---
 
@@ -68,6 +69,9 @@ Report on the tasks for which you were the lead person:
 - ✅ Report listing with category and status filtering
 - ✅ Automated test suite covering core workflows
 - ✅ File upload system with security validation
+- ✅ Standalone users table migration with UUID PK, indexes, and updated_at trigger (#11)
+- ✅ Reusable GPS location service extracting expo-location logic from ReportScreen (#34)
+- ✅ Reverse geocoding service converting coordinates to human-readable addresses (#35)
 
 ### Team Performance:
 

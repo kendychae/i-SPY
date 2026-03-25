@@ -61,6 +61,7 @@ No later than Tuesday each team member should record what features they will be 
 | Samuel Iyen Evbosaru | Implement file storage system with proper naming/organization | 5          |
 | Samuel Iyen Evbosaru | Create media table and link to reports                        | 3          |
 | Figuelia Ya'Sin      | Build media preview component for uploaded files              | 4          |
+| Figuelia Ya'Sin      | Design and implement users table migration (W3 carryover)     | 5          |
 | Kendahl Chae Bingham | Define file validation rules (size, type, security)           | 3          |
 
 ---
@@ -69,29 +70,30 @@ No later than Tuesday each team member should record what features they will be 
 
 Record the results of your standup meeting (Final Sprint Meeting — March 23, 2026).
 
-| Person               | Feature/Task                       | Progress Notes                                                                        | Blockers/Help Needed |
-| -------------------- | ---------------------------------- | ------------------------------------------------------------------------------------- | -------------------- |
-| Kendahl Chae Bingham | Report API Design & Docs           | Completed — full OpenAPI-style docs for all CRUD endpoints in docs/API-REPORTS.md     | None                 |
-| Kendahl Chae Bingham | Jest Testing Framework             | Completed — integration tests for auth and report flows, 3 bugs caught pre-production | None                 |
-| Kendahl Chae Bingham | Map Clustering Algorithm           | Completed — grid-based clustering spec documented in docs/MAP-CLUSTERING.md           | None                 |
-| Kendahl Chae Bingham | File Validation Rules              | Completed — magic-number file signature checks, MIME validation in upload.middleware  | None                 |
-| Kendahl Chae Bingham | Team Coordination & Code Reviews   | Completed — reviewed & merged Lyon PR #43 and Iyen branch, resolved conflicts         | None                 |
-| Samuel Iyen Evbosaru | POST /api/reports Endpoint         | Completed — full validation, image URL storage, integration tested                    | None                 |
-| Samuel Iyen Evbosaru | GET /api/reports with Filtering    | Completed — category, status, pagination filters working                              | None                 |
-| Samuel Iyen Evbosaru | Multer File Upload Middleware      | Completed — POST /api/v1/reports/upload with report linking                           | None                 |
-| Samuel Iyen Evbosaru | File Storage System                | Completed — uploads/{userId}/{date}/{type}/{filename} structure implemented           | None                 |
-| Samuel Iyen Evbosaru | Media Table & Report Linking       | Completed — media controller with addMediaToReport and getMediaByReport               | None                 |
-| Samuel Iyen Evbosaru | Geospatial Queries                 | Completed — PostGIS queries for nearby incidents in utils/geospatial.js               | None                 |
-| Brenden Taylor Lyon  | React Native Maps Integration      | Completed — maps working with location tracking; Kendahl provided Google Maps API key | None                 |
-| Brenden Taylor Lyon  | Display Incident Markers on Map    | Completed — custom markers for each incident category displayed on map                | None                 |
-| Brenden Taylor Lyon  | Report Submission Form             | Completed — inline field validation, status messages, AuthContext integrated          | None                 |
-| Brenden Taylor Lyon  | Report List Screen with Filters    | Completed — filter by category/status, list rendering with pull-to-refresh            | None                 |
-| Brenden Taylor Lyon  | Auth Context & Show/Hide Password  | Completed — AuthContext exported from App.js, show/hide toggle on login & register    | None                 |
-| Figuelia Ya'Sin      | Image Picker & Camera              | Completed — camera and gallery options both working with permissions                  | None                 |
-| Figuelia Ya'Sin      | Image Upload Service & Compression | Completed — compression reduces upload size by ~60%; tied to report submission        | None                 |
-| Figuelia Ya'Sin      | GPS Location Capture               | Completed — tested on physical device; location auto-populated on report form         | None                 |
-| Figuelia Ya'Sin      | Reverse Geocoding (Address Lookup) | Completed — Google reverse geocoding converts coordinates to readable address         | None                 |
-| Figuelia Ya'Sin      | Media Preview Component            | Completed — MediaPreview.js renders image/video thumbnails before submission          | None                 |
+| Person               | Feature/Task                       | Progress Notes                                                                               | Blockers/Help Needed |
+| -------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------- | -------------------- |
+| Kendahl Chae Bingham | Report API Design & Docs           | Completed — full OpenAPI-style docs for all CRUD endpoints in docs/API-REPORTS.md            | None                 |
+| Kendahl Chae Bingham | Jest Testing Framework             | Completed — integration tests for auth and report flows, 3 bugs caught pre-production        | None                 |
+| Kendahl Chae Bingham | Map Clustering Algorithm           | Completed — grid-based clustering spec documented in docs/MAP-CLUSTERING.md                  | None                 |
+| Kendahl Chae Bingham | File Validation Rules              | Completed — magic-number file signature checks, MIME validation in upload.middleware         | None                 |
+| Kendahl Chae Bingham | Team Coordination & Code Reviews   | Completed — reviewed & merged Lyon PR #43 and Iyen branch, resolved conflicts                | None                 |
+| Samuel Iyen Evbosaru | POST /api/reports Endpoint         | Completed — full validation, image URL storage, integration tested                           | None                 |
+| Samuel Iyen Evbosaru | GET /api/reports with Filtering    | Completed — category, status, pagination filters working                                     | None                 |
+| Samuel Iyen Evbosaru | Multer File Upload Middleware      | Completed — POST /api/v1/reports/upload with report linking                                  | None                 |
+| Samuel Iyen Evbosaru | File Storage System                | Completed — uploads/{userId}/{date}/{type}/{filename} structure implemented                  | None                 |
+| Samuel Iyen Evbosaru | Media Table & Report Linking       | Completed — media controller with addMediaToReport and getMediaByReport                      | None                 |
+| Samuel Iyen Evbosaru | Geospatial Queries                 | Completed — PostGIS queries for nearby incidents in utils/geospatial.js                      | None                 |
+| Brenden Taylor Lyon  | React Native Maps Integration      | Completed — maps working with location tracking; Kendahl provided Google Maps API key        | None                 |
+| Brenden Taylor Lyon  | Display Incident Markers on Map    | Completed — custom markers for each incident category displayed on map                       | None                 |
+| Brenden Taylor Lyon  | Report Submission Form             | Completed — inline field validation, status messages, AuthContext integrated                 | None                 |
+| Brenden Taylor Lyon  | Report List Screen with Filters    | Completed — filter by category/status, list rendering with pull-to-refresh                   | None                 |
+| Brenden Taylor Lyon  | Auth Context & Show/Hide Password  | Completed — AuthContext exported from App.js, show/hide toggle on login & register           | None                 |
+| Figuelia Ya'Sin      | Image Picker & Camera              | Completed — camera and gallery options both working with permissions                         | None                 |
+| Figuelia Ya'Sin      | Image Upload Service & Compression | Completed — compression reduces upload size by ~60%; tied to report submission               | None                 |
+| Figuelia Ya'Sin      | GPS Location Capture               | Completed — tested on physical device; location auto-populated on report form                | None                 |
+| Figuelia Ya'Sin      | Reverse Geocoding (Address Lookup) | Completed — Google reverse geocoding converts coordinates to readable address                | None                 |
+| Figuelia Ya'Sin      | Media Preview Component            | Completed — MediaPreview.js renders image/video thumbnails before submission                 | None                 |
+| Figuelia Ya'Sin      | Users Table Migration (W3 #11)     | Completed — standalone 001_create_users_table.sql migration with UUID PK, 4 indexes, trigger | None                 |
 
 ---
 
@@ -143,7 +145,7 @@ Record the results of your standup meeting (Final Sprint Meeting — March 23, 2
 - Add GPS location capture for reports
 - Implement reverse geocoding for addresses
 - Build media preview components
-- Total estimated hours: 25 | **Actual hours worked: 22**
+- Total estimated hours: 25 | **Actual hours worked: 27**
 
 ### Success Criteria:
 
