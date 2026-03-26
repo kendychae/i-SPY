@@ -1,10 +1,10 @@
-# iSPY App Navigation Flow
+﻿# VIGILUX App Navigation Flow
 
 ## Navigation Architecture
 
 ### Overview
 
-The iSPY app uses a hierarchical navigation structure with protected routes, ensuring authenticated users have access to the main app while unauthenticated users see only the auth screens.
+The VIGILUX app uses a hierarchical navigation structure with protected routes, ensuring authenticated users have access to the main app while unauthenticated users see only the auth screens.
 
 ## Navigation Hierarchy
 

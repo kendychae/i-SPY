@@ -1,12 +1,12 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
 // ── Production safety guards ──────────────────────────────────────────────────
 const INSECURE_DEFAULTS = [
-  'ispy-secret-key-change-in-production',
-  'ispy-refresh-secret-change-in-production',
+  'vigilux-secret-key-change-in-production',
+  'vigilux-refresh-secret-change-in-production',
 ];
 if (process.env.NODE_ENV === 'production') {
   if (
@@ -48,7 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK', 
-    message: 'iSPY API Server is running',
+    message: 'VIGILUX API Server is running',
     timestamp: new Date().toISOString()
   });
 });
@@ -56,7 +56,7 @@ app.get('/health', (req, res) => {
 // API Routes
 app.get('/api/v1', (req, res) => {
   res.json({ 
-    message: 'iSPY API v1.0',
+    message: 'VIGILUX API v1.0',
     endpoints: {
       auth: '/api/v1/auth',
       reports: '/api/v1/reports',
@@ -88,7 +88,7 @@ app.use((req, res) => {
 // Start server (only when run directly, not when imported by tests)
 if (require.main === module) {
   app.listen(PORT, () => {
-    console.log(`iSPY Backend Server running on port ${PORT}`);
+    console.log(`VIGILUX Backend Server running on port ${PORT}`);
     console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   });
 }

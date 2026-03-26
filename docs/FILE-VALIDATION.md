@@ -1,4 +1,4 @@
-# File Validation Rules and Security Guidelines
+﻿# File Validation Rules and Security Guidelines
 
 ## Version 1.0
 
@@ -20,7 +20,7 @@
 
 ## Overview
 
-This document defines comprehensive file validation rules for the iSPY platform to ensure security, performance, and user experience. All media uploads (images and videos) must pass these validation checks before being stored and associated with incident reports.
+This document defines comprehensive file validation rules for the VIGILUX platform to ensure security, performance, and user experience. All media uploads (images and videos) must pass these validation checks before being stored and associated with incident reports.
 
 ---
 
@@ -267,7 +267,7 @@ await sharp(inputBuffer)
   .withMetadata({
     exif: {
       IFD0: {
-        Copyright: 'iSPY Platform',
+        Copyright: 'VIGILUX Platform',
       },
     },
   })

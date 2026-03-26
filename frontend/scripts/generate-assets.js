@@ -1,6 +1,6 @@
-/**
+﻿/**
  * generate-assets.js
- * Creates placeholder app icons and splash screen PNGs for iSPY.
+ * Creates placeholder app icons and splash screen PNGs for VIGILUX.
  * Run: node scripts/generate-assets.js
  * Replace the generated files with final brand assets before App Store submission.
  */

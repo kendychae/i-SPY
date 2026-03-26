@@ -1,14 +1,14 @@
-# Deployment Infrastructure - PR Summary
+﻿# Deployment Infrastructure - PR Summary
 
 ## Description
-This PR adds comprehensive deployment infrastructure and documentation to make i-SPY production-ready. It includes deployment guides for multiple platforms, Docker support, and necessary configuration files.
+This PR adds comprehensive deployment infrastructure and documentation to make VIGILUX production-ready. It includes deployment guides for multiple platforms, Docker support, and necessary configuration files.
 
 ## Type of Change
 - [x] New feature (non-breaking change which adds functionality)
 - [x] Documentation update
 
 ## Related Issues
-Part of production readiness initiative for i-SPY project.
+Part of production readiness initiative for VIGILUX project.
 
 ## Changes Made
 - Added comprehensive `DEPLOYMENT.md` guide covering:
@@ -48,7 +48,7 @@ Part of production readiness initiative for i-SPY project.
 - [x] New and existing unit tests pass locally with my changes
 
 ## Additional Notes
-This deployment infrastructure enables the team to deploy i-SPY to production environments quickly and securely. The guide provides step-by-step instructions for multiple platforms to give flexibility based on team preferences and requirements.
+This deployment infrastructure enables the team to deploy VIGILUX to production environments quickly and securely. The guide provides step-by-step instructions for multiple platforms to give flexibility based on team preferences and requirements.
 
 **Deployment Status:** Ready for deployment ✅  
 **Last Updated:** March 14, 2026

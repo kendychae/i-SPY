@@ -1,4 +1,4 @@
-# iSPY License Comparison
+﻿# VIGILUX License Comparison
 
 ## 🚨 IMPORTANT: Choose Your License Strategy
 
@@ -30,7 +30,7 @@ Your repository currently uses **TWO different licenses**. You need to **CHOOSE 
 
 ### Real-World Impact:
 
-> "A company could take your entire iSPY codebase, rebrand it as 'SafetyWatch', sell it to cities for $50,000/year, and you get **$0** and have **no legal recourse**."
+> "A company could take your entire VIGILUX codebase, rebrand it as 'SafetyWatch', sell it to cities for $50,000/year, and you get **$0** and have **no legal recourse**."
 
 ---
 
@@ -154,7 +154,7 @@ If you're concerned about theft, you should:
 
 Ask yourself:
 
-1. **Do you plan to make money from iSPY?** → Use Proprietary or Dual
+1. **Do you plan to make money from VIGILUX?** → Use Proprietary or Dual
 2. **Is this just for your portfolio?** → MIT is fine
 3. **Do you want companies paying you to use it?** → Use Proprietary or Dual
 4. **Are you worried about competitors stealing it?** → Use Proprietary or Dual

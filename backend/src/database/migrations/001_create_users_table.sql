@@ -1,4 +1,4 @@
--- Migration: 001_create_users_table.sql
+﻿-- Migration: 001_create_users_table.sql
 -- Issue #11: Design and Implement Users Table
 -- Author: Figuelia Ya'Sin
 -- Date: 2026-03-25
@@ -47,9 +47,9 @@ INSERT INTO users (
         is_verified
     )
 VALUES (
-        'admin@ispy.local',
+        'admin@vigilux.local',
         '$2b$12$placeholderHashChangeBeforeDeployment000000000000000000000',
-        'iSPY',
+        'VIGILUX',
         'Admin',
         'admin',
         TRUE

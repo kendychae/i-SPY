@@ -1,5 +1,5 @@
-/**
- * Geospatial Query Utilities for iSPY Platform
+﻿/**
+ * Geospatial Query Utilities for VIGILUX Platform
  * 
  * This module provides high-performance geospatial query functions
  * for finding incidents within specific geographic areas.

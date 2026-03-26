@@ -1,4 +1,4 @@
-// API configuration and axios instance
+﻿// API configuration and axios instance
 import axios from 'axios';
 import Constants from 'expo-constants';
 import { getAccessToken, getRefreshToken, storeAccessToken, storeRefreshToken, clearAuthData } from '../utils/secureStorage';
@@ -29,7 +29,7 @@ function getApiBaseUrl() {
 const API_BASE_URL = getApiBaseUrl();
 
 if (__DEV__) {
-  console.log('[iSPY] API Base URL:', API_BASE_URL);
+  console.log('[VIGILUX] API Base URL:', API_BASE_URL);
 }
 
 const apiClient = axios.create({

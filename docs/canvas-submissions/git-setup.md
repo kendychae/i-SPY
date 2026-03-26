@@ -1,4 +1,4 @@
-# Git Setup and Workflow - iSPY Project
+﻿# Git Setup and Workflow - VIGILUX Project
 
 **CSE 499 - Week 2 Activity Submission**
 
@@ -6,7 +6,7 @@
 
 ## Project Information
 
-**Project Name:** iSPY - Neighborhood Watch Mobile Application
+**Project Name:** VIGILUX - Neighborhood Watch Mobile Application
 
 **Team Members:**
 
@@ -14,7 +14,7 @@
 - Samuel Iyen Evbosaru (Backend Developer) - GitHub: [@terrywhyte001](https://github.com/terrywhyte001)
 - Brenden Taylor Lyon (Frontend Developer) - GitHub: [@richardlyonheart](https://github.com/richardlyonheart)
 
-**Repository URL:** https://github.com/kendychae/i-SPY
+**Repository URL:** https://github.com/kendychae/VIGILUX
 
 **Project Board:** https://github.com/users/kendychae/projects/3/views/1?system_template=team_planning
 
@@ -42,7 +42,7 @@
 
 ✅ **Completed:**
 
-- Created repository: `i-SPY` at https://github.com/kendychae/i-SPY
+- Created repository: `VIGILUX` at https://github.com/kendychae/VIGILUX
 - Repository is public for collaboration and transparency
 - Initial README.md created
 - LICENSE file added (MIT License)
@@ -51,7 +51,7 @@
 ### 1.2 Repository Structure
 
 ```
-i-SPY/
+VIGILUX/
 ├── .gitignore           # Git ignore rules
 ├── README.md            # Project documentation
 ├── LICENSE              # MIT License
@@ -558,16 +558,16 @@ Use keywords in PR descriptions to automatically link and close issues:
 
    ```bash
    # HTTPS
-   git clone https://github.com/kendychae/i-SPY.git
+   git clone https://github.com/kendychae/VIGILUX.git
 
    # SSH (if configured)
-   git clone git@github.com:kendychae/i-SPY.git
+   git clone git@github.com:kendychae/VIGILUX.git
    ```
 
 4. **Navigate to Project**
 
    ```bash
-   cd i-SPY
+   cd VIGILUX
    ```
 
 5. **Install Backend Dependencies**
@@ -983,11 +983,11 @@ This Git setup and workflow has been reviewed and approved by:
 
 ### Team Resources
 
-- Repository: https://github.com/kendychae/i-SPY
+- Repository: https://github.com/kendychae/VIGILUX
 - Project Board: https://github.com/users/kendychae/projects/3
 - Discord/Slack: [Team Communication Channel]
 - Course Materials: https://byui-cse.github.io/cse499-ww-course/
 
 ---
 
-_This document serves as the official Git setup and workflow guide for the iSPY project. All team members are expected to follow these guidelines to ensure smooth collaboration and code quality._
+_This document serves as the official Git setup and workflow guide for the VIGILUX project. All team members are expected to follow these guidelines to ensure smooth collaboration and code quality._

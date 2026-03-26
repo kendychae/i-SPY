@@ -1,10 +1,10 @@
-const bcrypt = require('bcrypt');
+﻿const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { pool } = require('../config/database');
 
 // Environment variables for JWT
-const JWT_SECRET = process.env.JWT_SECRET || 'ispy-secret-key-change-in-production';
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'ispy-refresh-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'vigilux-secret-key-change-in-production';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'vigilux-refresh-secret-change-in-production';
 const JWT_EXPIRES_IN = '15m'; // Access token expires in 15 minutes
 const JWT_REFRESH_EXPIRES_IN = '7d'; // Refresh token expires in 7 days
 

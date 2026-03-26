@@ -1,4 +1,4 @@
-# Week 4 Implementation Summary
+﻿# Week 4 Implementation Summary
 
 **Sprint Duration:** Week 4  
 **Developer:** kendychae  
@@ -288,7 +288,7 @@ Comprehensive image upload guide:
 ## File Structure
 
 ```
-iSPY/
+VIGILUX/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/
@@ -545,7 +545,7 @@ All Week 4 success criteria met:
 
 **Developer:** kendychae  
 **Sprint:** Week 4  
-**Project:** iSPY - Community Safety App
+**Project:** VIGILUX - Community Safety App
 
 **Documentation Hub:**
 

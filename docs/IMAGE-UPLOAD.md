@@ -1,6 +1,6 @@
-# Image Upload Implementation Guide
+﻿# Image Upload Implementation Guide
 
-Complete guide for the image picker, compression, and upload system in the iSPY mobile application.
+Complete guide for the image picker, compression, and upload system in the VIGILUX mobile application.
 
 ## Architecture Overview
 
@@ -249,10 +249,10 @@ The report submission form includes the complete image upload workflow:
 
 ```xml
 <key>NSCameraUsageDescription</key>
-<string>Allow iSPY to take photos for incident reports.</string>
+<string>Allow VIGILUX to take photos for incident reports.</string>
 
 <key>NSPhotoLibraryUsageDescription</key>
-<string>Allow iSPY to access your photos to attach evidence to reports.</string>
+<string>Allow VIGILUX to access your photos to attach evidence to reports.</string>
 ```
 
 ### Android - AndroidManifest.xml
@@ -273,8 +273,8 @@ Already configured in `app.json`:
       [
         "expo-image-picker",
         {
-          "photosPermission": "Allow iSPY to access your photos...",
-          "cameraPermission": "Allow iSPY to take photos..."
+          "photosPermission": "Allow VIGILUX to access your photos...",
+          "cameraPermission": "Allow VIGILUX to take photos..."
         }
       ]
     ]

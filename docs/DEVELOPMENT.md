@@ -1,4 +1,4 @@
-# iSPY Development Guide
+﻿# VIGILUX Development Guide
 
 ## Quick Start for Developers
 
@@ -16,8 +16,8 @@
 1. **Clone Repository**
 
    ```bash
-   git clone https://github.com/kendychae/i-SPY.git
-   cd i-SPY
+   git clone https://github.com/kendychae/VIGILUX.git
+   cd VIGILUX
    ```
 
 2. **Setup Backend**
@@ -33,10 +33,10 @@
 
    ```bash
    # Create database
-   createdb ispy_db
+   createdb vigilux_db
 
    # Run schema
-   psql -d ispy_db -f src/database/schema.sql
+   psql -d vigilux_db -f src/database/schema.sql
    ```
 
 4. **Setup Frontend**

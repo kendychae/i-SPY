@@ -1,15 +1,15 @@
-# Initial Git Push Instructions
+﻿# Initial Git Push Instructions
 
 ## ⚠️ IMPORTANT: Read Before Pushing
 
-This guide will help you push your local iSPY project to GitHub.
+This guide will help you push your local VIGILUX project to GitHub.
 
 ---
 
 ## Prerequisites
 
 1. ✅ GitHub account created
-2. ✅ Repository created at: https://github.com/kendychae/i-SPY
+2. ✅ Repository created at: https://github.com/kendychae/VIGILUX
 3. ✅ Git installed on your computer
 4. ✅ All project files created locally
 
@@ -35,7 +35,7 @@ git config --global --list
 ### Step 2: Navigate to Project Directory
 
 ```powershell
-cd "C:\Users\kendy\OneDrive\iSPY"
+cd "C:\Users\kendy\OneDrive\VIGILUX"
 ```
 
 ### Step 3: Initialize Git Repository
@@ -52,7 +52,7 @@ git status
 
 ```powershell
 # Add GitHub repository as remote
-git remote add origin https://github.com/kendychae/i-SPY.git
+git remote add origin https://github.com/kendychae/VIGILUX.git
 
 # Verify remote
 git remote -v
@@ -61,8 +61,8 @@ git remote -v
 You should see:
 
 ```
-origin  https://github.com/kendychae/i-SPY.git (fetch)
-origin  https://github.com/kendychae/i-SPY.git (push)
+origin  https://github.com/kendychae/VIGILUX.git (fetch)
+origin  https://github.com/kendychae/VIGILUX.git (push)
 ```
 
 ### Step 5: Create and Switch to Main Branch
@@ -116,7 +116,7 @@ Add the key to your GitHub account:
 Then change remote URL:
 
 ```powershell
-git remote set-url origin git@github.com:kendychae/i-SPY.git
+git remote set-url origin git@github.com:kendychae/VIGILUX.git
 git push -u origin main
 ```
 
@@ -136,7 +136,7 @@ git push -u origin develop
 
 ## Step 10: Verify on GitHub
 
-1. Go to https://github.com/kendychae/i-SPY
+1. Go to https://github.com/kendychae/VIGILUX
 2. You should see:
    - ✅ All files and folders
    - ✅ README.md displayed
@@ -220,7 +220,7 @@ git push -u origin main
 
 After pushing, verify:
 
-- [ ] Repository visible at https://github.com/kendychae/i-SPY
+- [ ] Repository visible at https://github.com/kendychae/VIGILUX
 - [ ] README.md displays correctly
 - [ ] All folders present (backend, frontend, docs, .github)
 - [ ] .gitignore working (no node_modules)
@@ -254,7 +254,7 @@ After pushing, verify:
 ```powershell
 # Initialize and push (first time)
 git init
-git remote add origin https://github.com/kendychae/i-SPY.git
+git remote add origin https://github.com/kendychae/VIGILUX.git
 git branch -M main
 git add .
 git commit -m "chore: initial project setup"

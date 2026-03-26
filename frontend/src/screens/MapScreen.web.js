@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Web placeholder for MapScreen.
  * react-native-maps is a native-only module and cannot run in the browser.
  * Metro automatically resolves MapScreen.web.js over MapScreen.js on web builds.
@@ -16,7 +16,7 @@ const MapScreen = () => {
           The interactive map is available in the iOS and Android apps.
         </Text>
         <Text style={styles.note}>
-          Install iSPY on your phone to see real-time incident reports on the map.
+          Install VIGILUX on your phone to see real-time incident reports on the map.
         </Text>
       </View>
     </View>

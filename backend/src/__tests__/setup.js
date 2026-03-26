@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Jest Setup File
  * Runs before all tests
  */
@@ -6,7 +6,7 @@
 // Set test environment variables
 process.env.NODE_ENV = 'test';
 process.env.DB_HOST = process.env.TEST_DB_HOST || 'localhost';
-process.env.DB_NAME = process.env.TEST_DB_NAME || 'ispy_test_db';
+process.env.DB_NAME = process.env.TEST_DB_NAME || 'vigilux_test_db';
 process.env.JWT_SECRET = 'test-jwt-secret-key-for-testing-only';
 
 // Increase timeout for integration tests

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+﻿import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -104,7 +104,7 @@ const RegisterScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Text style={styles.title}>Create Account</Text>
-          <Text style={styles.subtitle}>Join the iSPY community</Text>
+          <Text style={styles.subtitle}>Join the VIGILUX community</Text>
         </View>
 
         <View style={styles.form}>

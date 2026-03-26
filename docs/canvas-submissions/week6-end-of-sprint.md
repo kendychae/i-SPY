@@ -1,4 +1,4 @@
-# CSE 499 End of Sprint Report
+﻿# CSE 499 End of Sprint Report
 
 **Sprint:** Week 6 (W06 Sprint 4 - FINAL)  
 **Name:** Kendahl Chae Bingham (Team Lead)  
@@ -10,7 +10,7 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/commit/[latest-week6-commit-hash]
+1. https://github.com/kendychae/VIGILUX/commit/[latest-week6-commit-hash]
 
 ---
 
@@ -240,4 +240,4 @@ This project would not have been possible without:
 
 **Final Rating:** Exceeds Expectations
 
-_Submitted with pride by the iSPY Development Team_
+_Submitted with pride by the VIGILUX Development Team_

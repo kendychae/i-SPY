@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+﻿const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'ispy-secret-key-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'vigilux-secret-key-change-in-production';
 
 /**
  * Verify JWT token and attach user to request

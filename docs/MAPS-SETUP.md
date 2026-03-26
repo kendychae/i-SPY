@@ -1,6 +1,6 @@
-# React Native Maps Setup Guide
+﻿# React Native Maps Setup Guide
 
-This guide covers setting up Google Maps integration for both iOS and Android platforms in the iSPY application.
+This guide covers setting up Google Maps integration for both iOS and Android platforms in the VIGILUX application.
 
 ## Prerequisites
 
@@ -29,7 +29,7 @@ This guide covers setting up Google Maps integration for both iOS and Android pl
 2. Click **Create Credentials** > **API Key**
 3. Click **Restrict Key** for security
 4. Under **Application restrictions**, select **Android apps**
-5. Add your package name: `com.ispy.app`
+5. Add your package name: `com.vigilux.app`
 6. Add your SHA-1 certificate fingerprint:
 
    ```bash
@@ -50,7 +50,7 @@ This guide covers setting up Google Maps integration for both iOS and Android pl
 
 1. Create another API key (or use the same with different restrictions)
 2. Under **Application restrictions**, select **iOS apps**
-3. Add your bundle identifier: `com.ispy.app`
+3. Add your bundle identifier: `com.vigilux.app`
 4. Under **API restrictions**, enable:
    - Maps SDK for iOS
    - Places API

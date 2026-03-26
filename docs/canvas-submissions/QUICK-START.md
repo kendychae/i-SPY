@@ -1,4 +1,4 @@
-# iSPY Week 3 - Quick Setup Guide
+﻿# VIGILUX Week 3 - Quick Setup Guide
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ cp .env.example .env
 # Edit .env and set your database password
 
 # Create database
-createdb ispy_db
+createdb vigilux_db
 
 # Run migrations
 npm run migrate
@@ -49,7 +49,7 @@ npm start
 
 ### Default Login Credentials
 
-- Email: `admin@ispy.app`
+- Email: `admin@vigilux.app`
 - Password: `Admin@123`
 
 ## What's Included
@@ -97,7 +97,7 @@ All endpoints use `/api/v1` prefix:
 ### Backend won't start
 
 - Check PostgreSQL is running: `pg_isready`
-- Verify database exists: `psql -l | grep ispy`
+- Verify database exists: `psql -l | grep vigilux`
 - Check .env file has correct credentials
 
 ### Frontend can't connect to API

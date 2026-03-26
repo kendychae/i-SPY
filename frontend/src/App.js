@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -100,7 +100,7 @@ const MainTabs = () => {
         name="Home" 
         component={HomeScreen}
         options={{
-          title: 'iSPY',
+          title: 'VIGILUX',
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
             <Text style={{ fontSize: 24 }}>🏠</Text>
@@ -180,7 +180,7 @@ const RootNavigator = () => {
     return (
       <View style={styles.loadingContainer}>
         <Text style={styles.logo}>🔍</Text>
-        <Text style={styles.appName}>iSPY</Text>
+        <Text style={styles.appName}>VIGILUX</Text>
         <ActivityIndicator size="large" color="#007AFF" style={styles.loader} />
         <Text style={styles.loadingText}>Loading...</Text>
       </View>

@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+﻿const { Pool } = require('pg');
 require('dotenv').config();
 
 /**
@@ -9,7 +9,7 @@ require('dotenv').config();
 const pool = new Pool({
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 5432,
-  database: process.env.DB_NAME || 'ispy_db',
+  database: process.env.DB_NAME || 'vigilux_db',
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD,
 });
@@ -48,7 +48,7 @@ async function runMigrations() {
       VALUES ($1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (email) DO NOTHING
     `, [
-      'admin@ispy.app',
+      'admin@vigilux.app',
       defaultPassword,
       'System',
       'Administrator',
@@ -57,7 +57,7 @@ async function runMigrations() {
       true
     ]);
 
-    console.log('✓ Default admin user created (admin@ispy.app / Admin@123)');
+    console.log('✓ Default admin user created (admin@vigilux.app / Admin@123)');
 
     console.log('\n✅ All migrations completed successfully!');
 

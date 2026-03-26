@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Location Service
  * Issue #34: Implement GPS location capture for incident reports
  * Issue #35: Add address lookup using reverse geocoding API
@@ -26,7 +26,7 @@ export const requestLocationPermission = async () => {
     if (status !== 'granted') {
       Alert.alert(
         'Location Permission Required',
-        'Please enable location access in your device settings so iSPY can attach your position to incident reports.',
+        'Please enable location access in your device settings so VIGILUX can attach your position to incident reports.',
         [{ text: 'OK' }]
       );
       return false;

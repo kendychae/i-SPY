@@ -1,4 +1,4 @@
-# CSE 499 End of Sprint Report
+﻿# CSE 499 End of Sprint Report
 
 **Sprint:** Week 7 (W07 Final Sprint — App Store Submission)
 **Name:** Kendahl Chae Bingham (Team Lead)
@@ -10,7 +10,7 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/tree/kendahlbingham
+1. https://github.com/kendychae/VIGILUX/tree/kendahlbingham
 
 ---
 
@@ -95,4 +95,4 @@ Report on the tasks for which you were the lead person:
 - 100% standup attendance maintained through final sprint
 - All critical production issues resolved before external submission
 - Total team hours (Week 7): ~120 (planned: 115)
-- Repository: https://github.com/kendychae/i-SPY (branch: kendahlbingham)
+- Repository: https://github.com/kendychae/VIGILUX (branch: kendahlbingham)

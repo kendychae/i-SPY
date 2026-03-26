@@ -1,4 +1,4 @@
-# Week 4 Setup & Testing Guide
+﻿# Week 4 Setup & Testing Guide
 
 ✅ **Dependencies Installed Successfully!**
 
@@ -16,7 +16,7 @@ Now follow these steps to complete your Week 4 setup and test the new features.
 
 2. **Create/Select Project:**
    - Click "Select a project" → "New Project"
-   - Name it "iSPY-Maps" or similar
+   - Name it "VIGILUX-Maps" or similar
    - Click "Create"
 
 3. **Enable Required APIs:**
@@ -32,9 +32,9 @@ Now follow these steps to complete your Week 4 setup and test the new features.
    - Go to "APIs & Services" → "Credentials"
    - Click "Create Credentials" → "API Key"
    - Click "Restrict Key"
-   - Name: "iSPY Android Maps"
+   - Name: "VIGILUX Android Maps"
    - Application restrictions: Select "Android apps"
-   - Package name: `com.ispy.app`
+   - Package name: `com.vigilux.app`
    - SHA-1 fingerprint: Get it by running:
      ```powershell
      cd C:\Users\kendy\.android
@@ -47,9 +47,9 @@ Now follow these steps to complete your Week 4 setup and test the new features.
 
    **For iOS:**
    - Create another API key
-   - Name: "iSPY iOS Maps"
+   - Name: "VIGILUX iOS Maps"
    - Application restrictions: Select "iOS apps"
-   - Bundle ID: `com.ispy.app`
+   - Bundle ID: `com.vigilux.app`
    - API restrictions: Enable "Maps SDK for iOS"
    - Save
    - **Copy the API key**
@@ -77,7 +77,7 @@ You need a custom development build:
 ### For Android:
 
 ```powershell
-cd C:\Users\kendy\OneDrive\iSPY\frontend
+cd C:\Users\kendy\OneDrive\VIGILUX\frontend
 
 # Prebuild native code
 npx expo prebuild --platform android
@@ -95,7 +95,7 @@ npx expo run:android
 ### For iOS (if you have a Mac):
 
 ```powershell
-cd C:\Users\kendy\OneDrive\iSPY\frontend
+cd C:\Users\kendy\OneDrive\VIGILUX\frontend
 
 # Prebuild native code
 npx expo prebuild --platform ios
@@ -171,7 +171,7 @@ Once the app is running, test these features:
 If you want to test the backend APIs:
 
 ```powershell
-cd C:\Users\kendy\OneDrive\iSPY\backend
+cd C:\Users\kendy\OneDrive\VIGILUX\backend
 
 # Run tests
 npm test

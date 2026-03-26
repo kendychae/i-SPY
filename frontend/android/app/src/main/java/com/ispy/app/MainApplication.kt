@@ -1,4 +1,4 @@
-package com.ispy.app
+﻿package com.vigilux.app
 
 import android.app.Application
 import android.content.res.Configuration

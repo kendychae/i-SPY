@@ -1,4 +1,4 @@
--- iSPY Database Schema
+﻿-- VIGILUX Database Schema
 -- Version 1.0
 -- Created: 2026-03-09
 -- Enable UUID extension

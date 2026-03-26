@@ -1,6 +1,6 @@
-# Contributing to iSPY
+﻿# Contributing to VIGILUX
 
-First off, thank you for considering contributing to iSPY! It's people like you that make iSPY such a great tool for community safety.
+First off, thank you for considering contributing to VIGILUX! It's people like you that make VIGILUX such a great tool for community safety.
 
 ## Code of Conduct
 

@@ -1,4 +1,4 @@
-# Week 3 Tasks - API Documentation
+﻿# Week 3 Tasks - API Documentation
 
 ## Authentication Endpoints
 
@@ -223,7 +223,7 @@ curl -X POST http://localhost:3000/api/v1/auth/register \
 curl -X POST http://localhost:3000/api/v1/auth/login \
   -H "Content-Type: application/json" \
   -d '{
-    "email": "admin@ispy.app",
+    "email": "admin@vigilux.app",
     "password": "Admin@123"
   }'
 ```

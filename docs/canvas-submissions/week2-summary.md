@@ -1,6 +1,6 @@
-# Week 2 Canvas Submission Summary
+﻿# Week 2 Canvas Submission Summary
 
-**iSPY - Neighborhood Watch Mobile Application**
+**VIGILUX - Neighborhood Watch Mobile Application**
 
 ---
 
@@ -15,7 +15,7 @@
 
 ## Team Information
 
-**Project Name:** iSPY - Neighborhood Watch Mobile Application
+**Project Name:** VIGILUX - Neighborhood Watch Mobile Application
 
 **Team Members:**
 
@@ -33,7 +33,7 @@
 
 ## Repository Information
 
-**GitHub Repository:** https://github.com/kendychae/i-SPY  
+**GitHub Repository:** https://github.com/kendychae/VIGILUX  
 **Project Board:** https://github.com/users/kendychae/projects/3/views/1?system_template=team_planning  
 **Repository Status:** ✅ Active and Initialized
 
@@ -48,7 +48,7 @@
 **Completed Tasks:**
 
 1. ✅ **Repository Created**
-   - Repository Name: `i-SPY`
+   - Repository Name: `VIGILUX`
    - Visibility: Public
    - Owner: kendychae
    - Initialized with README
@@ -220,7 +220,7 @@
 ### Project Structure
 
 ```
-iSPY/
+VIGILUX/
 ├── .github/
 │   ├── ISSUE_TEMPLATE/
 │   │   ├── bug_report.md
@@ -467,7 +467,7 @@ iSPY/
 **Project Lead:** Kendahl Chae Bingham  
 **Email:** [Your Email]  
 **GitHub:** [@kendychae](https://github.com/kendychae)  
-**Repository:** https://github.com/kendychae/i-SPY
+**Repository:** https://github.com/kendychae/VIGILUX
 
 ---
 
@@ -541,4 +541,4 @@ All required and bonus files created for Week 2:
 
 ---
 
-_This document summarizes all Week 2 activities and deliverables for the iSPY project. All referenced files are included in the repository and ready for instructor review._
+_This document summarizes all Week 2 activities and deliverables for the VIGILUX project. All referenced files are included in the repository and ready for instructor review._

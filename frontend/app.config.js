@@ -1,4 +1,4 @@
-/**
+﻿/**
  * app.config.js — dynamic Expo configuration
  * Reads environment variables so the same config works for:
  *   - local dev (from .env via dotenv)
@@ -27,8 +27,8 @@ const googleMapsAndroid =
 
 module.exports = {
   expo: {
-    name: 'iSPY',
-    slug: 'ispy-app',
+    name: 'VIGILUX',
+    slug: 'vigilux-app',
     owner: 'kendychae',
     version: '1.0.0',
     orientation: 'portrait',
@@ -42,7 +42,7 @@ module.exports = {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.ispy.app',
+      bundleIdentifier: 'com.vigilux.app',
       buildNumber: '1',
       privacyManifests: {
         NSPrivacyAccessedAPITypes: [
@@ -61,7 +61,7 @@ module.exports = {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#667eea',
       },
-      package: 'com.ispy.app',
+      package: 'com.vigilux.app',
       versionCode: 1,
       permissions: [
         'ACCESS_FINE_LOCATION',
@@ -86,15 +86,15 @@ module.exports = {
         'expo-location',
         {
           locationAlwaysAndWhenInUsePermission:
-            'Allow iSPY to use your location to tag incident reports.',
+            'Allow VIGILUX to use your location to tag incident reports.',
         },
       ],
       [
         'expo-image-picker',
         {
           photosPermission:
-            'Allow iSPY to access your photos to attach evidence to reports.',
-          cameraPermission: 'Allow iSPY to take photos for incident reports.',
+            'Allow VIGILUX to access your photos to attach evidence to reports.',
+          cameraPermission: 'Allow VIGILUX to take photos for incident reports.',
         },
       ],
       'expo-asset',
@@ -104,7 +104,7 @@ module.exports = {
     extra: {
       apiUrl,
       eas: {
-        projectId: process.env.EAS_PROJECT_ID || 'ispy-app',
+        projectId: process.env.EAS_PROJECT_ID || 'vigilux-app',
       },
     },
   },

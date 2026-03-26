@@ -1,13 +1,19 @@
-# iSPY Proprietary License
+﻿# VIGILUX Proprietary License — Reference Copy
 
-Copyright (c) 2026 iSPY Development Team
-Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+> **This file is a reference copy. The authoritative, legally binding license is in [LICENSE](LICENSE).**
+> Updated: March 26, 2026
+
+---
+
+**Copyright © 2026 Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon**
 
 ## LICENSE SUMMARY
 
-**This software is the proprietary intellectual property of the iSPY Development Team.**
+**This software is the proprietary intellectual property of Kendahl Chae Bingham, Samuel Iyen Evbosaru, and Brenden Taylor Lyon (collectively, "VIGILUX Owners").**
 
 All rights reserved. This code is provided for **VIEWING AND EDUCATIONAL PURPOSES ONLY**.
+Any other use — including production deployment, commercial use, or redistribution —
+requires a paid Commercial License Agreement. See [LICENSE](LICENSE) for full terms.
 
 ---
 
@@ -25,19 +31,19 @@ All rights reserved. This code is provided for **VIEWING AND EDUCATIONAL PURPOSE
 - Redistribute, sublicense, or sell copies of this software
 - Create derivative works for commercial purposes
 - Remove, modify, or obscure any copyright notices
-- Use the iSPY name, branding, or trademarks without permission
+- Use the VIGILUX name, branding, or trademarks without permission
 - Integrate this code into any product or service offered to third parties
 
 ---
 
 ## COMMERCIAL USE
 
-Any commercial use, production deployment, or integration requires a separate **Commercial License Agreement** from the iSPY Development Team.
+Any commercial use, production deployment, or integration requires a separate **Commercial License Agreement** from the VIGILUX Development Team.
 
 For commercial licensing inquiries, please contact:
-- **GitHub Issues:** https://github.com/kendychae/i-SPY/issues (label: "Commercial Licensing")
+- **GitHub Issues:** https://github.com/kendychae/VIGILUX/issues (label: "Commercial Licensing")
 - **Project Team:** Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
-- **Repository:** https://github.com/kendychae/i-SPY
+- **Repository:** https://github.com/kendychae/VIGILUX
 
 ---
 
@@ -51,8 +57,8 @@ Educational institutions and students may use this software for:
 **Required Attribution:**
 When using this software for educational purposes, you must include:
 ```
-Based on iSPY by Kendahl Chae Bingham, Samuel Iyen Evbosaru, and Brenden Taylor Lyon
-Source: https://github.com/kendychae/i-SPY
+Based on VIGILUX by Kendahl Chae Bingham, Samuel Iyen Evbosaru, and Brenden Taylor Lyon
+Source: https://github.com/kendychae/VIGILUX
 ```
 
 ---
@@ -66,7 +72,7 @@ While the core software is proprietary, we welcome contributions:
 
 By submitting a contribution, you agree that:
 1. You retain copyright to your contribution
-2. You grant iSPY Development Team a perpetual, worldwide, non-exclusive, royalty-free license to use your contribution
+2. You grant VIGILUX Development Team a perpetual, worldwide, non-exclusive, royalty-free license to use your contribution
 3. Your contribution does not violate any third-party rights
 
 ---
@@ -76,7 +82,7 @@ By submitting a contribution, you agree that:
 This software and its concept, architecture, and implementation are protected by:
 - Copyright law
 - Trade secret protections
-- Trademark protections (iSPY name and branding)
+- Trademark protections (VIGILUX name and branding)
 
 Any unauthorized use may result in legal action.
 
@@ -114,4 +120,4 @@ This license shall be governed by and construed in accordance with the laws of [
 
 This license is effective as of March 18, 2026.
 
-For questions about this license, please contact the iSPY Development Team via GitHub.
+For questions about this license, please contact the VIGILUX Development Team via GitHub.

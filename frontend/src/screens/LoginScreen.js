@@ -1,4 +1,4 @@
-﻿import React, { useState, useContext } from 'react';
+﻿﻿import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -80,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
         {/* Logo/Title Section */}
         <View style={styles.header}>
           <Text style={styles.logo}>🔍</Text>
-          <Text style={styles.title}>iSPY</Text>
+          <Text style={styles.title}>VIGILUX</Text>
           <Text style={styles.subtitle}>Neighborhood Watch</Text>
         </View>
 

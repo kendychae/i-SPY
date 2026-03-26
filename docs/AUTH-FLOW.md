@@ -1,8 +1,8 @@
-# iSPY Authentication Flow Documentation
+﻿# VIGILUX Authentication Flow Documentation
 
 ## Overview
 
-This document outlines the complete authentication flow for the iSPY mobile application, designed for production deployment on Google Play and Apple App Store.
+This document outlines the complete authentication flow for the VIGILUX mobile application, designed for production deployment on Google Play and Apple App Store.
 
 ## Authentication Architecture
 

@@ -1,4 +1,4 @@
-# Report Submission API Documentation
+﻿# Report Submission API Documentation
 
 ## Version 1.0
 
@@ -20,9 +20,9 @@
 
 ## Overview
 
-The Report Submission API enables authenticated users to create, retrieve, and manage incident reports within the iSPY platform. All endpoints require JWT authentication and follow RESTful conventions.
+The Report Submission API enables authenticated users to create, retrieve, and manage incident reports within the VIGILUX platform. All endpoints require JWT authentication and follow RESTful conventions.
 
-**Base URL:** `https://api.ispy.com/api/v1`
+**Base URL:** `https://api.vigilux.com/api/v1`
 
 ---
 
@@ -102,7 +102,7 @@ Authorization: Bearer <jwt_token>
     "media": [
       {
         "id": "660e8400-e29b-41d4-a716-446655440001",
-        "file_url": "https://storage.ispy.com/reports/550e8400/image1.jpg",
+        "file_url": "https://storage.vigilux.com/reports/550e8400/image1.jpg",
         "file_type": "image/jpeg",
         "file_size": 2456789,
         "uploaded_at": "2026-03-20T15:00:00Z"
@@ -240,7 +240,7 @@ Retrieves detailed information about a specific report.
     "media": [
       {
         "id": "660e8400-e29b-41d4-a716-446655440001",
-        "file_url": "https://storage.ispy.com/reports/550e8400/image1.jpg",
+        "file_url": "https://storage.vigilux.com/reports/550e8400/image1.jpg",
         "file_type": "image/jpeg",
         "file_size": 2456789,
         "uploaded_at": "2026-03-20T15:00:00Z"
@@ -455,7 +455,7 @@ interface ReportUpdate {
 ### Example 1: Creating a Report with Image
 
 ```bash
-curl -X POST https://api.ispy.com/api/v1/reports \
+curl -X POST https://api.vigilux.com/api/v1/reports \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." \
   -F "title=Broken streetlight" \
   -F "description=Streetlight at corner of Main and 5th has been out for 3 days" \
@@ -469,14 +469,14 @@ curl -X POST https://api.ispy.com/api/v1/reports \
 ### Example 2: Filtering Reports by Location
 
 ```bash
-curl -X GET "https://api.ispy.com/api/v1/reports?latitude=34.0522&longitude=-118.2437&radius=5000&limit=10" \
+curl -X GET "https://api.vigilux.com/api/v1/reports?latitude=34.0522&longitude=-118.2437&radius=5000&limit=10" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 
 ### Example 3: Filtering by Status and Type
 
 ```bash
-curl -X GET "https://api.ispy.com/api/v1/reports?status=submitted,under_review&incident_type=theft,vandalism&page=1&limit=20" \
+curl -X GET "https://api.vigilux.com/api/v1/reports?status=submitted,under_review&incident_type=theft,vandalism&page=1&limit=20" \
   -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
 ```
 

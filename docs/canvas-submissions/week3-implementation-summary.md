@@ -1,8 +1,8 @@
-# Week 3 Implementation Summary
+﻿# Week 3 Implementation Summary
 
 ## Overview
 
-All Week 3 tasks have been completed for the iSPY Neighborhood Watch application. This document summarizes the implementations and provides setup instructions.
+All Week 3 tasks have been completed for the VIGILUX Neighborhood Watch application. This document summarizes the implementations and provides setup instructions.
 
 ## Completed Tasks
 
@@ -162,7 +162,7 @@ cp .env.example .env
 
 ```bash
 # Create PostgreSQL database
-createdb ispy_db
+createdb vigilux_db
 
 # Run migrations
 npm run migrate
@@ -214,7 +214,7 @@ npm start
    - Submit → Should auto-login to home screen
 
 2. **Login**
-   - Email: admin@ispy.app
+   - Email: admin@vigilux.app
    - Password: Admin@123
    - Should navigate to home screen
 
@@ -258,7 +258,7 @@ curl -X GET http://localhost:3000/api/v1/auth/me \
 ## Project Structure
 
 ```
-iSPY/
+VIGILUX/
 ├── backend/
 │   ├── src/
 │   │   ├── config/
@@ -386,4 +386,4 @@ For questions or issues:
 
 **Date**: March 13, 2026
 **Developer**: Kendahl Bingham
-**Project**: iSPY Neighborhood Watch App
+**Project**: VIGILUX Neighborhood Watch App

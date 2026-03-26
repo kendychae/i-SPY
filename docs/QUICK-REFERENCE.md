@@ -1,11 +1,11 @@
-# iSPY - Quick Reference
+﻿# VIGILUX - Quick Reference
 
 ## 🚀 Quick Setup
 
 ```bash
 # Clone
-git clone https://github.com/kendychae/i-SPY.git
-cd i-SPY
+git clone https://github.com/kendychae/VIGILUX.git
+cd VIGILUX
 
 # Backend
 cd backend && npm install
@@ -30,7 +30,7 @@ cd frontend && npm start
 
 ## 🔗 Important Links
 
-- **Repository:** https://github.com/kendychae/i-SPY
+- **Repository:** https://github.com/kendychae/VIGILUX
 - **Project Board:** https://github.com/users/kendychae/projects/3
 - **Course Materials:** https://byui-cse.github.io/cse499-ww-course/
 
@@ -65,7 +65,7 @@ git merge origin/develop
 ## 🏗️ Project Structure
 
 ```
-iSPY/
+VIGILUX/
 ├── backend/          # Node.js API server
 ├── frontend/         # React Native app
 ├── docs/            # Documentation
@@ -127,7 +127,7 @@ cd frontend && npm test
 # Backend .env
 PORT=3000
 DB_HOST=localhost
-DB_NAME=ispy_db
+DB_NAME=vigilux_db
 DB_USER=your_user
 DB_PASSWORD=your_password
 JWT_SECRET=your_secret

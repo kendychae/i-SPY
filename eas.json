@@ -1,4 +1,4 @@
-{
+﻿{
   "cli": {
     "version": ">= 14.0.0"
   },
@@ -22,7 +22,7 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://ispy-staging.herokuapp.com/api/v1"
+        "EXPO_PUBLIC_API_URL": "https://vigilux-staging.herokuapp.com/api/v1"
       }
     },
     "production": {
@@ -33,7 +33,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://ispy-api.onrender.com/api/v1"
+        "EXPO_PUBLIC_API_URL": "https://vigilux-api.onrender.com/api/v1"
       }
     }
   },

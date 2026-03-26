@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ const HomeScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <Text style={styles.title}>Welcome to iSPY</Text>
+          <Text style={styles.title}>Welcome to VIGILUX</Text>
           <Text style={styles.subtitle}>Your neighborhood watch companion</Text>
         </View>
 

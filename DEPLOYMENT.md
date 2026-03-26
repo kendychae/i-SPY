@@ -1,6 +1,6 @@
-# i-SPY Deployment Guide
+﻿# VIGILUX Deployment Guide
 
-This guide covers deployment options for the i-SPY application.
+This guide covers deployment options for the VIGILUX application.
 
 ## 🚀 Quick Deploy Options
 
@@ -122,7 +122,7 @@ railway domain
 2. Click "New +" → "Web Service"
 3. Connect your GitHub repository
 4. Configure:
-   - **Name:** ispy-backend
+   - **Name:** vigilux-backend
    - **Environment:** Node
    - **Build Command:** `npm install`
    - **Start Command:** `node src/server.js`
@@ -161,7 +161,7 @@ railway domain
 
    ```bash
    cd backend
-   heroku create ispy-app-backend
+   heroku create vigilux-app-backend
    ```
 
 3. **Add PostgreSQL Add-on**
@@ -214,7 +214,7 @@ railway domain
 
    ```bash
    cd backend
-   docker build -t ispy-backend .
+   docker build -t vigilux-backend .
    ```
 
 2. **Run Container**
@@ -224,11 +224,11 @@ railway domain
      -e JWT_SECRET="your-secret" \
      -e JWT_REFRESH_SECRET="your-refresh-secret" \
      -e DB_HOST="your-db-host" \
-     -e DB_NAME="ispy_db" \
+     -e DB_NAME="vigilux_db" \
      -e DB_USER="postgres" \
      -e DB_PASSWORD="your-password" \
-     --name ispy-backend \
-     ispy-backend
+     --name vigilux-backend \
+     vigilux-backend
    ```
 
 **Using Docker Compose (Create docker-compose.yml):**
@@ -244,7 +244,7 @@ services:
     environment:
       - NODE_ENV=production
       - DB_HOST=db
-      - DB_NAME=ispy_db
+      - DB_NAME=vigilux_db
       - DB_USER=postgres
       - DB_PASSWORD=postgres
       - JWT_SECRET=your-secret-key
@@ -255,7 +255,7 @@ services:
   db:
     image: postgres:14-alpine
     environment:
-      - POSTGRES_DB=ispy_db
+      - POSTGRES_DB=vigilux_db
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
@@ -398,7 +398,7 @@ curl -X POST https://your-domain.com/api/v1/auth/login \
 For deployment issues:
 
 1. Check logs: `railway logs` or `heroku logs --tail`
-2. Review [GitHub Issues](https://github.com/kendychae/i-SPY/issues)
+2. Review [GitHub Issues](https://github.com/kendychae/VIGILUX/issues)
 3. Contact the development team
 
 ---

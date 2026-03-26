@@ -1,126 +1,225 @@
-# iSPY Proprietary License
+﻿# VIGILUX — Proprietary Software License
 
-Copyright (c) 2026 iSPY Development Team
-Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+**Copyright © 2026 Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon**
+**("VIGILUX Owners" / "Rights Holders")**
 
-## LICENSE SUMMARY
-
-**This software is the proprietary intellectual property of the iSPY Development Team.**
-
-All rights reserved. This code is provided for **VIEWING AND EDUCATIONAL PURPOSES ONLY**.
+All rights reserved.
 
 ---
 
-## PERMITTED USES
+## ⚠️ NOTICE: ALL RIGHTS RESERVED — PROPRIETARY SOFTWARE
 
-### ✅ You MAY:
-
-- View the source code for educational purposes
-- Fork the repository for personal learning
-- Study the architecture and implementation
-- Use code snippets for academic/educational projects with proper attribution
-
-### ❌ You MAY NOT:
-
-- Use this software in any commercial product or service
-- Deploy this software for production use without written permission
-- Redistribute, sublicense, or sell copies of this software
-- Create derivative works for commercial purposes
-- Remove, modify, or obscure any copyright notices
-- Use the iSPY name, branding, or trademarks without permission
-- Integrate this code into any product or service offered to third parties
+**VIGILUX** is proprietary software. Access to this repository does **NOT** grant
+you any license to use, copy, modify, distribute, or exploit this software or
+any portion of it, except as explicitly permitted below. Viewing this code on
+GitHub does not create a license.
 
 ---
 
-## COMMERCIAL USE
+## 1. TRADEMARK AND BRAND PROTECTION
 
-Any commercial use, production deployment, or integration requires a separate **Commercial License Agreement** from the iSPY Development Team.
+The name **"VIGILUX"**, the VIGILUX logo, wordmarks, app icons, color schemes,
+and all associated branding are the exclusive intellectual property of the
+VIGILUX Owners and are protected under applicable trademark and trade dress law.
 
-For commercial licensing inquiries, please contact:
+**You MAY NOT, under any circumstances:**
 
-- **GitHub Issues:** https://github.com/kendychae/i-SPY/issues (label: "Commercial Licensing")
-- **Project Team:** Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
-- **Repository:** https://github.com/kendychae/i-SPY
+- Use the name "VIGILUX" in any product, service, domain, app store listing,
+  marketing material, or online property without prior written permission.
+- Register or attempt to register "VIGILUX" or any confusingly similar name as
+  a trademark, domain name, social media handle, or app store identifier.
+- Represent your product or service as affiliated with, endorsed by, or derived
+  from VIGILUX without written authorization.
+- Use VIGILUX branding to attract users or business to a competing or unrelated
+  product.
+
+Unauthorized use of the VIGILUX trademark constitutes trademark infringement
+and unfair competition under applicable law and will be prosecuted to the fullest
+extent permitted.
 
 ---
 
-## ACADEMIC & EDUCATIONAL USE
+## 2. COPYRIGHT PROTECTION
 
-Educational institutions and students may use this software for:
+This software — including but not limited to its source code, compiled binaries,
+database schemas, API design, screen layouts, UI/UX design, documentation,
+architecture, algorithms, and all original authorship contained herein — is
+protected by copyright law (17 U.S.C. § 101 et seq. and international equivalents).
 
-- Classroom instruction and demonstrations
-- Student projects and assignments
-- Academic research (with proper citation)
+**You MAY NOT:**
 
-**Required Attribution:**
-When using this software for educational purposes, you must include:
+- Copy, reproduce, or duplicate any portion of this software.
+- Distribute, publish, or transmit this software or derivative works.
+- Incorporate any portion of this software into another product or service.
+- Decompile, reverse engineer, disassemble, or attempt to derive the source code
+  from any compiled component.
+- Remove, alter, cover, or obscure any copyright, trademark, or proprietary
+  notices from any part of this software.
+- Create derivative works based on this software for any commercial purpose.
+- Sublicense or transfer any rights to third parties.
+
+Violations of copyright may result in statutory damages of up to **$150,000 per
+work** under 17 U.S.C. § 504(c)(2) for willful infringement, in addition to
+attorney fees and injunctive relief.
+
+---
+
+## 3. CONCEPT, TRADE DRESS, AND UNIQUE EXPRESSION PROTECTION
+
+While general concepts and ideas of community safety reporting cannot be
+exclusively owned, the specific and original **expression, combination, design,
+user experience, workflow, and architecture** of the VIGILUX platform — including:
+
+- The specific incident-reporting workflow design
+- The role-based citizen/officer/admin system architecture
+- The integrated GPS + multimedia evidence + push-notification combination
+- The real-time report lifecycle management system
+- The officer dashboard and community map clustering implementation
+
+— as implemented in this codebase, constitute **original creative expression**
+protected under copyright law and function as protectable **trade dress** and
+**trade secrets** where applicable.
+
+Copying or substantially reproducing this specific expression to create a
+competing or derivative neighborhood-watch product **without a commercial
+license** is prohibited.
+
+---
+
+## 4. WHAT IS PERMITTED (WITHOUT A LICENSE)
+
+### ✅ Personal / Educational Use Only
+
+You MAY, strictly for personal non-commercial educational purposes:
+
+- **View** the source code on GitHub.
+- **Fork** the repository solely to study the code privately.
+- **Reference** architectural patterns in academic papers or coursework
+  with full attribution (see Section 7).
+
+These permissions are **automatically revoked** if you:
+
+- Deploy any part of this software to a server accessed by others.
+- Use it in any commercial, monetized, or revenue-generating context.
+- Distribute it to any third party.
+
+---
+
+## 5. WHAT REQUIRES A PAID COMMERCIAL LICENSE
+
+A paid **Commercial License Agreement** is required before you may:
+
+- Deploy this software (or any derivative) in production for any number of users.
+- Use any portion of this codebase in a commercial product or SaaS service.
+- Integrate this software with any paid or monetized platform.
+- Use this software to provide services to third parties.
+- Build a neighborhood-watch, public-safety reporting, or community incident
+  reporting product that substantially reproduces the look, feel, workflow,
+  or architecture of VIGILUX.
+- Use the name VIGILUX in any commercial context.
+- White-label, resell, or rebrand this software for any purpose.
+
+**There are no exceptions.** The lack of a visible price tag does not imply
+free use. "Non-profit" status does not exempt you from this requirement
+without explicit written consent.
+
+To obtain a commercial license, contact:
+
+- **GitHub Issues:** https://github.com/kendychae/VIGILUX/issues (label: `Commercial Licensing`)
+- **Copyright Holders:** Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+- **Repository:** https://github.com/kendychae/VIGILUX
+
+---
+
+## 6. CONTRIBUTIONS
+
+If you submit a pull request, bug report, or other contribution to this repository:
+
+1. You retain copyright to your original contribution.
+2. You grant the VIGILUX Owners a **perpetual, irrevocable, worldwide, royalty-free,
+   exclusive license** to use, reproduce, modify, sublicense, and distribute your
+   contribution as part of VIGILUX, under any license the VIGILUX Owners choose.
+3. You represent that you have the full right to grant the above license.
+4. Your contribution does not grant you any additional rights to the VIGILUX
+   software beyond those explicitly stated in this License.
+
+---
+
+## 7. REQUIRED ATTRIBUTION (EDUCATIONAL USE)
+
+Any educational use must include the following notice in all copies,
+documentation, papers, or presentations:
 
 ```
-Based on iSPY by Kendahl Chae Bingham, Samuel Iyen Evbosaru, and Brenden Taylor Lyon
-Source: https://github.com/kendychae/i-SPY
+VIGILUX — Neighborhood Watch Mobile Application
+Copyright © 2026 Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon
+All rights reserved. Source: https://github.com/kendychae/VIGILUX
+Used for educational purposes only under the VIGILUX Proprietary License.
 ```
 
 ---
 
-## OPEN SOURCE CONTRIBUTIONS
+## 8. ENFORCEMENT AND REMEDIES
 
-While the core software is proprietary, we welcome contributions:
+The VIGILUX Owners reserve the right to pursue all available legal remedies
+against any person or entity that violates this License, including:
 
-- Bug reports and feature suggestions via GitHub Issues
-- Code contributions via Pull Requests (contributors retain copyright but grant us license to use)
-- Documentation improvements
+- **Injunctive relief** (immediate court order to stop infringing use).
+- **Statutory copyright damages** (up to $150,000 per infringed work under
+  17 U.S.C. § 504 for willful infringement).
+- **Actual damages and disgorgement** of all profits derived from unauthorized use.
+- **Trademark infringement damages** under the Lanham Act (15 U.S.C. § 1117).
+- **Attorney fees and costs** to the extent permitted by applicable law.
+- **Criminal referral** for willful commercial infringement (17 U.S.C. § 506).
 
-By submitting a contribution, you agree that:
-
-1. You retain copyright to your contribution
-2. You grant iSPY Development Team a perpetual, worldwide, non-exclusive, royalty-free license to use your contribution
-3. Your contribution does not violate any third-party rights
-
----
-
-## INTELLECTUAL PROPERTY
-
-This software and its concept, architecture, and implementation are protected by:
-
-- Copyright law
-- Trade secret protections
-- Trademark protections (iSPY name and branding)
-
-Any unauthorized use may result in legal action.
+The VIGILUX Owners' failure to enforce any provision of this License shall not
+constitute a waiver of any future enforcement.
 
 ---
 
-## DATA PRIVACY & SECURITY
-
-Any deployment of this software MUST:
-
-1. Comply with all applicable data privacy laws (GDPR, CCPA, etc.)
-2. Implement appropriate security measures for user data
-3. Obtain proper legal authorization for law enforcement integration
-4. NOT be used as a replacement for official emergency services (911)
-
----
-
-## WARRANTY DISCLAIMER
+## 9. NO WARRANTY
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+VIGILUX OWNERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+This disclaimer does not limit any remedies available to the VIGILUX Owners for
+violations of this License by others.
 
 ---
 
-## GOVERNING LAW
+## 10. GOVERNING LAW AND JURISDICTION
 
-This license shall be governed by and construed in accordance with the laws of [Your State/Country], without regard to its conflict of law provisions.
+This License shall be governed by and construed in accordance with the laws of
+the **State of Idaho**, United States of America, without regard to
+conflicts-of-law principles. Any dispute arising under or relating to this
+License shall be subject to the exclusive jurisdiction of the state and federal
+courts located in **Blackfoot, Bingham County, Idaho**.
+
+---
+
+## 11. SEVERABILITY
+
+If any provision of this License is held invalid or unenforceable, the remaining
+provisions shall continue in full force and effect.
+
+---
+
+## 12. ENTIRE AGREEMENT
+
+This License constitutes the entire agreement between the parties with respect
+to the VIGILUX software and supersedes all prior agreements, representations,
+and understandings.
 
 ---
 
 ## EFFECTIVE DATE
 
-This license is effective as of March 18, 2026.
+This License is effective as of **March 26, 2026**, and supersedes all prior
+license versions.
 
-For questions about this license, please contact the iSPY Development Team via GitHub.
+**© 2026 VIGILUX — Kendahl Chae Bingham, Samuel Iyen Evbosaru, Brenden Taylor Lyon.
+All rights reserved. https://github.com/kendychae/VIGILUX**

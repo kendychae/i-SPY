@@ -1,15 +1,15 @@
-# iSPY — Full Production Audit Report
+﻿# VIGILUX — Full Production Audit Report
 
 **Date:** March 21, 2026  
 **Auditor:** GitHub Copilot (automated audit)  
 **Branch:** `kendahlbingham`  
-**Repo:** https://github.com/kendychae/i-SPY
+**Repo:** https://github.com/kendychae/VIGILUX
 
 ---
 
 ## Executive Summary
 
-iSPY is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Express/PostgreSQL backend. The application is feature-complete for its core scope (authentication, incident reporting with photo upload, GPS map view, push notifications, officer dashboard, search/filtering). **8 production-blocking issues were found and fixed in this audit.** Several medium-priority items require attention before the first public App Store release.
+VIGILUX is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Express/PostgreSQL backend. The application is feature-complete for its core scope (authentication, incident reporting with photo upload, GPS map view, push notifications, officer dashboard, search/filtering). **8 production-blocking issues were found and fixed in this audit.** Several medium-priority items require attention before the first public App Store release.
 
 ---
 
@@ -64,7 +64,7 @@ iSPY is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Ex
 | #   | Area                                         | Issue                                                                                                                                                  | Recommended Action                                                                                                                                          |
 | --- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | M1  | `backend/.env`                               | DB password is `1234` — unacceptable for production                                                                                                    | Change to a 32+ character random string; set in Render/Railway dashboard, never in `.env`                                                                   |
-| M2  | `backend/src/controllers/auth.controller.js` | JWT secret fallback `'ispy-secret-key-change-in-production'` is still in code                                                                          | Ensure `process.env.JWT_SECRET` is always set; add a startup guard that throws if not set                                                                   |
+| M2  | `backend/src/controllers/auth.controller.js` | JWT secret fallback `'vigilux-secret-key-change-in-production'` is still in code                                                                          | Ensure `process.env.JWT_SECRET` is always set; add a startup guard that throws if not set                                                                   |
 | M3  | `backend/src/server.js`                      | No rate limiting on any route                                                                                                                          | Add `express-rate-limit` (already in dependencies? — if not, `npm install express-rate-limit`) — limit `/auth/login`, `/auth/register` to 10 req/min per IP |
 | M4  | `frontend/src/App.js`                        | Auth status checked by polling every 2 seconds (`setInterval(checkAuthStatus, 2000)`) — drains battery and makes unnecessary async calls               | Replace with event-emitter approach: emit `LOGIN`/`LOGOUT` events from `authService` and listen in `App.js`                                                 |
 | M5  | `frontend/src/screens/ProfileScreen.js`      | "Edit Profile", "Notifications", "Privacy & Security", "Help Center", "Contact Us", "About" menu items are non-functional stubs (no `onPress` handler) | Implement each screen or add a "Coming soon" alert as minimum before App Store release                                                                      |
@@ -78,7 +78,7 @@ iSPY is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Ex
 | L2  | `eas.json` `submit.production.ios`     | `appleId`, `ascAppId`, `appleTeamId` are placeholder strings                          | Fill with actual Apple Developer account values                                                     |
 | L3  | `eas.json` `submit.production.android` | `serviceAccountKeyPath` points to `./google-service-account.json` which doesn't exist | Generate a Google service account key from Play Console and add the JSON file (add to `.gitignore`) |
 | L4  | `backend/.env`                         | `SMTP_USER` and `SMTP_PASSWORD` are placeholder — password reset emails won't send    | Configure real SMTP credentials (use SendGrid/Resend API for production)                            |
-| L5  | `frontend/app.json`                    | `extra.eas.projectId` is `"ispy-app"` (placeholder)                                   | Set real EAS project ID: run `eas init` to generate and populate it                                 |
+| L5  | `frontend/app.json`                    | `extra.eas.projectId` is `"vigilux-app"` (placeholder)                                   | Set real EAS project ID: run `eas init` to generate and populate it                                 |
 | L6  | `frontend-temp/`                       | Unused directory at project root — stale copy of app                                  | Delete or move to `archive/` to keep repo clean                                                     |
 | L7  | N/A                                    | Privacy Policy URL required by both Apple and Google before release                   | Create and host a Privacy Policy page; add URL to both store listings                               |
 
@@ -121,7 +121,7 @@ iSPY is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Ex
 
 ### iOS (App Store Connect)
 
-- [x] Bundle ID set: `com.ispy.app`
+- [x] Bundle ID set: `com.vigilux.app`
 - [x] iOS build number: `1`
 - [x] Tablet support: `supportsTablet: true`
 - [x] Privacy manifest (`NSPrivacyAccessedAPITypes`) added for iOS 17+ requirement
@@ -138,7 +138,7 @@ iSPY is a React Native (Expo) neighborhood-watch reporting app with a Node.js/Ex
 
 ### Android (Google Play Console)
 
-- [x] Package: `com.ispy.app`
+- [x] Package: `com.vigilux.app`
 - [x] Version code: `1`
 - [x] Build type: `app-bundle` (AAB) ← fixed in this audit
 - [x] Permissions declared in manifest

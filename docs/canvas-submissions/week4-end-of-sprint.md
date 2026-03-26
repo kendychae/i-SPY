@@ -1,4 +1,4 @@
-# CSE 499 End of Sprint Report
+﻿# CSE 499 End of Sprint Report
 
 **Sprint:** Week 4 (W04 Sprint 2)  
 **Name:** Kendahl Chae Bingham (Team Lead)  
@@ -10,10 +10,10 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/commit/a0ed329 (Merge figuelia-yasin — users table migration, GPS location service, reverse geocoding #11/#34/#35)
-2. https://github.com/kendychae/i-SPY/commit/3e633cc (Merge iyen-samuel — final W4 API integration, March 25, 2026)
-3. https://github.com/kendychae/i-SPY/commit/acf0e36 (Merge Lyon's PR #43 — AuthContext, validation, show/hide password)
-4. https://github.com/kendychae/i-SPY/commit/c6ee0dd931d2a2c700550b00ca8e11770d10a610 (Complete Week 4 Sprint — image upload, compression, maps, media preview, March 20, 2026)
+1. https://github.com/kendychae/VIGILUX/commit/a0ed329 (Merge figuelia-yasin — users table migration, GPS location service, reverse geocoding #11/#34/#35)
+2. https://github.com/kendychae/VIGILUX/commit/3e633cc (Merge iyen-samuel — final W4 API integration, March 25, 2026)
+3. https://github.com/kendychae/VIGILUX/commit/acf0e36 (Merge Lyon's PR #43 — AuthContext, validation, show/hide password)
+4. https://github.com/kendychae/VIGILUX/commit/c6ee0dd931d2a2c700550b00ca8e11770d10a610 (Complete Week 4 Sprint — image upload, compression, maps, media preview, March 20, 2026)
 
 ---
 

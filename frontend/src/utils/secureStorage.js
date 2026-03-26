@@ -1,4 +1,4 @@
-import * as SecureStore from 'expo-secure-store';
+﻿import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
 
 /**
@@ -9,9 +9,9 @@ import { Platform } from 'react-native';
  */
 
 const STORAGE_KEYS = {
-  ACCESS_TOKEN: 'ispy_access_token',
-  REFRESH_TOKEN: 'ispy_refresh_token',
-  USER_DATA: 'ispy_user_data',
+  ACCESS_TOKEN: 'vigilux_access_token',
+  REFRESH_TOKEN: 'vigilux_refresh_token',
+  USER_DATA: 'vigilux_user_data',
 };
 
 // Platform-specific storage helpers

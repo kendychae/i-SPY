@@ -1,6 +1,6 @@
-# CSE 499: Senior Project
+﻿# CSE 499: Senior Project
 
-## iSPY - Neighborhood Watch Mobile Application
+## VIGILUX - Neighborhood Watch Mobile Application
 
 **Course:** CSE 499 - Senior Project  
 **Assignment:** W2-project-plan  
@@ -12,13 +12,13 @@
 - Samuel Iyen Evbosaru (Backend Developer) - @terrywhyte001
 - Brenden Taylor Lyon (Frontend Developer) - @richardlyonheart
 
-**Repository:** https://github.com/kendychae/i-SPY
+**Repository:** https://github.com/kendychae/VIGILUX
 
 ---
 
 ## Project Overview
 
-iSPY is a mobile application that enables citizens to report and track illegal activities in their neighborhoods. The app provides secure incident reporting with photo evidence, GPS location tracking, and real-time status updates. Law enforcement officers can manage reports through a dedicated dashboard, update case statuses, and communicate with citizens, improving public safety through better community-police collaboration.
+VIGILUX is a mobile application that enables citizens to report and track illegal activities in their neighborhoods. The app provides secure incident reporting with photo evidence, GPS location tracking, and real-time status updates. Law enforcement officers can manage reports through a dedicated dashboard, update case statuses, and communicate with citizens, improving public safety through better community-police collaboration.
 
 ---
 
@@ -155,7 +155,7 @@ iSPY is a mobile application that enables citizens to report and track illegal a
 
 ## 3. Architecture
 
-iSPY follows a **three-tier client-server architecture**:
+VIGILUX follows a **three-tier client-server architecture**:
 
 **Presentation Tier (Mobile Client):** React Native mobile application running on iOS and Android devices. Handles user interface, input validation, and user interactions. Communicates with backend via RESTful API over HTTPS and integrates with device capabilities (camera, GPS, push notifications).
 

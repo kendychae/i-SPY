@@ -1,4 +1,4 @@
-# CSE 499 End of Sprint Report
+﻿# CSE 499 End of Sprint Report
 
 **Sprint:** Week 3 (W03 Sprint 1)  
 **Name:** Kendahl Chae Bingham (Team Lead)  
@@ -10,7 +10,7 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/i-SPY/commits/kendahlbingham
+1. https://github.com/kendychae/VIGILUX/commits/kendahlbingham
 
 ---
 

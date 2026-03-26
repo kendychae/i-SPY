@@ -1,4 +1,4 @@
-# Map Marker Clustering Algorithm and Data Structure
+﻿# Map Marker Clustering Algorithm and Data Structure
 
 ## Version 1.0
 
@@ -21,7 +21,7 @@
 
 ## Overview
 
-Map marker clustering is essential for the iSPY platform to prevent visual clutter when displaying multiple incident reports on the map. This document defines the algorithm, data structures, and thresholds for efficiently clustering nearby markers while maintaining usability and performance.
+Map marker clustering is essential for the VIGILUX platform to prevent visual clutter when displaying multiple incident reports on the map. This document defines the algorithm, data structures, and thresholds for efficiently clustering nearby markers while maintaining usability and performance.
 
 ### Goals
 

@@ -1,4 +1,4 @@
-# iSPY 🔍
+﻿# VIGILUX 🔍
 
 ### Neighborhood Watch Mobile Application
 
@@ -20,7 +20,7 @@
 
 ## 📖 About The Project
 
-iSPY is a comprehensive neighborhood watch mobile application designed to bridge the communication gap between community residents and local law enforcement. Our mission is to improve public safety by providing a centralized, user-friendly platform where citizens can report incidents, attach multimedia evidence, and track the status of their reports in real-time.
+VIGILUX is a comprehensive neighborhood watch mobile application designed to bridge the communication gap between community residents and local law enforcement. Our mission is to improve public safety by providing a centralized, user-friendly platform where citizens can report incidents, attach multimedia evidence, and track the status of their reports in real-time.
 
 ### Problem Statement
 
@@ -32,7 +32,7 @@ Many communities struggle with:
 - **Limited community awareness** of local safety concerns
 - **Inefficient response coordination** by law enforcement agencies
 
-iSPY addresses these challenges by creating a seamless, secure, and efficient reporting ecosystem that promotes community safety and engagement.
+VIGILUX addresses these challenges by creating a seamless, secure, and efficient reporting ecosystem that promotes community safety and engagement.
 
 ---
 
@@ -118,7 +118,7 @@ iSPY addresses these challenges by creating a seamless, secure, and efficient re
 
 ### Quick Options
 
-You have **two ways** to run iSPY:
+You have **two ways** to run VIGILUX:
 
 #### **Option 1: Quick Demo (Fastest - Web Only)**
 
@@ -126,7 +126,7 @@ Test the authentication system instantly with the demo page:
 
 1. Start backend: `cd backend && npm run dev`
 2. Open `demo.html` in your browser
-3. Login with: `admin@ispy.app` / `Admin@123`
+3. Login with: `admin@vigilux.app` / `Admin@123`
 
 #### **Option 2: Full React Native App (Web + Mobile)**
 
@@ -153,8 +153,8 @@ Before you begin, ensure you have the following installed:
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/kendychae/i-SPY.git
-   cd i-SPY
+   git clone https://github.com/kendychae/VIGILUX.git
+   cd VIGILUX
    ```
 
 2. **Setup Backend**
@@ -168,7 +168,7 @@ Before you begin, ensure you have the following installed:
    # Edit .env with your database credentials
 
    # Create database and run migrations
-   createdb ispy_db
+   createdb vigilux_db
    npm run migrate
    ```
 
@@ -214,7 +214,7 @@ Before you begin, ensure you have the following installed:
 5. **Test the App**
 
    Default login credentials:
-   - Email: `admin@ispy.app`
+   - Email: `admin@vigilux.app`
    - Password: `Admin@123`
 
    **Available Screens:**
@@ -235,7 +235,7 @@ PORT=3000
 # PostgreSQL Database
 DB_HOST=localhost
 DB_PORT=5432
-DB_NAME=ispy_db
+DB_NAME=vigilux_db
 DB_USER=postgres
 DB_PASSWORD=your_password_here
 
@@ -261,7 +261,7 @@ REACT_APP_API_URL=http://localhost:3000/api/v1
 ## 📁 Project Structure
 
 ```
-iSPY/
+VIGILUX/
 ├── backend/                 # Node.js backend application
 │   ├── src/
 │   │   ├── config/         # Database configuration
@@ -359,7 +359,7 @@ All Week 3 tasks have been successfully completed:
 - ✅ CORS configuration
 - ✅ Security headers (Helmet.js)
 
-**Default Login**: admin@ispy.app / Admin@123
+**Default Login**: admin@vigilux.app / Admin@123
 
 ---
 
@@ -435,7 +435,7 @@ Please ensure your code follows our coding standards and includes appropriate te
 
 **⚠️ PROPRIETARY LICENSE - All Rights Reserved**
 
-This software is the proprietary intellectual property of the iSPY Development Team.
+This software is the proprietary intellectual property of the VIGILUX Development Team.
 
 ### ❌ **NOT Open Source**
 
@@ -443,14 +443,14 @@ This code is provided for **viewing and educational purposes only**. Any use, de
 
 ### 💰 **Commercial Licensing**
 
-Interested in using iSPY for your:
+Interested in using VIGILUX for your:
 
 - City or municipality?
 - Police department?
 - Community organization?
 - Commercial deployment?
 
-**Contact us for licensing:** [Open a GitHub Issue](https://github.com/kendychae/i-SPY/issues) or email the project team.
+**Contact us for licensing:** [Open a GitHub Issue](https://github.com/kendychae/VIGILUX/issues) or email the project team.
 
 ### ✅ **What You CAN Do (Without Permission)**
 
@@ -472,7 +472,7 @@ See the full [LICENSE](LICENSE) file for complete terms and conditions.
 
 ## 📞 Contact & Support
 
-**Project Repository:** [https://github.com/kendychae/i-SPY](https://github.com/kendychae/i-SPY)
+**Project Repository:** [https://github.com/kendychae/VIGILUX](https://github.com/kendychae/VIGILUX)
 
 **Project Board:** [GitHub Projects](https://github.com/users/kendychae/projects/3/views/1)
 
@@ -490,7 +490,7 @@ For questions, issues, or suggestions, please open an issue on GitHub or contact
 
 <div align="center">
 
-**Made with ❤️ by the iSPY Team**
+**Made with ❤️ by the VIGILUX Team**
 
 _Safer communities through better communication_
 
