@@ -55,24 +55,21 @@
     "web": {
       "bundler": "metro"
     },
-    "plugins": [
-      [
-        "expo-location",
-        {
-          "locationAlwaysAndWhenInUsePermission": "Allow iSPY to use your location to tag incident reports."
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "Allow iSPY to access your photos to attach evidence to reports.",
-          "cameraPermission": "Allow iSPY to take photos for incident reports."
-        }
-      ],
-      "expo-asset",
-      "expo-font",
-      "expo-secure-store"
-    ],
+   "plugins": [
+  [
+    "expo-location",
+    {
+      "locationAlwaysAndWhenInUsePermission": "Allow iSPY to use your location to tag incident reports."
+    }
+  ],
+  [
+    "expo-image-picker",
+    {
+      "photosPermission": "Allow iSPY to access your photos to attach evidence to reports.",
+      "cameraPermission": "Allow iSPY to take photos for incident reports."
+    }
+  ]
+],
     "extra": {
       "apiUrl": "$API_URL",
       "eas": {
