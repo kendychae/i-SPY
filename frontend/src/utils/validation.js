@@ -5,9 +5,23 @@ export const validateEmail = (value) => {
   return email.length > 0 && emailRegex.test(email);
 };
 
-export const validatePassword = (value, minLength = 6) => {
+export const validatePassword = (value, minLength = 8, requireStrong = false) => {
   const password = value || '';
-  return password.length >= minLength;
+  
+  if (password.length < minLength) {
+    return false;
+  }
+  
+  // For registration, enforce strong password requirements
+  if (requireStrong) {
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecialChar = /[@$!%*?&]/.test(password);
+    return hasUpperCase && hasLowerCase && hasNumber && hasSpecialChar;
+  }
+  
+  return true;
 };
 
 export const validateLogin = ({ email, password }) => {
@@ -53,8 +67,8 @@ export const validateRegister = (formData) => {
 
   if (!formData.password) {
     errors.password = 'Password is required';
-  } else if (!validatePassword(formData.password, 8)) {
-    errors.password = 'Password must be at least 8 characters';
+  } else if (!validatePassword(formData.password, 8, true)) {
+    errors.password = 'Password must have 8+ chars, uppercase, lowercase, number, and special char (@$!%*?&)';
   }
 
   if (!formData.confirmPassword) {
