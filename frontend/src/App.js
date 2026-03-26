@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -15,6 +15,11 @@ import MapScreen from './screens/MapScreen';
 import ReportScreen from './screens/ReportScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+
+// Notification Context
+import { NotificationProvider, useNotifications } from './contexts/NotificationContext';
 
 // Services
 import { authService } from './services/authService';
@@ -102,6 +107,22 @@ const ProfileStack = () => {
           headerBackTitle: 'Back',
         }}
       />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          title: 'Settings',
+          headerBackTitle: 'Back',
+        }}
+      />
+      <Stack.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          title: 'Notifications',
+          headerBackTitle: 'Back',
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -110,6 +131,7 @@ const ProfileStack = () => {
  * Main Tab Navigator - Authenticated users
  */
 const MainTabs = () => {
+  const { badgeCount } = useNotifications();
   return (
     <Tab.Navigator
       screenOptions={{
@@ -167,6 +189,18 @@ const MainTabs = () => {
           tabBarIcon: ({ color }) => (
             <Text style={{ fontSize: 24 }}>📝</Text>
           ),
+        }}
+      />
+      <Tab.Screen
+        name="AlertsTab"
+        component={NotificationsScreen}
+        options={{
+          title: 'Notifications',
+          tabBarLabel: 'Alerts',
+          tabBarIcon: ({ color }) => (
+            <Text style={{ fontSize: 24 }}>🔔</Text>
+          ),
+          tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
         }}
       />
       <Tab.Screen 
@@ -262,10 +296,13 @@ const RootNavigator = () => {
  * Main App Component
  */
 const App = () => {
+  const navigationRef = useRef(null);
   return (
-    <NavigationContainer>
-      <RootNavigator />
-    </NavigationContainer>
+    <NotificationProvider navigationRef={navigationRef}>
+      <NavigationContainer ref={navigationRef}>
+        <RootNavigator />
+      </NavigationContainer>
+    </NotificationProvider>
   );
 };
 

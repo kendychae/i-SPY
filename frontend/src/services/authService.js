@@ -149,7 +149,33 @@ export const authService = {
       };
     }
   },
-};
+  /**
+   * Update full profile (name, phone, bio, profile image)
+   * Uses the dedicated PUT /api/v1/users/profile endpoint (Issue #46)
+   */
+  updateFullProfile: async (profileData) => {
+    try {
+      const response = await apiClient.put('/users/profile', profileData);
 
-export default authService;
+      if (response.data.success) {
+        const { user } = response.data.data;
+        await storeAuthData(
+          {
+            accessToken: await getAccessToken(),
+            refreshToken: await getRefreshToken(),
+          },
+          user
+        );
+        return { success: true, user };
+      }
+
+      return { success: false, message: response.data.message };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to update profile',
+      };
+    }
+  },
+};
 

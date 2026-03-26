@@ -636,10 +636,182 @@ const deleteReport = async (req, res) => {
   }
 };
 
+/**
+ * Allowed status transitions (state machine)
+ * Issue #53 - W5: Report Status Tracking
+ */
+const STATUS_TRANSITIONS = {
+  submitted:    ['under_review', 'closed'],
+  under_review: ['investigating', 'submitted', 'closed'],
+  investigating:['resolved', 'under_review', 'closed'],
+  resolved:     ['closed', 'submitted'],
+  closed:       ['submitted'],
+};
+
+/**
+ * Update report status with transition validation
+ * PATCH /api/v1/reports/:id/status
+ */
+const updateReportStatus = async (req, res) => {
+  const client = await db.pool.connect();
+  try {
+    const { id } = req.params;
+    const { status: newStatus, notes } = req.body;
+    const userId = req.user.userId;
+    const userType = req.user.userType;
+
+    if (!newStatus) {
+      return res.status(400).json({ success: false, message: 'status is required' });
+    }
+
+    const allowedStatuses = Object.keys(STATUS_TRANSITIONS);
+    if (!allowedStatuses.includes(newStatus)) {
+      return res.status(400).json({
+        success: false,
+        message: `Invalid status. Allowed: ${allowedStatuses.join(', ')}`,
+      });
+    }
+
+    await client.query('BEGIN');
+
+    // Fetch current report
+    const { rows: reportRows } = await client.query(
+      'SELECT id, status, user_id FROM reports WHERE id = $1',
+      [id]
+    );
+    if (reportRows.length === 0) {
+      await client.query('ROLLBACK');
+      return res.status(404).json({ success: false, message: 'Report not found' });
+    }
+
+    const report = reportRows[0];
+    const currentStatus = report.status;
+
+    // Role check: citizens can only close their own report; officers/admins can do full transitions
+    if (userType === 'citizen') {
+      if (String(report.user_id) !== String(userId)) {
+        await client.query('ROLLBACK');
+        return res.status(403).json({ success: false, message: 'Insufficient permissions' });
+      }
+      if (!['closed'].includes(newStatus)) {
+        await client.query('ROLLBACK');
+        return res.status(403).json({ success: false, message: 'Citizens may only close their own reports' });
+      }
+    }
+
+    // Validate transition
+    const allowed = STATUS_TRANSITIONS[currentStatus] || [];
+    if (!allowed.includes(newStatus)) {
+      await client.query('ROLLBACK');
+      return res.status(422).json({
+        success: false,
+        message: `Cannot transition from '${currentStatus}' to '${newStatus}'. Allowed next statuses: ${allowed.join(', ')}`,
+      });
+    }
+
+    // Update report status
+    await client.query(
+      'UPDATE reports SET status = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2',
+      [newStatus, id]
+    );
+
+    // Insert history row
+    await client.query(
+      `INSERT INTO report_status_history (report_id, old_status, new_status, changed_by, notes)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [id, currentStatus, newStatus, userId, notes || null]
+    );
+
+    await client.query('COMMIT');
+
+    // Fire notification to report owner (async, non-blocking)
+    try {
+      const { notify } = require('../utils/notifications');
+      const statusLabels = {
+        under_review: 'Under Review',
+        investigating: 'Being Investigated',
+        resolved: 'Resolved',
+        closed: 'Closed',
+        submitted: 'Re-submitted',
+      };
+      if (String(report.user_id) !== String(userId)) {
+        await notify(
+          String(report.user_id),
+          'Report Status Updated',
+          `Your report status changed to: ${statusLabels[newStatus] || newStatus}`,
+          'report_status_change',
+          id,
+          { reportId: id, newStatus }
+        );
+      }
+    } catch (notifyErr) {
+      console.error('[updateReportStatus] Notification error (non-fatal):', notifyErr.message);
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Report status updated',
+      data: { reportId: id, oldStatus: currentStatus, newStatus },
+    });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('updateReportStatus error:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  } finally {
+    client.release();
+  }
+};
+
+/**
+ * Get full status history for a report
+ * GET /api/v1/reports/:id/status-history
+ */
+const getReportStatusHistory = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Verify report exists and user has access
+    const { rows: reportRows } = await db.query(
+      'SELECT id, user_id FROM reports WHERE id = $1',
+      [id]
+    );
+    if (reportRows.length === 0) {
+      return res.status(404).json({ success: false, message: 'Report not found' });
+    }
+
+    const { rows: history } = await db.query(
+      `SELECT
+         rsh.id,
+         rsh.old_status,
+         rsh.new_status,
+         rsh.notes,
+         rsh.changed_at,
+         u.first_name,
+         u.last_name,
+         u.user_type
+       FROM report_status_history rsh
+       LEFT JOIN users u ON u.id = rsh.changed_by
+       WHERE rsh.report_id = $1
+       ORDER BY rsh.changed_at ASC`,
+      [id]
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: { reportId: id, history },
+    });
+  } catch (error) {
+    console.error('getReportStatusHistory error:', error);
+    return res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   createReport,
   getReports,
   getReportById,
   updateReport,
-  deleteReport
+  deleteReport,
+  updateReportStatus,
+  getReportStatusHistory,
 };

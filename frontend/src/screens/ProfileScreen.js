@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import {
   View,
   Text,
+  Image,
   TouchableOpacity,
   StyleSheet,
   ScrollView,
@@ -13,6 +14,7 @@ import {
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '../services/authService';
+import apiClient from '../services/api';
 import { AuthContext } from '../App';
 
 const ProfileScreen = ({ navigation }) => {
@@ -34,12 +36,30 @@ const ProfileScreen = ({ navigation }) => {
   );
 
   const loadUser = async () => {
-    const userData = await authService.getCachedUser();
-    setUser(userData);
+    // Load cached user first for instant display
+    const cached = await authService.getCachedUser();
+    setUser(cached);
+    // Then fetch full profile (includes bio and profile_image_url)
+    try {
+      const response = await apiClient.get('/users/profile');
+      if (response.data.success) {
+        setUser(response.data.data.user);
+      }
+    } catch (_) {
+      // Silently fall back to cached data
+    }
   };
 
   const handleEditProfile = () => {
     navigation.navigate('EditProfile');
+  };
+
+  const handleSettings = () => {
+    navigation.navigate('Settings');
+  };
+
+  const handleNotifications = () => {
+    navigation.navigate('Notifications');
   };
 
   const handleLogout = async () => {
@@ -103,15 +123,25 @@ const ProfileScreen = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.header}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {user?.firstName?.[0]}{user?.lastName?.[0]}
-            </Text>
-          </View>
+          {user?.profile_image_url ? (
+            <Image
+              source={{ uri: user.profile_image_url }}
+              style={styles.avatarImage}
+            />
+          ) : (
+            <View style={styles.avatar}>
+              <Text style={styles.avatarText}>
+                {user?.firstName?.[0]}{user?.lastName?.[0]}
+              </Text>
+            </View>
+          )}
           <Text style={styles.name}>
             {user?.firstName} {user?.lastName}
           </Text>
           <Text style={styles.email}>{user?.email}</Text>
+          {user?.bio ? (
+            <Text style={styles.bio}>{user.bio}</Text>
+          ) : null}
           <View style={styles.badge}>
             <Text style={styles.badgeText}>{user?.userType || 'Citizen'}</Text>
           </View>
@@ -126,13 +156,13 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={handleNotifications}>
             <Text style={styles.menuIcon}>🔔</Text>
             <Text style={styles.menuText}>Notifications</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.menuItem}>
+          <TouchableOpacity style={styles.menuItem} onPress={handleSettings}>
             <Text style={styles.menuIcon}>🔒</Text>
             <Text style={styles.menuText}>Privacy & Security</Text>
             <Text style={styles.menuArrow}>›</Text>
@@ -245,6 +275,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 16,
+  },
   avatarText: {
     fontSize: 36,
     fontWeight: 'bold',
@@ -259,7 +295,15 @@ const styles = StyleSheet.create({
   email: {
     fontSize: 16,
     color: '#666',
+    marginBottom: 8,
+  },
+  bio: {
+    fontSize: 14,
+    color: '#555',
+    textAlign: 'center',
     marginBottom: 12,
+    paddingHorizontal: 20,
+    lineHeight: 20,
   },
   badge: {
     backgroundColor: '#E3F2FD',

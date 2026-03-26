@@ -59,6 +59,13 @@ async function runMigrations() {
 
     console.log('✓ Default admin user created (admin@vigilux.app / Admin@123)');
 
+    // Run W5 migration: report_status_history, notification_preferences, fcm_tokens
+    console.log('Running W5 migrations...');
+    const w5MigrationPath = path.join(__dirname, 'migrations', '002_w5_report_status_notifications.sql');
+    const w5Migration = fs.readFileSync(w5MigrationPath, 'utf8');
+    await client.query(w5Migration);
+    console.log('✓ W5 migration completed (report_status_history, notification_preferences, fcm_tokens)');
+
     console.log('\n✅ All migrations completed successfully!');
 
   } catch (error) {

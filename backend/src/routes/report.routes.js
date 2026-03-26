@@ -12,7 +12,9 @@ const {
   getReports,
   getReportById,
   updateReport,
-  deleteReport
+  deleteReport,
+  updateReportStatus,
+  getReportStatusHistory,
 } = require('../controllers/report.controller');
 const multer = require('multer');
 const path = require('path');
@@ -91,7 +93,21 @@ router.patch('/:id', updateReport);
  */
 router.delete('/:id', deleteReport);
 
-// Upload standalone media file (optionally links to a report)
+/**
+ * @route   PATCH /api/v1/reports/:id/status
+ * @desc    Update report status with state-machine validation (Issue #53)
+ * @access  Private (citizens can only close own; officers/admins full control)
+ */
+router.patch('/:id/status', updateReportStatus);
+
+/**
+ * @route   GET /api/v1/reports/:id/status-history
+ * @desc    Get full status-change timeline for a report (Issue #53)
+ * @access  Private
+ */
+router.get('/:id/status-history', getReportStatusHistory);
+
+
 router.post(
   '/upload',
   mediaUpload.single('file'),
