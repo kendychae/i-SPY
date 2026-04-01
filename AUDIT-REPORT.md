@@ -1,6 +1,6 @@
 ﻿# VIGILUX — Full Production Audit Report
 
-**Date:** March 21, 2026 *(updated April 1, 2026 — W6 security pass)*  
+**Date:** March 21, 2026 _(updated April 1, 2026 — W6 security pass)_  
 **Auditor:** GitHub Copilot (automated audit)  
 **Branch:** `kendahlbingham`  
 **Repo:** https://github.com/kendychae/VIGILUX
@@ -63,40 +63,40 @@ VIGILUX is a React Native (Expo) neighborhood-watch reporting app with a Node.js
 
 ### OWASP Top 10 Audit Results
 
-| OWASP Risk | Area | Finding | Status |
-|---|---|---|---|
-| A01 — Broken Access Control | `PATCH /api/v1/reports/:id` | IDOR: ownership enforced — users cannot update/delete other users' reports; returns 403 | ✅ Already mitigated |
-| A01 — Broken Access Control | `DELETE /api/v1/reports/:id` | Same ownership check as update | ✅ Already mitigated |
-| A01 — Broken Access Control | `/api/v1/officer/*` routes | All officer endpoints enforce `authorize('officer', 'admin')` — citizens get 403 | ✅ Fixed W6 #58 |
-| A02 — Cryptographic Failures | JWT secrets | Prod guard added to `server.js` — server exits on startup if using default secrets | ✅ Already mitigated |
-| A02 — Cryptographic Failures | Passwords | bcrypt with cost factor 12 used throughout | ✅ Already mitigated |
-| A03 — Injection | SQL queries | All queries use parameterised `$1`/`$2` placeholders via `pg` pool — no interpolation | ✅ No issues found |
-| A04 — Insecure Design | State machine | Status transitions validated server-side in controller (cannot skip states) | ✅ Already mitigated |
-| A05 — Security Misconfiguration | CORS | Restricted to `CORS_ORIGIN` env var; not open wildcard in production | ✅ Already mitigated |
-| A05 — Security Misconfiguration | Security headers | `helmet()` applied globally — adds `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`, CSP | ✅ Verified present |
-| A07 — Authentication Failures | Brute-force login | **No rate limit on `/auth/login` or `/auth/register`** | ✅ **FIXED W6 #59** — `express-rate-limit` added: 100 req / 15 min per IP |
-| A09 — Security Logging | Error responses | Production errors do not leak stack traces (`err.message` only in dev mode) | ✅ Already mitigated |
-| A10 — SSRF | File uploads | Multer with file signature validation (magic bytes checked) — no URL-based upload | ✅ Already mitigated |
+| OWASP Risk                      | Area                         | Finding                                                                                                          | Status                                                                    |
+| ------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| A01 — Broken Access Control     | `PATCH /api/v1/reports/:id`  | IDOR: ownership enforced — users cannot update/delete other users' reports; returns 403                          | ✅ Already mitigated                                                      |
+| A01 — Broken Access Control     | `DELETE /api/v1/reports/:id` | Same ownership check as update                                                                                   | ✅ Already mitigated                                                      |
+| A01 — Broken Access Control     | `/api/v1/officer/*` routes   | All officer endpoints enforce `authorize('officer', 'admin')` — citizens get 403                                 | ✅ Fixed W6 #58                                                           |
+| A02 — Cryptographic Failures    | JWT secrets                  | Prod guard added to `server.js` — server exits on startup if using default secrets                               | ✅ Already mitigated                                                      |
+| A02 — Cryptographic Failures    | Passwords                    | bcrypt with cost factor 12 used throughout                                                                       | ✅ Already mitigated                                                      |
+| A03 — Injection                 | SQL queries                  | All queries use parameterised `$1`/`$2` placeholders via `pg` pool — no interpolation                            | ✅ No issues found                                                        |
+| A04 — Insecure Design           | State machine                | Status transitions validated server-side in controller (cannot skip states)                                      | ✅ Already mitigated                                                      |
+| A05 — Security Misconfiguration | CORS                         | Restricted to `CORS_ORIGIN` env var; not open wildcard in production                                             | ✅ Already mitigated                                                      |
+| A05 — Security Misconfiguration | Security headers             | `helmet()` applied globally — adds `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`, CSP | ✅ Verified present                                                       |
+| A07 — Authentication Failures   | Brute-force login            | **No rate limit on `/auth/login` or `/auth/register`**                                                           | ✅ **FIXED W6 #59** — `express-rate-limit` added: 100 req / 15 min per IP |
+| A09 — Security Logging          | Error responses              | Production errors do not leak stack traces (`err.message` only in dev mode)                                      | ✅ Already mitigated                                                      |
+| A10 — SSRF                      | File uploads                 | Multer with file signature validation (magic bytes checked) — no URL-based upload                                | ✅ Already mitigated                                                      |
 
 ### Remaining Open Items (No Breaking Risk)
 
-| # | Area | Finding | Priority |
-|---|---|---|---|
-| R1 | `backend/.env` | DB password is `1234` — must be changed before production deployment | HIGH |
-| R2 | `backend/.env` | SMTP credentials are placeholder — password reset emails will fail | MEDIUM |
-| R3 | Auth token invalidation | Logout does not blacklist the JWT — the token remains usable until expiry (15 min window) | MEDIUM |
-| R4 | Officer unassign | Officer cannot unassign a report that is in `resolved`/`closed` state — may need a business rule clarification | LOW |
+| #   | Area                    | Finding                                                                                                        | Priority |
+| --- | ----------------------- | -------------------------------------------------------------------------------------------------------------- | -------- |
+| R1  | `backend/.env`          | DB password is `1234` — must be changed before production deployment                                           | HIGH     |
+| R2  | `backend/.env`          | SMTP credentials are placeholder — password reset emails will fail                                             | MEDIUM   |
+| R3  | Auth token invalidation | Logout does not blacklist the JWT — the token remains usable until expiry (15 min window)                      | MEDIUM   |
+| R4  | Officer unassign        | Officer cannot unassign a report that is in `resolved`/`closed` state — may need a business rule clarification | LOW      |
 
 ### E2E Test Coverage Added (W6 #59)
 
 All E2E tests live in `backend/src/__tests__/officer.test.js`:
 
-| Test Suite | Tests |
-|---|---|
-| Officer Dashboard API | 15 integration tests covering paginated list, queue, assign, unassign with full RBAC |
-| E2E: Citizen Flow | register → submit report → view report → view status history |
-| E2E: Officer Flow | login → view queue → claim report → transition status × 2 → verify My Cases filter |
-| OWASP: Security Controls | IDOR update, IDOR delete, unauthenticated 401, tampered token 401, helmet headers |
+| Test Suite               | Tests                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------ |
+| Officer Dashboard API    | 15 integration tests covering paginated list, queue, assign, unassign with full RBAC |
+| E2E: Citizen Flow        | register → submit report → view report → view status history                         |
+| E2E: Officer Flow        | login → view queue → claim report → transition status × 2 → verify My Cases filter   |
+| OWASP: Security Controls | IDOR update, IDOR delete, unauthenticated 401, tampered token 401, helmet headers    |
 
 ---
 
@@ -104,14 +104,14 @@ All E2E tests live in `backend/src/__tests__/officer.test.js`:
 
 ### Medium Priority
 
-| #   | Area                                         | Issue                                                                                                                                                  | Recommended Action                                                                                                                                          |
-| --- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| M1  | `backend/.env`                               | DB password is `1234` — unacceptable for production                                                                                                    | Change to a 32+ character random string; set in Render/Railway dashboard, never in `.env`                                                                   |
-| M2  | `backend/src/controllers/auth.controller.js` | JWT secret fallback `'vigilux-secret-key-change-in-production'` is still in code                                                                          | Ensure `process.env.JWT_SECRET` is always set; add a startup guard that throws if not set                                                                   |
+| #   | Area                                         | Issue                                                                                                                                                  | Recommended Action                                                                                                                           |
+| --- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| M1  | `backend/.env`                               | DB password is `1234` — unacceptable for production                                                                                                    | Change to a 32+ character random string; set in Render/Railway dashboard, never in `.env`                                                    |
+| M2  | `backend/src/controllers/auth.controller.js` | JWT secret fallback `'vigilux-secret-key-change-in-production'` is still in code                                                                       | Ensure `process.env.JWT_SECRET` is always set; add a startup guard that throws if not set                                                    |
 | M3  | `backend/src/server.js`                      | No rate limiting on any route                                                                                                                          | ~~Add `express-rate-limit`~~ **FIXED (W6 #59)** — `express-rate-limit` added to `/auth/login` and `/auth/register` (100 req / 15 min per IP) |
-| M4  | `frontend/src/App.js`                        | Auth status checked by polling every 2 seconds (`setInterval(checkAuthStatus, 2000)`) — drains battery and makes unnecessary async calls               | Replace with event-emitter approach: emit `LOGIN`/`LOGOUT` events from `authService` and listen in `App.js`                                                 |
-| M5  | `frontend/src/screens/ProfileScreen.js`      | "Edit Profile", "Notifications", "Privacy & Security", "Help Center", "Contact Us", "About" menu items are non-functional stubs (no `onPress` handler) | Implement each screen or add a "Coming soon" alert as minimum before App Store release                                                                      |
-| M6  | `frontend/src/App.js`                        | Tab bar icons use emoji `<Text>` — looks unprofessional on store screenshots; may render inconsistently across Android versions                        | Replace with `@expo/vector-icons` (Ionicons/MaterialIcons) — already compatible with Expo SDK 54                                                            |
+| M4  | `frontend/src/App.js`                        | Auth status checked by polling every 2 seconds (`setInterval(checkAuthStatus, 2000)`) — drains battery and makes unnecessary async calls               | Replace with event-emitter approach: emit `LOGIN`/`LOGOUT` events from `authService` and listen in `App.js`                                  |
+| M5  | `frontend/src/screens/ProfileScreen.js`      | "Edit Profile", "Notifications", "Privacy & Security", "Help Center", "Contact Us", "About" menu items are non-functional stubs (no `onPress` handler) | Implement each screen or add a "Coming soon" alert as minimum before App Store release                                                       |
+| M6  | `frontend/src/App.js`                        | Tab bar icons use emoji `<Text>` — looks unprofessional on store screenshots; may render inconsistently across Android versions                        | Replace with `@expo/vector-icons` (Ionicons/MaterialIcons) — already compatible with Expo SDK 54                                             |
 
 ### Low Priority / Pre-Submission Checklist
 
@@ -121,7 +121,7 @@ All E2E tests live in `backend/src/__tests__/officer.test.js`:
 | L2  | `eas.json` `submit.production.ios`     | `appleId`, `ascAppId`, `appleTeamId` are placeholder strings                          | Fill with actual Apple Developer account values                                                     |
 | L3  | `eas.json` `submit.production.android` | `serviceAccountKeyPath` points to `./google-service-account.json` which doesn't exist | Generate a Google service account key from Play Console and add the JSON file (add to `.gitignore`) |
 | L4  | `backend/.env`                         | `SMTP_USER` and `SMTP_PASSWORD` are placeholder — password reset emails won't send    | Configure real SMTP credentials (use SendGrid/Resend API for production)                            |
-| L5  | `frontend/app.json`                    | `extra.eas.projectId` is `"vigilux-app"` (placeholder)                                   | Set real EAS project ID: run `eas init` to generate and populate it                                 |
+| L5  | `frontend/app.json`                    | `extra.eas.projectId` is `"vigilux-app"` (placeholder)                                | Set real EAS project ID: run `eas init` to generate and populate it                                 |
 | L6  | `frontend-temp/`                       | Unused directory at project root — stale copy of app                                  | Delete or move to `archive/` to keep repo clean                                                     |
 | L7  | N/A                                    | Privacy Policy URL required by both Apple and Google before release                   | Create and host a Privacy Policy page; add URL to both store listings                               |
 
@@ -143,24 +143,24 @@ All E2E tests live in `backend/src/__tests__/officer.test.js`:
 
 ## Backend API Audit
 
-| Endpoint                           | Auth   | Status                     |
-| ---------------------------------- | ------ | -------------------------- |
-| `POST /api/v1/auth/register`       | Public | ✅ Working                 |
-| `POST /api/v1/auth/login`          | Public | ✅ Working                 |
-| `POST /api/v1/auth/refresh`        | Public | ✅ Working                 |
-| `POST /api/v1/auth/logout`         | Bearer | ✅ Working                 |
-| `GET  /api/v1/auth/me`             | Bearer | ✅ Working                 |
-| `POST /api/v1/reports`             | Bearer | ✅ Fixed (req.user.userId) |
-| `GET  /api/v1/reports`             | Bearer | ✅ Working                 |
-| `GET  /api/v1/reports/:id`         | Bearer | ✅ Working                 |
-| `PATCH /api/v1/reports/:id`        | Bearer | ✅ Working                 |
-| `DELETE /api/v1/reports/:id`       | Bearer | ✅ Working                 |
-| `GET  /api/v1/users` (user routes) | Bearer | ✅ Working                 |
-| `GET  /health`                     | Public | ✅ Working                 |
-| `GET  /api/v1/officer/reports`              | Bearer (officer/admin) | ✅ Added W6 #58 |
-| `GET  /api/v1/officer/reports/queue`        | Bearer (officer/admin) | ✅ Added W6 #58 |
-| `PATCH /api/v1/officer/reports/:id/assign`  | Bearer (officer/admin) | ✅ Added W6 #58 |
-| `PATCH /api/v1/officer/reports/:id/unassign`| Bearer (officer/admin) | ✅ Added W6 #58 |
+| Endpoint                                     | Auth                   | Status                     |
+| -------------------------------------------- | ---------------------- | -------------------------- |
+| `POST /api/v1/auth/register`                 | Public                 | ✅ Working                 |
+| `POST /api/v1/auth/login`                    | Public                 | ✅ Working                 |
+| `POST /api/v1/auth/refresh`                  | Public                 | ✅ Working                 |
+| `POST /api/v1/auth/logout`                   | Bearer                 | ✅ Working                 |
+| `GET  /api/v1/auth/me`                       | Bearer                 | ✅ Working                 |
+| `POST /api/v1/reports`                       | Bearer                 | ✅ Fixed (req.user.userId) |
+| `GET  /api/v1/reports`                       | Bearer                 | ✅ Working                 |
+| `GET  /api/v1/reports/:id`                   | Bearer                 | ✅ Working                 |
+| `PATCH /api/v1/reports/:id`                  | Bearer                 | ✅ Working                 |
+| `DELETE /api/v1/reports/:id`                 | Bearer                 | ✅ Working                 |
+| `GET  /api/v1/users` (user routes)           | Bearer                 | ✅ Working                 |
+| `GET  /health`                               | Public                 | ✅ Working                 |
+| `GET  /api/v1/officer/reports`               | Bearer (officer/admin) | ✅ Added W6 #58            |
+| `GET  /api/v1/officer/reports/queue`         | Bearer (officer/admin) | ✅ Added W6 #58            |
+| `PATCH /api/v1/officer/reports/:id/assign`   | Bearer (officer/admin) | ✅ Added W6 #58            |
+| `PATCH /api/v1/officer/reports/:id/unassign` | Bearer (officer/admin) | ✅ Added W6 #58            |
 
 ---
 
