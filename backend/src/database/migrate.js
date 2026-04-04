@@ -75,6 +75,20 @@ async function runMigrations() {
     await client.query(w6Migration);
     console.log('✓ W6 migration completed (provider-aware push tokens)');
 
+    // Run W7 migration: officer assignment tracking
+    console.log('Running W7 migrations...');
+    const w7MigrationPath = path.join(__dirname, 'migrations', '004_officer_assignment.sql');
+    const w7Migration = readSqlFile(w7MigrationPath);
+    await client.query(w7Migration);
+    console.log('✓ W7 migration completed (officer assignment tracking)');
+
+    // Run offline sync migration: client_id for idempotency
+    console.log('Running offline sync migrations...');
+    const offlineSyncMigrationPath = path.join(__dirname, 'migrations', '005_client_id.sql');
+    const offlineSyncMigration = readSqlFile(offlineSyncMigrationPath);
+    await client.query(offlineSyncMigration);
+    console.log('✓ Offline sync migration completed (client_id for idempotency)');
+
     console.log('\n✅ All migrations completed successfully!');
 
   } catch (error) {

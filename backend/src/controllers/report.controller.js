@@ -16,7 +16,8 @@ const createReport = async (req, res) => {
       longitude,
       address,
       incident_date,
-      priority = 'medium'
+      priority = 'medium',
+      client_id
     } = req.body;
 
     const userId = req.user.userId;
@@ -115,7 +116,7 @@ const createReport = async (req, res) => {
     // Begin transaction
     await client.query('BEGIN');
 
-    // Insert report into database
+    // Insert report into database with idempotency handling
     const insertReportQuery = `
       INSERT INTO reports (
         user_id,
@@ -127,12 +128,14 @@ const createReport = async (req, res) => {
         latitude,
         longitude,
         address,
-        incident_date
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+        incident_date,
+        client_id
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      ON CONFLICT (client_id) DO NOTHING
       RETURNING *;
     `;
 
-    const reportResult = await client.query(insertReportQuery, [
+    let reportResult = await client.query(insertReportQuery, [
       userId,
       title.trim(),
       description.trim(),
@@ -142,10 +145,30 @@ const createReport = async (req, res) => {
       parseFloat(latitude),
       parseFloat(longitude),
       address || null,
-      incident_date
+      incident_date,
+      client_id || null
     ]);
 
-    const report = reportResult.rows[0];
+    let report = reportResult.rows[0];
+
+    // If no row was inserted (conflict), fetch the existing report by client_id
+    if (!report && client_id) {
+      const existingReportQuery = `
+        SELECT * FROM reports WHERE client_id = $1;
+      `;
+      const existingResult = await client.query(existingReportQuery, [client_id]);
+      report = existingResult.rows[0];
+    }
+
+    // If still no report found, this shouldn't happen but handle gracefully
+    if (!report) {
+      await client.query('ROLLBACK');
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to create or retrieve report',
+        message: 'An unexpected error occurred while processing the report.'
+      });
+    }
 
     // Handle media file uploads if present
     let mediaRecords = [];

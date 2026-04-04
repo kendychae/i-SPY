@@ -13,11 +13,13 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 import api from '../services/api';
 import { getLocationWithAddress } from '../services/locationService';
 import MediaPreview from '../components/MediaPreview';
 import { showImagePickerOptions, validateImages } from '../services/imagePicker';
 import { compressAndUpload, cleanupCompressedImages } from '../services/imageCompression';
+import { enqueueReport, getQueueLength } from '../utils/offlineQueue';
 
 const ReportScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -31,6 +33,8 @@ const ReportScreen = ({ navigation }) => {
   const [errors, setErrors] = useState({});
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({ stage: '', percentage: 0 });
+  const [isConnected, setIsConnected] = useState(true);
+  const [queueLength, setQueueLength] = useState(0);
 
   const incidentTypes = [
     { id: 'theft', label: 'Theft', icon: '🚨', description: 'Stolen items or break-ins' },
@@ -53,6 +57,37 @@ const ReportScreen = ({ navigation }) => {
 
   useEffect(() => {
     getCurrentLocation();
+  }, []);
+
+  // Monitor network connectivity
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected ?? true);
+    });
+
+    // Get initial connectivity state
+    NetInfo.fetch().then(state => {
+      setIsConnected(state.isConnected ?? true);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // Monitor queue length
+  useEffect(() => {
+    const updateQueueLength = async () => {
+      const length = await getQueueLength();
+      setQueueLength(length);
+    };
+
+    updateQueueLength();
+
+    // Update queue length when connectivity changes (in case sync happened)
+    const unsubscribe = NetInfo.addEventListener(() => {
+      updateQueueLength();
+    });
+
+    return unsubscribe;
   }, []);
 
   const getCurrentLocation = async () => {
@@ -176,7 +211,26 @@ const ReportScreen = ({ navigation }) => {
         priority: priority,
       };
 
-      // Submit report to API
+      // Check connectivity
+      if (!isConnected) {
+        // Offline: enqueue for later sync
+        await enqueueReport(reportData);
+        setLoading(false);
+
+        Alert.alert(
+          'Report Saved Offline',
+          'Your report has been saved and will be submitted automatically when you reconnect to the internet.',
+          [
+            {
+              text: 'OK',
+              onPress: () => resetForm(),
+            },
+          ]
+        );
+        return;
+      }
+
+      // Online: submit directly to API
       const response = await api.post('/reports', reportData);
 
       if (response.data.success) {
@@ -530,7 +584,14 @@ const ReportScreen = ({ navigation }) => {
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
-              <Text style={styles.submitButtonText}>📤 Submit Report</Text>
+              <View style={styles.submitButtonContent}>
+                <Text style={styles.submitButtonText}>📤 Submit Report</Text>
+                {queueLength > 0 && (
+                  <View style={styles.queueBadge}>
+                    <Text style={styles.queueBadgeText}>{queueLength}</Text>
+                  </View>
+                )}
+              </View>
             )}
           </TouchableOpacity>
 
@@ -756,6 +817,26 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '700',
+  },
+  submitButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  queueBadge: {
+    backgroundColor: '#FF6B35',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+    paddingHorizontal: 6,
+  },
+  queueBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
   },
   footer: {
