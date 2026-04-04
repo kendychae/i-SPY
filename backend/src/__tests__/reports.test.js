@@ -6,6 +6,7 @@ describe('Report API Integration Tests', () => {
   let authToken;
   let testUserId;
   let testReportId;
+  let searchReportId;
 
   // Setup: Create test user and login
   beforeAll(async () => {
@@ -39,6 +40,9 @@ describe('Report API Integration Tests', () => {
     // Delete test data
     if (testReportId) {
       await db.query('DELETE FROM reports WHERE id = $1', [testReportId]);
+    }
+    if (searchReportId) {
+      await db.query('DELETE FROM reports WHERE id = $1', [searchReportId]);
     }
     if (testUserId) {
       await db.query('DELETE FROM users WHERE id = $1', [testUserId]);
@@ -200,6 +204,72 @@ describe('Report API Integration Tests', () => {
       if (response.body.data.length > 0) {
         expect(response.body.data.every(r => r.incident_type === 'suspicious_activity')).toBe(true);
       }
+    });
+
+    it('should filter reports by keyword search and category', async () => {
+      const newReport = {
+        title: 'Vandalism search test',
+        description: 'Search keyword vandalism should return this report.',
+        incident_type: 'vandalism',
+        latitude: 34.0522,
+        longitude: -118.2437,
+        incident_date: new Date().toISOString(),
+      };
+
+      const createResponse = await request(app)
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send(newReport)
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      searchReportId = createResponse.body.data.id;
+
+      const response = await request(app)
+        .get('/api/v1/reports?q=vandalism&category=vandalism&status=submitted')
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body.data.some((r) => r.id === searchReportId)).toBe(true);
+
+      await db.query('DELETE FROM reports WHERE id = $1', [searchReportId]);
+      searchReportId = null;
+    });
+
+    it('should support date range filtering with dateFrom/dateTo', async () => {
+      const now = new Date();
+      const newReport = {
+        title: 'Date range search test',
+        description: 'This report is used to validate date range filtering.',
+        incident_type: 'theft',
+        latitude: 34.0522,
+        longitude: -118.2437,
+        incident_date: now.toISOString(),
+      };
+
+      const createResponse = await request(app)
+        .post('/api/v1/reports')
+        .set('Authorization', `Bearer ${authToken}`)
+        .send(newReport)
+        .expect('Content-Type', /json/)
+        .expect(201);
+
+      const dateRangeId = createResponse.body.data.id;
+      const dateFrom = new Date(now.getTime() - 2 * 24 * 60 * 60 * 1000).toISOString();
+      const dateTo = new Date(now.getTime() + 2 * 60 * 60 * 1000).toISOString();
+
+      const response = await request(app)
+        .get(`/api/v1/reports?dateFrom=${encodeURIComponent(dateFrom)}&dateTo=${encodeURIComponent(dateTo)}`)
+        .set('Authorization', `Bearer ${authToken}`)
+        .expect('Content-Type', /json/)
+        .expect(200);
+
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body.data.some((r) => r.id === dateRangeId)).toBe(true);
+
+      await db.query('DELETE FROM reports WHERE id = $1', [dateRangeId]);
     });
 
     it('should support pagination', async () => {

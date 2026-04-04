@@ -242,9 +242,13 @@ const getReports = async (req, res) => {
       limit = 20,
       status,
       incident_type,
+      category,
+      q,
       priority,
       start_date,
       end_date,
+      dateFrom,
+      dateTo,
       latitude,
       longitude,
       radius,
@@ -261,6 +265,21 @@ const getReports = async (req, res) => {
     const conditions = [];
     const queryParams = [];
     let paramCount = 0;
+
+    // Filter by keyword search
+    if (q && q.trim()) {
+      paramCount++;
+      conditions.push(`(title ILIKE $${paramCount} OR description ILIKE $${paramCount})`);
+      queryParams.push(`%${q.trim()}%`);
+    }
+
+    // Filter by category alias for incident_type (comma-separated)
+    if (category) {
+      const categories = category.split(',').map(c => c.trim());
+      paramCount++;
+      conditions.push(`incident_type = ANY($${paramCount}::text[])`);
+      queryParams.push(categories);
+    }
 
     // Filter by status (comma-separated)
     if (status) {
@@ -287,6 +306,18 @@ const getReports = async (req, res) => {
     }
 
     // Filter by date range
+    if (dateFrom) {
+      paramCount++;
+      conditions.push(`created_at >= $${paramCount}`);
+      queryParams.push(dateFrom);
+    }
+
+    if (dateTo) {
+      paramCount++;
+      conditions.push(`created_at <= $${paramCount}`);
+      queryParams.push(dateTo);
+    }
+
     if (start_date) {
       paramCount++;
       conditions.push(`created_at >= $${paramCount}`);
