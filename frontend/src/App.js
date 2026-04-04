@@ -2,7 +2,8 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, AppState } from 'react-native';
+import NetInfo from '@react-native-community/netinfo';
 
 // Auth Screens
 import LoginScreen from './screens/LoginScreen';
@@ -24,6 +25,8 @@ import { NotificationProvider, useNotifications } from './contexts/NotificationC
 
 // Services
 import { authService } from './services/authService';
+import api from './services/api';
+import { processQueue } from './utils/offlineQueue';
 
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -269,6 +272,47 @@ const RootNavigator = () => {
     const interval = setInterval(checkAuthStatus, 2000);
     return () => clearInterval(interval);
   }, []);
+
+  // Offline queue processing
+  useEffect(() => {
+    if (!isAuthenticated) return; // Only process queue when authenticated
+
+    const submitReport = async (payload) => {
+      try {
+        const response = await api.post('/reports', payload);
+        return { success: response.data.success };
+      } catch (error) {
+        return { success: false };
+      }
+    };
+
+    // Process queue when network reconnects
+    const netInfoUnsubscribe = NetInfo.addEventListener(async (state) => {
+      if (state.isConnected) {
+        console.log('[App] Network reconnected, processing offline queue...');
+        const result = await processQueue(submitReport);
+        if (result.succeeded > 0 || result.failed > 0) {
+          console.log(`[App] Queue processed: ${result.succeeded} succeeded, ${result.failed} failed`);
+        }
+      }
+    });
+
+    // Process queue when app becomes active
+    const appStateUnsubscribe = AppState.addEventListener('change', async (nextAppState) => {
+      if (nextAppState === 'active') {
+        console.log('[App] App became active, processing offline queue...');
+        const result = await processQueue(submitReport);
+        if (result.succeeded > 0 || result.failed > 0) {
+          console.log(`[App] Queue processed: ${result.succeeded} succeeded, ${result.failed} failed`);
+        }
+      }
+    });
+
+    return () => {
+      netInfoUnsubscribe();
+      appStateUnsubscribe.remove();
+    };
+  }, [isAuthenticated]);
 
   const checkAuthStatus = async () => {
     try {
