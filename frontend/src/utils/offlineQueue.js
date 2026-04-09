@@ -9,7 +9,18 @@
  * - Automatic sync on connectivity restore
  */
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import uuid from 'react-native-uuid';
+
+// Platform-safe UUID — uses crypto.randomUUID on web, Math.random fallback elsewhere
+const generateUUID = () => {
+  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    return crypto.randomUUID();
+  }
+  // RFC 4122 v4 fallback
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+};
 
 // ─── Queue storage key ────────────────────────────────────────────────────────
 const QUEUE_KEY = 'vigilux:queue';
@@ -43,7 +54,7 @@ const BACKOFF_SCHEDULE = [
  * Generate a new clientId UUID for idempotency
  */
 function generateClientId() {
-  return uuid.v4();
+  return generateUUID();
 }
 
 /**
@@ -80,7 +91,7 @@ export async function enqueueReport(payload) {
   const clientId = generateClientId();
 
   const entry = {
-    id: uuid.v4(),
+    id: generateUUID(),
     clientId,
     operation: 'CREATE_REPORT',
     payload: { ...payload, client_id: clientId }, // Include client_id in payload

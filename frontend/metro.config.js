@@ -26,6 +26,23 @@ config.resolver.disableHierarchicalLookup = false;
 const originalResolveRequest = config.resolver.resolveRequest;
 config.resolver.resolveRequest = (context, moduleName, platform) => {
   const originNorm = context.originModulePath.replace(/\\/g, '/');
+
+  // Web shim: @react-native-community/netinfo doesn't support web
+  if (moduleName === '@react-native-community/netinfo' && platform === 'web') {
+    return {
+      filePath: path.resolve(projectRoot, 'src', 'utils', 'netinfo-web-shim.js'),
+      type: 'sourceFile',
+    };
+  }
+
+  // Web shim: react-native-uuid uses crypto.randomUUID() on web
+  if (moduleName === 'react-native-uuid' && platform === 'web') {
+    return {
+      filePath: path.resolve(projectRoot, 'src', 'utils', 'uuid-web-shim.js'),
+      type: 'sourceFile',
+    };
+  }
+
   if (
     moduleName === '../../App' &&
     originNorm.includes('node_modules/expo/AppEntry')
