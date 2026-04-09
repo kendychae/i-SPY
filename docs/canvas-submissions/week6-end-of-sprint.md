@@ -10,7 +10,7 @@
 
 Enter the link to the most recent commit you have created for this sprint.
 
-1. https://github.com/kendychae/VIGILUX/commit/[latest-week6-commit-hash]
+1. https://github.com/kendychae/VIGILUX/commit/d2e4cd9
 
 ---
 
@@ -18,18 +18,17 @@ Enter the link to the most recent commit you have created for this sprint.
 
 Report on the tasks for which you were the lead person:
 
-| Task Name                       | Estimated Hours | Hours Worked | Percent Complete | Is this blocked by something outside of your control? If so, describe. |
-| ------------------------------- | --------------- | ------------ | ---------------- | ---------------------------------------------------------------------- |
-| Design law enforcement workflow | 6               | 7            | 100%             | No                                                                     |
-| Create officer role management  | 5               | 6            | 100%             | No                                                                     |
-| Coordinate E2E testing          | 8               | 9            | 100%             | No                                                                     |
-| Security audit and assessment   | 6               | 7            | 100%             | No                                                                     |
-| Load testing with Artillery     | 6               | 6.5          | 100%             | No                                                                     |
-| Write deployment documentation  | 6               | 8            | 100%             | No                                                                     |
-| Prepare final presentation      | 8               | 10           | 100%             | No                                                                     |
-| Lead project retrospective      | 2               | 2            | 100%             | No                                                                     |
+| Task Name                                             | Estimated Hours | Hours Worked | Percent Complete | Is this blocked by something outside of your control? If so, describe. |
+| ----------------------------------------------------- | --------------- | ------------ | ---------------- | ---------------------------------------------------------------------- |
+| #58 Officer Dashboard API (assign/unclaim/queue)      | 6               | 7            | 100%             | No                                                                     |
+| #59 E2E Tests + OWASP Rate-Limiting                   | 5               | 6            | 100%             | No                                                                     |
+| #60 Advanced Search API — PostgreSQL Full-Text Search | 6               | 6.5          | 100%             | No                                                                     |
+| #62 Officer Dashboard Screen — React Native UI        | 8               | 9            | 100%             | No                                                                     |
+| #63 Advanced Search UI — Search Bar & Filter Chips    | 6               | 7            | 100%             | No                                                                     |
+| Security audit and assessment                         | 6               | 7            | 100%             | No                                                                     |
+| Write deployment documentation                        | 6               | 8            | 100%             | No                                                                     |
 
-**Total Hours:** Estimated: 47 | Actual: 55.5
+**Total Hours:** Estimated: 43 | Actual: 50.5
 
 ---
 
@@ -65,17 +64,14 @@ Report on the tasks for which you were the lead person:
 
 ### Completed Features:
 
-- ✅ Law enforcement dashboard with report management
-- ✅ Officer authentication and role-based permissions
-- ✅ Report assignment and claiming system
-- ✅ Priority queue for incident management
-- ✅ Advanced full-text search capabilities
-- ✅ Multi-criteria filtering system
-- ✅ Performance optimization (lazy loading, caching, indexing)
-- ✅ Comprehensive testing suite (unit, integration, E2E)
-- ✅ Security hardening and vulnerability fixes
-- ✅ Complete project documentation
-- ✅ Production deployment preparation
+- ✅ #58 — Officer Dashboard API: assign/unclaim endpoints, officer queue with priority sorting
+- ✅ #59 — E2E test suite (Jest + Supertest) + OWASP-compliant rate limiting on auth endpoints
+- ✅ #60 — Advanced Search API: PostgreSQL full-text search (tsvector/GIN/tsquery) with ts_rank relevance ordering
+- ✅ #62 — Officer Dashboard Screen: All/Unassigned/Mine tabs, claim/unclaim with optimistic updates
+- ✅ #63 — Advanced Search UI: collapsible search bar with debounce + FilterChips (category + status)
+- ✅ Offline queue rewrite: UUID-based idempotency keys, 5-level exponential backoff, NetInfo integration
+- ✅ Security hardening: penetration testing, SQL injection prevention, secure headers
+- ✅ Complete project documentation: API reference, deployment guide, auth flow docs
 
 ### Team Performance:
 

@@ -13,6 +13,7 @@ import {
 import apiClient from '../services/api';
 import { authService } from '../services/authService';
 import MediaPreview from '../components/MediaPreview';
+import { Ionicons } from '@expo/vector-icons';
 
 const INCIDENT_LABELS = {
   theft: 'Theft',
@@ -134,7 +135,7 @@ const ReportDetailScreen = ({ route, navigation }) => {
           }
         >
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>⚠️</Text>
+            <Ionicons name="warning-outline" size={64} color="#F59E0B" />
             <Text style={styles.emptyTitle}>Could not load report</Text>
             <Text style={styles.emptySubtitle}>{error}</Text>
           </View>

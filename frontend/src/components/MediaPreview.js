@@ -71,7 +71,7 @@ const MediaPreview = ({ media = [], onDelete, editable = true, maxItems = 5 }) =
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>
-          📷 Photos ({displayMedia.length}/{maxItems})
+          Photos ({displayMedia.length}/{maxItems})
         </Text>
         {displayMedia.length === maxItems && (
           <Text style={styles.limitText}>Maximum reached</Text>
@@ -168,7 +168,7 @@ const MediaPreview = ({ media = [], onDelete, editable = true, maxItems = 5 }) =
                 style={styles.viewerDeleteButton}
                 onPress={() => handleDelete(selectedIndex)}
               >
-                <Text style={styles.viewerDeleteText}>🗑️ Delete Photo</Text>
+                <Text style={styles.viewerDeleteText}>Delete Photo</Text>
               </TouchableOpacity>
             )}
           </View>

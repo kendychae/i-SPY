@@ -16,6 +16,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { authService } from '../services/authService';
 import apiClient from '../services/api';
 import { AuthContext } from '../App';
+import { Ionicons } from '@expo/vector-icons';
 
 const ProfileScreen = ({ navigation }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
@@ -151,19 +152,19 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Account</Text>
           
           <TouchableOpacity style={styles.menuItem} onPress={handleEditProfile}>
-            <Text style={styles.menuIcon}>👤</Text>
+            <Ionicons name="person-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>Edit Profile</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={handleNotifications}>
-            <Text style={styles.menuIcon}>🔔</Text>
+            <Ionicons name="notifications-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>Notifications</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem} onPress={handleSettings}>
-            <Text style={styles.menuIcon}>🔒</Text>
+            <Ionicons name="lock-closed-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>Privacy & Security</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
@@ -173,19 +174,19 @@ const ProfileScreen = ({ navigation }) => {
           <Text style={styles.sectionTitle}>Support</Text>
           
           <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuIcon}>❓</Text>
+            <Ionicons name="help-circle-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>Help Center</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuIcon}>📧</Text>
+            <Ionicons name="mail-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>Contact Us</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.menuItem}>
-            <Text style={styles.menuIcon}>ℹ️</Text>
+            <Ionicons name="information-circle-outline" size={20} color="#007AFF" style={styles.menuIcon} />
             <Text style={styles.menuText}>About</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
@@ -336,7 +337,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   menuIcon: {
-    fontSize: 24,
     marginRight: 16,
   },
   menuText: {

@@ -13,11 +13,13 @@ import {
   Platform,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 import api from '../services/api';
 import { getLocationWithAddress } from '../services/locationService';
 import MediaPreview from '../components/MediaPreview';
 import { showImagePickerOptions, validateImages } from '../services/imagePicker';
 import { compressAndUpload, cleanupCompressedImages } from '../services/imageCompression';
+import { enqueueReport, getQueueLength } from '../utils/offlineQueue';
 
 const ReportScreen = ({ navigation }) => {
   const [title, setTitle] = useState('');
@@ -31,17 +33,19 @@ const ReportScreen = ({ navigation }) => {
   const [errors, setErrors] = useState({});
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({ stage: '', percentage: 0 });
+  const [isConnected, setIsConnected] = useState(true);
+  const [queueLength, setQueueLength] = useState(0);
 
   const incidentTypes = [
-    { id: 'theft', label: 'Theft', icon: '🚨', description: 'Stolen items or break-ins' },
-    { id: 'vandalism', label: 'Vandalism', icon: '🔨', description: 'Property damage' },
-    { id: 'assault', label: 'Assault', icon: '⚠️', description: 'Physical violence' },
-    { id: 'suspicious_activity', label: 'Suspicious', icon: '👀', description: 'Unusual behavior' },
-    { id: 'traffic_violation', label: 'Traffic', icon: '🚗', description: 'Reckless driving' },
-    { id: 'noise_complaint', label: 'Noise', icon: '🔊', description: 'Loud disturbances' },
-    { id: 'fire', label: 'Fire', icon: '🔥', description: 'Fire or smoke' },
-    { id: 'medical_emergency', label: 'Medical', icon: '🚑', description: 'Medical emergency' },
-    { id: 'other', label: 'Other', icon: '📌', description: 'Other incidents' },
+    { id: 'theft',               label: 'Theft',     description: 'Stolen items or break-ins' },
+    { id: 'vandalism',           label: 'Vandalism', description: 'Property damage' },
+    { id: 'assault',             label: 'Assault',   description: 'Physical violence' },
+    { id: 'suspicious_activity', label: 'Suspicious',description: 'Unusual behavior' },
+    { id: 'traffic_violation',   label: 'Traffic',   description: 'Reckless driving' },
+    { id: 'noise_complaint',     label: 'Noise',     description: 'Loud disturbances' },
+    { id: 'fire',                label: 'Fire',      description: 'Fire or smoke' },
+    { id: 'medical_emergency',   label: 'Medical',   description: 'Medical emergency' },
+    { id: 'other',               label: 'Other',     description: 'Other incidents' },
   ];
 
   const priorityLevels = [
@@ -53,6 +57,37 @@ const ReportScreen = ({ navigation }) => {
 
   useEffect(() => {
     getCurrentLocation();
+  }, []);
+
+  // Monitor network connectivity
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(state => {
+      setIsConnected(state.isConnected ?? true);
+    });
+
+    // Get initial connectivity state
+    NetInfo.fetch().then(state => {
+      setIsConnected(state.isConnected ?? true);
+    });
+
+    return unsubscribe;
+  }, []);
+
+  // Monitor queue length
+  useEffect(() => {
+    const updateQueueLength = async () => {
+      const length = await getQueueLength();
+      setQueueLength(length);
+    };
+
+    updateQueueLength();
+
+    // Update queue length when connectivity changes (in case sync happened)
+    const unsubscribe = NetInfo.addEventListener(() => {
+      updateQueueLength();
+    });
+
+    return unsubscribe;
   }, []);
 
   const getCurrentLocation = async () => {
@@ -176,7 +211,26 @@ const ReportScreen = ({ navigation }) => {
         priority: priority,
       };
 
-      // Submit report to API
+      // Check connectivity
+      if (!isConnected) {
+        // Offline: enqueue for later sync
+        await enqueueReport(reportData);
+        setLoading(false);
+
+        Alert.alert(
+          'Report Saved Offline',
+          'Your report has been saved and will be submitted automatically when you reconnect to the internet.',
+          [
+            {
+              text: 'OK',
+              onPress: () => resetForm(),
+            },
+          ]
+        );
+        return;
+      }
+
+      // Online: submit directly to API
       const response = await api.post('/reports', reportData);
 
       if (response.data.success) {
@@ -247,7 +301,7 @@ const ReportScreen = ({ navigation }) => {
         setUploadProgress({ stage: '', percentage: 0 });
 
         Alert.alert(
-          'Success! 🎉',
+          'Report Submitted',
           'Your report has been submitted successfully. Our team will review it shortly.',
           [
             {
@@ -292,7 +346,7 @@ const ReportScreen = ({ navigation }) => {
 
   const renderError = (field) => {
     if (errors[field]) {
-      return <Text style={styles.errorText}>⚠️ {errors[field]}</Text>;
+      return <Text style={styles.errorText}>{errors[field]}</Text>;
     }
     return null;
   };
@@ -323,7 +377,7 @@ const ReportScreen = ({ navigation }) => {
 
           {/* Emergency Disclaimer */}
           <View style={styles.disclaimer}>
-            <Text style={styles.disclaimerIcon}>🚨</Text>
+            <Text style={styles.disclaimerIcon}>!</Text>
             <Text style={styles.disclaimerText}>
               <Text style={styles.disclaimerBold}>In an emergency, call 911 immediately.</Text>
               {' '}This form is for non-emergency reports only and is not monitored in real time.
@@ -333,7 +387,7 @@ const ReportScreen = ({ navigation }) => {
           {/* Location Section */}
           <View style={styles.section}>
             <View style={styles.labelRow}>
-              <Text style={styles.label}>📍 Location</Text>
+              <Text style={styles.label}>Location</Text>
               {locationLoading && (
                 <ActivityIndicator size="small" color="#2196F3" />
               )}
@@ -345,7 +399,7 @@ const ReportScreen = ({ navigation }) => {
                   {address || 'Location acquired'}
                 </Text>
                 <TouchableOpacity onPress={getCurrentLocation}>
-                  <Text style={styles.refreshText}>🔄 Refresh</Text>
+                  <Text style={styles.refreshText}>Refresh</Text>
                 </TouchableOpacity>
               </View>
             ) : (
@@ -364,7 +418,7 @@ const ReportScreen = ({ navigation }) => {
 
           {/* Incident Type Section */}
           <View style={styles.section}>
-            <Text style={styles.label}>🚨 Incident Type *</Text>
+            <Text style={styles.label}>Incident Type *</Text>
             <ScrollView 
               horizontal 
               showsHorizontalScrollIndicator={false}
@@ -383,7 +437,6 @@ const ReportScreen = ({ navigation }) => {
                   }}
                   activeOpacity={0.7}
                 >
-                  <Text style={styles.typeIcon}>{type.icon}</Text>
                   <Text style={[
                     styles.typeLabel,
                     incidentType === type.id && styles.typeLabelSelected,
@@ -399,7 +452,7 @@ const ReportScreen = ({ navigation }) => {
 
           {/* Priority Section */}
           <View style={styles.section}>
-            <Text style={styles.label}>⚡ Priority Level</Text>
+            <Text style={styles.label}>Priority Level</Text>
             <View style={styles.priorityRow}>
               {priorityLevels.map((level) => (
                 <TouchableOpacity
@@ -428,7 +481,7 @@ const ReportScreen = ({ navigation }) => {
           {/* Title Section */}
           <View style={styles.section}>
             <View style={styles.labelRow}>
-              <Text style={styles.label}>📝 Title *</Text>
+              <Text style={styles.label}>Title *</Text>
               {renderCharacterCount(title.length, 255)}
             </View>
             <TextInput
@@ -448,7 +501,7 @@ const ReportScreen = ({ navigation }) => {
           {/* Description Section */}
           <View style={styles.section}>
             <View style={styles.labelRow}>
-              <Text style={styles.label}>📄 Description *</Text>
+              <Text style={styles.label}>Description *</Text>
               {renderCharacterCount(description.length, 5000)}
             </View>
             <TextInput
@@ -470,7 +523,7 @@ const ReportScreen = ({ navigation }) => {
 
           {/* Media Section */}
           <View style={styles.section}>
-            <Text style={styles.label}>📷 Photos (Optional)</Text>
+            <Text style={styles.label}>Photos (Optional)</Text>
             <Text style={styles.helperText}>Add up to 5 photos to support your report</Text>
             
             {/* Show selected images */}
@@ -491,7 +544,7 @@ const ReportScreen = ({ navigation }) => {
                 disabled={loading}
                 activeOpacity={0.7}
               >
-                <Text style={styles.addPhotoIcon}>📸</Text>
+                <Text style={styles.addPhotoIcon}>+</Text>
                 <Text style={styles.addPhotoText}>
                   {selectedImages.length === 0 ? 'Add Photos' : 'Add More Photos'}
                 </Text>
@@ -513,7 +566,7 @@ const ReportScreen = ({ navigation }) => {
                   />
                 </View>
                 <Text style={styles.progressText}>
-                  {uploadProgress.stage === 'compress' ? '📦 Compressing...' : '☁️ Uploading...'}
+                  {uploadProgress.stage === 'compress' ? 'Compressing...' : 'Uploading...'}
                   {' '}{uploadProgress.percentage}%
                 </Text>
               </View>
@@ -530,7 +583,14 @@ const ReportScreen = ({ navigation }) => {
             {loading ? (
               <ActivityIndicator color="#FFFFFF" />
             ) : (
-              <Text style={styles.submitButtonText}>📤 Submit Report</Text>
+              <View style={styles.submitButtonContent}>
+                <Text style={styles.submitButtonText}>Submit Report</Text>
+                {queueLength > 0 && (
+                  <View style={styles.queueBadge}>
+                    <Text style={styles.queueBadgeText}>{queueLength}</Text>
+                  </View>
+                )}
+              </View>
             )}
           </TouchableOpacity>
 
@@ -756,6 +816,26 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#FFFFFF',
     fontSize: 16,
+    fontWeight: '700',
+  },
+  submitButtonContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  queueBadge: {
+    backgroundColor: '#FF6B35',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: 8,
+    paddingHorizontal: 6,
+  },
+  queueBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 12,
     fontWeight: '700',
   },
   footer: {

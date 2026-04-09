@@ -5,12 +5,13 @@
  */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 const MapScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.icon}>🗺️</Text>
+        <Ionicons name="map-outline" size={64} color="#007AFF" />
         <Text style={styles.title}>Incident Map</Text>
         <Text style={styles.subtitle}>
           The interactive map is available in the iOS and Android apps.

@@ -23,6 +23,7 @@ import {
 } from 'react-native';
 import { authService } from '../services/authService';
 import { selectFromGallery, takePhoto } from '../services/imagePicker';
+import { Ionicons } from '@expo/vector-icons';
 import apiClient from '../services/api';
 
 const EditProfileScreen = ({ navigation }) => {
@@ -185,7 +186,7 @@ const EditProfileScreen = ({ navigation }) => {
                 </View>
               )}
               <View style={styles.avatarEditBadge}>
-                <Text style={styles.avatarEditIcon}>📷</Text>
+                <Ionicons name="camera" size={14} color="#FFFFFF" />
               </View>
             </TouchableOpacity>
             <Text style={styles.avatarHint}>Tap to change photo</Text>

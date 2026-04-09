@@ -2,7 +2,9 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet, AppState } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import NetInfo from '@react-native-community/netinfo';
 
 // Auth Screens
 import LoginScreen from './screens/LoginScreen';
@@ -18,12 +20,15 @@ import ProfileScreen from './screens/ProfileScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
+import OfficerDashboardScreen from './screens/OfficerDashboardScreen';
 
 // Notification Context
 import { NotificationProvider, useNotifications } from './contexts/NotificationContext';
 
 // Services
 import { authService } from './services/authService';
+import api from './services/api';
+import { processQueue } from './utils/offlineQueue';
 
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -134,6 +139,16 @@ const ProfileStack = () => {
  */
 const MainTabs = () => {
   const { badgeCount } = useNotifications();
+  const [userRole, setUserRole] = useState(null);
+
+  useEffect(() => {
+    authService.getCachedUser().then(user => {
+      if (user?.user_type) setUserRole(user.user_type);
+    });
+  }, []);
+
+  const isOfficer = userRole === 'officer' || userRole === 'admin';
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -166,8 +181,8 @@ const MainTabs = () => {
         options={{
           title: 'VIGILUX',
           tabBarLabel: 'Home',
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24 }}>🏠</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
         }}
       />
@@ -177,8 +192,8 @@ const MainTabs = () => {
         options={{
           title: 'Incident Map',
           tabBarLabel: 'Map',
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24 }}>🗺️</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="map-outline" size={size} color={color} />
           ),
         }}
       />
@@ -188,8 +203,8 @@ const MainTabs = () => {
         options={{
           title: 'New Report',
           tabBarLabel: 'Report',
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24 }}>📝</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="document-text-outline" size={size} color={color} />
           ),
         }}
       />
@@ -199,20 +214,33 @@ const MainTabs = () => {
         options={{
           title: 'Notifications',
           tabBarLabel: 'Alerts',
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24 }}>🔔</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="notifications-outline" size={size} color={color} />
           ),
           tabBarBadge: badgeCount > 0 ? badgeCount : undefined,
         }}
       />
+      {isOfficer && (
+        <Tab.Screen
+          name="Dashboard"
+          component={OfficerDashboardScreen}
+          options={{
+            title: 'Officer Dashboard',
+            tabBarLabel: 'Dashboard',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="shield-outline" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
       <Tab.Screen 
         name="Profile" 
         component={ProfileStack}
         options={{
           headerShown: false,
           tabBarLabel: 'Profile',
-          tabBarIcon: ({ color }) => (
-            <Text style={{ fontSize: 24 }}>👤</Text>
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="person-outline" size={size} color={color} />
           ),
         }}
       />
@@ -270,6 +298,47 @@ const RootNavigator = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Offline queue processing
+  useEffect(() => {
+    if (!isAuthenticated) return; // Only process queue when authenticated
+
+    const submitReport = async (payload) => {
+      try {
+        const response = await api.post('/reports', payload);
+        return { success: response.data.success };
+      } catch (error) {
+        return { success: false };
+      }
+    };
+
+    // Process queue when network reconnects
+    const netInfoUnsubscribe = NetInfo.addEventListener(async (state) => {
+      if (state.isConnected) {
+        console.log('[App] Network reconnected, processing offline queue...');
+        const result = await processQueue(submitReport);
+        if (result.succeeded > 0 || result.failed > 0) {
+          console.log(`[App] Queue processed: ${result.succeeded} succeeded, ${result.failed} failed`);
+        }
+      }
+    });
+
+    // Process queue when app becomes active
+    const appStateUnsubscribe = AppState.addEventListener('change', async (nextAppState) => {
+      if (nextAppState === 'active') {
+        console.log('[App] App became active, processing offline queue...');
+        const result = await processQueue(submitReport);
+        if (result.succeeded > 0 || result.failed > 0) {
+          console.log(`[App] Queue processed: ${result.succeeded} succeeded, ${result.failed} failed`);
+        }
+      }
+    });
+
+    return () => {
+      netInfoUnsubscribe();
+      appStateUnsubscribe.remove();
+    };
+  }, [isAuthenticated]);
+
   const checkAuthStatus = async () => {
     try {
       const authenticated = await authService.isAuthenticated();
@@ -285,7 +354,7 @@ const RootNavigator = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.logo}>🔍</Text>
+        <Ionicons name="shield-checkmark" size={80} color="#007AFF" style={{ marginBottom: 16 }} />
         <Text style={styles.appName}>VIGILUX</Text>
         <ActivityIndicator size="large" color="#007AFF" style={styles.loader} />
         <Text style={styles.loadingText}>Loading...</Text>
@@ -344,10 +413,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f8f9fa',
-  },
-  logo: {
-    fontSize: 80,
-    marginBottom: 16,
   },
   appName: {
     fontSize: 36,

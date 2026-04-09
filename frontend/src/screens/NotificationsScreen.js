@@ -23,11 +23,11 @@ import {
 } from 'react-native';
 import apiClient from '../services/api';
 
-const TYPE_ICONS = {
-  report_status_change: '📋',
-  report_assigned: '👮',
-  nearby_incident: '📍',
-  weekly_digest: '📊',
+const TYPE_LABELS = {
+  report_status_change: 'Status',
+  report_assigned:      'Assigned',
+  nearby_incident:      'Nearby',
+  weekly_digest:        'Digest',
 };
 
 const NotificationsScreen = ({ navigation }) => {
@@ -132,7 +132,9 @@ const NotificationsScreen = ({ navigation }) => {
       activeOpacity={0.85}
     >
       <View style={styles.iconCol}>
-        <Text style={styles.icon}>{TYPE_ICONS[item.type] || '🔔'}</Text>
+        <View style={styles.iconBadge}>
+          <Text style={styles.iconBadgeText}>{TYPE_LABELS[item.type] ?? 'Alert'}</Text>
+        </View>
         {!item.is_read && <View style={styles.unreadDot} />}
       </View>
       <View style={styles.textCol}>
@@ -180,7 +182,7 @@ const NotificationsScreen = ({ navigation }) => {
 
       {notifications.length === 0 ? (
         <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🔕</Text>
+          <Text style={styles.emptyIcon}></Text>
           <Text style={styles.emptyTitle}>No notifications yet</Text>
           <Text style={styles.emptySubtitle}>
             You'll see updates about your reports and local incidents here.
@@ -257,7 +259,20 @@ const styles = StyleSheet.create({
   unreadCard: { borderLeftWidth: 3, borderLeftColor: '#007AFF' },
 
   iconCol: { width: 40, alignItems: 'center', marginRight: 12 },
-  icon: { fontSize: 22 },
+  iconBadge: {
+    backgroundColor: '#E3F2FD',
+    borderRadius: 4,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    minWidth: 40,
+    alignItems: 'center',
+  },
+  iconBadgeText: {
+    color: '#1565C0',
+    fontSize: 9,
+    fontWeight: '700',
+    letterSpacing: 0.3,
+  },
   unreadDot: {
     width: 8,
     height: 8,
