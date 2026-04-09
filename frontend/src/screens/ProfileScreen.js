@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  Platform,
   Modal,
   TextInput,
   ActivityIndicator,
@@ -62,22 +63,34 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate('Notifications');
   };
 
+  const performLogout = async () => {
+    await authService.logout();
+    setIsAuthenticated(false);
+  };
+
   const handleLogout = async () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          style: 'destructive',
-          onPress: async () => {
-            await authService.logout();
-            setIsAuthenticated(false);
-          },
-        },
-      ]
-    );
+    if (Platform.OS === 'web') {
+      const confirmed =
+        typeof globalThis.confirm === 'function'
+          ? globalThis.confirm('Are you sure you want to logout?')
+          : true;
+
+      if (!confirmed) {
+        return;
+      }
+
+      await performLogout();
+      return;
+    }
+
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        style: 'destructive',
+        onPress: performLogout,
+      },
+    ]);
   };
 
   const handleDeleteAccount = async () => {

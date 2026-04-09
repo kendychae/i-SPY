@@ -19,6 +19,7 @@ import {
   SafeAreaView,
   ActivityIndicator,
   Alert,
+  Platform,
 } from 'react-native';
 import apiClient from '../services/api';
 import { authService } from '../services/authService';
@@ -71,22 +72,34 @@ const SettingsScreen = ({ navigation }) => {
     }
   };
 
-  const handleSignOut = () => {
-    Alert.alert(
-      'Sign Out',
-      'Are you sure you want to sign out?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Sign Out',
-          style: 'destructive',
-          onPress: async () => {
-            await authService.logout();
-            setIsAuthenticated(false);
-          },
-        },
-      ]
-    );
+  const performSignOut = async () => {
+    await authService.logout();
+    setIsAuthenticated(false);
+  };
+
+  const handleSignOut = async () => {
+    if (Platform.OS === 'web') {
+      const confirmed =
+        typeof globalThis.confirm === 'function'
+          ? globalThis.confirm('Are you sure you want to sign out?')
+          : true;
+
+      if (!confirmed) {
+        return;
+      }
+
+      await performSignOut();
+      return;
+    }
+
+    Alert.alert('Sign Out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Sign Out',
+        style: 'destructive',
+        onPress: performSignOut,
+      },
+    ]);
   };
 
   const handleChangePassword = () => {
