@@ -14,8 +14,15 @@ const getProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
     const { rows } = await db.query(
-      `SELECT id, email, first_name, last_name, phone_number, bio,
-              profile_image_url, user_type, is_verified, created_at
+      `SELECT id, email,
+              first_name  AS "firstName",
+              last_name   AS "lastName",
+              phone_number AS "phoneNumber",
+              bio,
+              profile_image_url AS "profileImageUrl",
+              user_type   AS "userType",
+              is_verified AS "isVerified",
+              created_at  AS "createdAt"
        FROM users WHERE id = $1`,
       [userId]
     );

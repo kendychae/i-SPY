@@ -113,7 +113,7 @@ export const getRefreshToken = async () => {
  */
 export const getUserData = async () => {
   try {
-    const userData = await SecureStore.getItemAsync(STORAGE_KEYS.USER_DATA);
+    const userData = await getItem(STORAGE_KEYS.USER_DATA);
     return userData ? JSON.parse(userData) : null;
   } catch (error) {
     console.error('Error getting user data:', error);

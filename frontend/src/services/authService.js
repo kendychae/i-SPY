@@ -13,7 +13,9 @@ export const authService = {
       
       if (response.data.success) {
         const { user, tokens } = response.data.data;
-        await storeAuthData(tokens, user);
+        if (tokens?.accessToken && tokens?.refreshToken) {
+          await storeAuthData(tokens, user);
+        }
         return { success: true, user };
       }
       

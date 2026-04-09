@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS notification_preferences (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+DROP TRIGGER IF EXISTS update_notification_preferences_updated_at ON notification_preferences;
 CREATE TRIGGER update_notification_preferences_updated_at BEFORE
 UPDATE ON notification_preferences FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 -- FCM device tokens table (issue #52)
@@ -43,6 +44,7 @@ CREATE TABLE IF NOT EXISTS fcm_tokens (
     UNIQUE(user_id, token)
 );
 CREATE INDEX IF NOT EXISTS idx_fcm_tokens_user_id ON fcm_tokens(user_id);
+DROP TRIGGER IF EXISTS update_fcm_tokens_updated_at ON fcm_tokens;
 CREATE TRIGGER update_fcm_tokens_updated_at BEFORE
 UPDATE ON fcm_tokens FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 -- Notifications table is already in base schema, just verify indexes exist

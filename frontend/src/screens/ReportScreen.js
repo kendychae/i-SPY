@@ -13,7 +13,9 @@ import {
   Keyboard,
   Platform,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
+import { authService } from '../services/authService';
 import { getAccessToken } from '../utils/secureStorage';
 import { getLocationWithAddress } from '../services/locationService';
 import MediaPreview from '../components/MediaPreview';
@@ -32,6 +34,13 @@ const ReportScreen = ({ navigation }) => {
   const [errors, setErrors] = useState({});
   const [selectedImages, setSelectedImages] = useState([]);
   const [uploadProgress, setUploadProgress] = useState({ stage: '', percentage: 0 });
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      authService.getCachedUser().then(setCurrentUser);
+    }, [])
+  );
 
   const incidentTypes = [
     { id: 'theft', label: 'Theft', icon: '🚨', description: 'Stolen items or break-ins' },
@@ -320,6 +329,18 @@ const ReportScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {currentUser && !currentUser.isVerified ? (
+        <View style={styles.pendingWall}>
+          <Text style={styles.pendingIcon}>⏳</Text>
+          <Text style={styles.pendingTitle}>Account Pending Verification</Text>
+          <Text style={styles.pendingBody}>
+            Your account is awaiting admin approval. Once verified, you will be able to submit incident reports.
+          </Text>
+          <Text style={styles.pendingHint}>
+            In the meantime, you can browse reports and view alerts.
+          </Text>
+        </View>
+      ) : (
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.keyboardAvoid}
@@ -553,6 +574,7 @@ const ReportScreen = ({ navigation }) => {
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
+      )}
     </SafeAreaView>
   );
 };
@@ -561,6 +583,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5F7FA',
+  },
+  pendingWall: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 32,
+  },
+  pendingIcon: {
+    fontSize: 64,
+    marginBottom: 20,
+  },
+  pendingTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#1e293b',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  pendingBody: {
+    fontSize: 15,
+    color: '#475569',
+    textAlign: 'center',
+    lineHeight: 22,
+    marginBottom: 16,
+  },
+  pendingHint: {
+    fontSize: 13,
+    color: '#94a3b8',
+    textAlign: 'center',
+    lineHeight: 20,
   },
   keyboardAvoid: {
     flex: 1,

@@ -18,12 +18,14 @@ import ProfileScreen from './screens/ProfileScreen';
 import EditProfileScreen from './screens/EditProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
+import SystemAdminScreen from './screens/SystemAdminScreen';
 
 // Notification Context
 import { NotificationProvider, useNotifications } from './contexts/NotificationContext';
 
 // Services
 import { authService } from './services/authService';
+import apiClient from './services/api';
 
 const Stack = createStackNavigator();
 const MainStack = createStackNavigator();
@@ -125,6 +127,14 @@ const ProfileStack = () => {
           headerBackTitle: 'Back',
         }}
       />
+      <Stack.Screen
+        name="SystemAdmin"
+        component={SystemAdminScreen}
+        options={{
+          title: 'System Admin',
+          headerBackTitle: 'Back',
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -134,6 +144,22 @@ const ProfileStack = () => {
  */
 const MainTabs = () => {
   const { badgeCount } = useNotifications();
+  const [adminPendingCount, setAdminPendingCount] = useState(0);
+
+  useEffect(() => {
+    let cancelled = false;
+    const checkPending = async () => {
+      try {
+        const user = await authService.getCachedUser();
+        if (!user || user.userType !== 'admin') return;
+        const res = await apiClient.get('/auth/pending-verifications');
+        if (!cancelled) setAdminPendingCount(res.data?.data?.users?.length || 0);
+      } catch (_) {}
+    };
+    checkPending();
+    const interval = setInterval(checkPending, 30000);
+    return () => { cancelled = true; clearInterval(interval); };
+  }, []);
   return (
     <Tab.Navigator
       screenOptions={{
@@ -214,6 +240,7 @@ const MainTabs = () => {
           tabBarIcon: ({ color }) => (
             <Text style={{ fontSize: 24 }}>👤</Text>
           ),
+          tabBarBadge: adminPendingCount > 0 ? adminPendingCount : undefined,
         }}
       />
     </Tab.Navigator>

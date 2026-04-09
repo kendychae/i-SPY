@@ -21,6 +21,7 @@ import { AuthContext } from '../App';
 const ProfileScreen = ({ navigation }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
   const [user, setUser] = React.useState(null);
+  const [pendingCount, setPendingCount] = React.useState(0);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -44,7 +45,14 @@ const ProfileScreen = ({ navigation }) => {
     try {
       const response = await apiClient.get('/users/profile');
       if (response.data.success) {
-        setUser(response.data.data.user);
+        const profile = response.data.data.user;
+        setUser(profile);
+        if (profile?.userType === 'admin') {
+          try {
+            const pendingRes = await apiClient.get('/auth/pending-verifications');
+            setPendingCount(pendingRes.data?.data?.users?.length || 0);
+          } catch (_) {}
+        }
       }
     } catch (_) {
       // Silently fall back to cached data
@@ -61,6 +69,10 @@ const ProfileScreen = ({ navigation }) => {
 
   const handleNotifications = () => {
     navigation.navigate('Notifications');
+  };
+
+  const handleSystemAdmin = () => {
+    navigation.navigate('SystemAdmin');
   };
 
   const performLogout = async () => {
@@ -180,6 +192,19 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuText}>Privacy & Security</Text>
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
+
+          {user?.userType === 'admin' ? (
+            <TouchableOpacity style={styles.menuItem} onPress={handleSystemAdmin}>
+              <Text style={styles.menuIcon}>🛡️</Text>
+              <Text style={styles.menuText}>System Admin</Text>
+              {pendingCount > 0 ? (
+                <View style={styles.pendingBadge}>
+                  <Text style={styles.pendingBadgeText}>{pendingCount}</Text>
+                </View>
+              ) : null}
+              <Text style={styles.menuArrow}>›</Text>
+            </TouchableOpacity>
+          ) : null}
         </View>
 
         <View style={styles.section}>
@@ -360,6 +385,21 @@ const styles = StyleSheet.create({
   menuArrow: {
     fontSize: 24,
     color: '#999',
+  },
+  pendingBadge: {
+    backgroundColor: '#ef4444',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 5,
+    marginRight: 6,
+  },
+  pendingBadgeText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '700',
   },
   logoutButton: {
     backgroundColor: '#fff',
