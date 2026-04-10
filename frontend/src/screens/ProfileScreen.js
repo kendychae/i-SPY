@@ -8,6 +8,7 @@ import {
   ScrollView,
   SafeAreaView,
   Alert,
+  Platform,
   Modal,
   TextInput,
   ActivityIndicator,
@@ -21,6 +22,7 @@ import { Ionicons } from '@expo/vector-icons';
 const ProfileScreen = ({ navigation }) => {
   const { setIsAuthenticated } = useContext(AuthContext);
   const [user, setUser] = React.useState(null);
+  const [pendingCount, setPendingCount] = React.useState(0);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -44,7 +46,14 @@ const ProfileScreen = ({ navigation }) => {
     try {
       const response = await apiClient.get('/users/profile');
       if (response.data.success) {
-        setUser(response.data.data.user);
+        const profile = response.data.data.user;
+        setUser(profile);
+        if (profile?.userType === 'admin' || profile?.user_type === 'admin') {
+          try {
+            const pendingRes = await apiClient.get('/auth/pending-verifications');
+            setPendingCount(pendingRes.data?.data?.users?.length || 0);
+          } catch (_) {}
+        }
       }
     } catch (_) {
       // Silently fall back to cached data
@@ -63,7 +72,25 @@ const ProfileScreen = ({ navigation }) => {
     navigation.navigate('Notifications');
   };
 
+  const handleSystemAdmin = () => {
+    navigation.navigate('SystemAdmin');
+  };
+
+  const performLogout = async () => {
+    await authService.logout();
+    setIsAuthenticated(false);
+  };
+
   const handleLogout = async () => {
+    if (Platform.OS === 'web') {
+      const confirmed =
+        typeof globalThis.confirm === 'function'
+          ? globalThis.confirm('Are you sure you want to logout?')
+          : true;
+      if (!confirmed) return;
+      await performLogout();
+      return;
+    }
     Alert.alert(
       'Logout',
       'Are you sure you want to logout?',
@@ -72,10 +99,7 @@ const ProfileScreen = ({ navigation }) => {
         {
           text: 'Logout',
           style: 'destructive',
-          onPress: async () => {
-            await authService.logout();
-            setIsAuthenticated(false);
-          },
+          onPress: performLogout,
         },
       ]
     );
@@ -169,6 +193,22 @@ const ProfileScreen = ({ navigation }) => {
             <Text style={styles.menuArrow}>›</Text>
           </TouchableOpacity>
         </View>
+
+        {(user?.userType === 'admin' || user?.user_type === 'admin') && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Administration</Text>
+            <TouchableOpacity style={styles.menuItem} onPress={handleSystemAdmin}>
+              <Ionicons name="shield-checkmark-outline" size={20} color="#FF9500" style={styles.menuIcon} />
+              <Text style={styles.menuText}>System Admin Panel</Text>
+              {pendingCount > 0 && (
+                <View style={styles.pendingBadge}>
+                  <Text style={styles.pendingBadgeText}>{pendingCount}</Text>
+                </View>
+              )}
+              <Text style={styles.menuArrow}>›</Text>
+            </TouchableOpacity>
+          </View>
+        )}
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Support</Text>
@@ -347,6 +387,21 @@ const styles = StyleSheet.create({
   menuArrow: {
     fontSize: 24,
     color: '#999',
+  },
+  pendingBadge: {
+    backgroundColor: '#FF3B30',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 6,
+    paddingHorizontal: 6,
+  },
+  pendingBadgeText: {
+    color: '#fff',
+    fontSize: 11,
+    fontWeight: '700',
   },
   logoutButton: {
     backgroundColor: '#fff',

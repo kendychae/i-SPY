@@ -21,6 +21,7 @@ import EditProfileScreen from './screens/EditProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import NotificationsScreen from './screens/NotificationsScreen';
 import OfficerDashboardScreen from './screens/OfficerDashboardScreen';
+import SystemAdminScreen from './screens/SystemAdminScreen';
 
 // Notification Context
 import { NotificationProvider, useNotifications } from './contexts/NotificationContext';
@@ -28,6 +29,7 @@ import { NotificationProvider, useNotifications } from './contexts/NotificationC
 // Services
 import { authService } from './services/authService';
 import api from './services/api';
+import apiClient from './services/api';
 import { processQueue } from './utils/offlineQueue';
 
 const Stack = createStackNavigator();
@@ -130,6 +132,14 @@ const ProfileStack = () => {
           headerBackTitle: 'Back',
         }}
       />
+      <Stack.Screen
+        name="SystemAdmin"
+        component={SystemAdminScreen}
+        options={{
+          title: 'System Admin',
+          headerBackTitle: 'Back',
+        }}
+      />
     </Stack.Navigator>
   );
 };
@@ -140,11 +150,27 @@ const ProfileStack = () => {
 const MainTabs = () => {
   const { badgeCount } = useNotifications();
   const [userRole, setUserRole] = useState(null);
+  const [adminPendingCount, setAdminPendingCount] = useState(0);
 
   useEffect(() => {
     authService.getCachedUser().then(user => {
-      if (user?.user_type) setUserRole(user.user_type);
+      if (user?.user_type || user?.userType) setUserRole(user.user_type || user.userType);
     });
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const checkPending = async () => {
+      try {
+        const user = await authService.getCachedUser();
+        if (!user || (user.userType !== 'admin' && user.user_type !== 'admin')) return;
+        const res = await apiClient.get('/auth/pending-verifications');
+        if (!cancelled) setAdminPendingCount(res.data?.data?.users?.length || 0);
+      } catch (_) {}
+    };
+    checkPending();
+    const interval = setInterval(checkPending, 30000);
+    return () => { cancelled = true; clearInterval(interval); };
   }, []);
 
   const isOfficer = userRole === 'officer' || userRole === 'admin';
@@ -242,6 +268,7 @@ const MainTabs = () => {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="person-outline" size={size} color={color} />
           ),
+          tabBarBadge: adminPendingCount > 0 ? adminPendingCount : undefined,
         }}
       />
     </Tab.Navigator>

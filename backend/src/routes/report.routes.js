@@ -196,4 +196,78 @@ router.get('/media/:mediaId', async (req, res) => {
   }
 });
 
+/**
+ * @route   POST /api/v1/reports/:reportId/media
+ * @desc    Upload media files for an existing report
+ * @access  Private (authenticated users)
+ */
+router.post(
+  '/:reportId/media',
+  upload.array('media', 5),
+  handleMulterError,
+  validateFileSignatures,
+  enrichFileMetadata,
+  async (req, res) => {
+    const { reportId } = req.params;
+    const db = require('../config/database');
+
+    try {
+      const reportResult = await db.query(
+        'SELECT id FROM reports WHERE id = $1',
+        [reportId]
+      );
+
+      if (reportResult.rows.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'Not Found',
+          message: 'Report not found',
+        });
+      }
+
+      if (!req.files || req.files.length === 0) {
+        return res.status(400).json({
+          success: false,
+          error: 'Validation Error',
+          message: 'No media files were uploaded',
+        });
+      }
+
+      const files = [];
+      for (const file of req.files) {
+        const fileUrl = `/uploads/reports/${reportId}/${file.secureFilename || file.filename}`;
+        const mediaRecord = await mediaController.addMediaToReport(
+          reportId,
+          fileUrl,
+          file.mimetype,
+          file.size
+        );
+
+        files.push({
+          id: mediaRecord.id,
+          url: mediaRecord.file_url,
+          type: mediaRecord.file_type,
+          size: mediaRecord.file_size,
+        });
+      }
+
+      return res.status(201).json({
+        success: true,
+        message: 'Media uploaded successfully',
+        data: {
+          uploaded: files.length,
+          failed: 0,
+          files,
+        },
+      });
+    } catch (err) {
+      return res.status(500).json({
+        success: false,
+        error: 'Internal Server Error',
+        message: err.message,
+      });
+    }
+  }
+);
+
 module.exports = router;

@@ -45,7 +45,21 @@ exports.register = async (req, res) => {
   const client = await pool.connect();
   
   try {
-    const { email, password, firstName, lastName, phoneNumber, userType } = req.body;
+    const { email, password, firstName, lastName, phoneNumber, userType, idDocumentUrl } = req.body;
+
+    if (!idDocumentUrl || !String(idDocumentUrl).trim()) {
+      return res.status(400).json({
+        success: false,
+        message: 'ID document upload is required',
+      });
+    }
+
+    if (!['citizen', 'officer'].includes(userType)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please choose either citizen or officer account type',
+      });
+    }
 
     // Check if user already exists
     const existingUser = await client.query(
@@ -66,21 +80,25 @@ exports.register = async (req, res) => {
 
     // Insert new user
     const result = await client.query(
-      `INSERT INTO users (email, password_hash, first_name, last_name, phone_number, user_type)
-       VALUES ($1, $2, $3, $4, $5, $6)
-       RETURNING id, email, first_name, last_name, user_type, created_at`,
-      [email.toLowerCase(), passwordHash, firstName, lastName, phoneNumber, userType || 'citizen']
+      `INSERT INTO users (email, password_hash, first_name, last_name, phone_number, user_type, id_document_url, is_verified, verification_status)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, FALSE, 'pending')
+       RETURNING id, email, first_name, last_name, user_type, is_verified, verification_status, id_document_url, created_at`,
+      [
+        email.toLowerCase(),
+        passwordHash,
+        firstName,
+        lastName,
+        phoneNumber,
+        userType,
+        idDocumentUrl,
+      ]
     );
 
     const newUser = result.rows[0];
 
-    // Generate tokens
-    const accessToken = generateAccessToken(newUser);
-    const refreshToken = generateRefreshToken(newUser);
-
     res.status(201).json({
       success: true,
-      message: 'User registered successfully',
+      message: 'Account created and submitted for admin verification',
       data: {
         user: {
           id: newUser.id,
@@ -88,11 +106,9 @@ exports.register = async (req, res) => {
           firstName: newUser.first_name,
           lastName: newUser.last_name,
           userType: newUser.user_type,
-        },
-        tokens: {
-          accessToken,
-          refreshToken,
-          expiresIn: JWT_EXPIRES_IN,
+          isVerified: newUser.is_verified,
+          verificationStatus: newUser.verification_status,
+          idDocumentUrl: newUser.id_document_url,
         },
       },
     });
@@ -120,7 +136,7 @@ exports.login = async (req, res) => {
 
     // Find user by email
     const result = await client.query(
-      `SELECT id, email, password_hash, first_name, last_name, user_type, is_active, is_verified
+      `SELECT id, email, password_hash, first_name, last_name, user_type, is_active, is_verified, verification_status
        FROM users
        WHERE email = $1`,
       [email.toLowerCase()]
@@ -174,6 +190,7 @@ exports.login = async (req, res) => {
           lastName: user.last_name,
           userType: user.user_type,
           isVerified: user.is_verified,
+          verificationStatus: user.verification_status,
         },
         tokens: {
           accessToken,
@@ -543,6 +560,104 @@ exports.verifyEmail = async (req, res) => {
     res.status(400).json({
       success: false,
       message: 'Invalid or expired verification token',
+    });
+  } finally {
+    client.release();
+  }
+};
+
+/**
+ * List users pending verification
+ * GET /api/v1/auth/pending-verifications
+ * Admin only
+ */
+exports.getPendingVerifications = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const { rows } = await client.query(
+      `SELECT
+         id,
+         email,
+         first_name,
+         last_name,
+         user_type,
+         phone_number,
+         id_document_url,
+         verification_status,
+         created_at
+       FROM users
+       WHERE verification_status = 'pending'
+         AND user_type IN ('citizen', 'officer')
+       ORDER BY created_at ASC`
+    );
+
+    return res.status(200).json({
+      success: true,
+      data: { users: rows },
+    });
+  } catch (error) {
+    console.error('Pending verification list error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching pending verification users',
+    });
+  } finally {
+    client.release();
+  }
+};
+
+/**
+ * Approve or reject user verification
+ * PATCH /api/v1/auth/verify-user/:id
+ * Admin only
+ */
+exports.verifyUser = async (req, res) => {
+  const client = await pool.connect();
+
+  try {
+    const { id } = req.params;
+    const { decision, notes } = req.body;
+
+    if (!['approved', 'rejected'].includes(decision)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Decision must be either approved or rejected',
+      });
+    }
+
+    const isApproved = decision === 'approved';
+
+    const { rows } = await client.query(
+      `UPDATE users
+       SET is_verified = $1,
+           verification_status = $2,
+           verification_notes = $3,
+           verified_at = CURRENT_TIMESTAMP,
+           verified_by = $4,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $5
+       RETURNING id, email, user_type, is_verified, verification_status, verified_at`,
+      [isApproved, decision, notes || null, req.user.userId, id]
+    );
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `User ${decision} successfully`,
+      data: { user: rows[0] },
+    });
+  } catch (error) {
+    console.error('Verify user error:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error updating user verification status',
     });
   } finally {
     client.release();

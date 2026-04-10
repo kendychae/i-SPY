@@ -48,7 +48,12 @@ async function runMigrations() {
     await client.query(`
       INSERT INTO users (email, password_hash, first_name, last_name, user_type, is_verified, is_active)
       VALUES ($1, $2, $3, $4, $5, $6, $7)
-      ON CONFLICT (email) DO NOTHING
+      ON CONFLICT (email) DO UPDATE
+      SET
+        user_type = 'admin',
+        is_verified = TRUE,
+        is_active = TRUE,
+        updated_at = CURRENT_TIMESTAMP
     `, [
       'admin@vigilux.app',
       defaultPassword,
@@ -95,6 +100,20 @@ async function runMigrations() {
     const ftsMigration = readSqlFile(ftsPath);
     await client.query(ftsMigration);
     console.log('✓ Full-text search migration completed (search_vector GIN index + trigger)');
+
+    // Run ID verification + admin workflow migration
+    console.log('Running ID verification migrations...');
+    const idVerificationPath = path.join(__dirname, 'migrations', '007_user_verification_id_docs.sql');
+    const idVerificationMigration = readSqlFile(idVerificationPath);
+    await client.query(idVerificationMigration);
+    console.log('✓ ID verification migration completed (id_document_url, verification_status)');
+
+    // Run admin seed migration
+    console.log('Running admin seed migration...');
+    const adminSeedPath = path.join(__dirname, 'migrations', '008_seed_ipsy_admin.sql');
+    const adminSeedMigration = readSqlFile(adminSeedPath);
+    await client.query(adminSeedMigration);
+    console.log('✓ Admin seed migration completed');
 
     console.log('\n✅ All migrations completed successfully!');
 

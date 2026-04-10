@@ -13,7 +13,6 @@ import {
 import apiClient from '../services/api';
 import { authService } from '../services/authService';
 import MediaPreview from '../components/MediaPreview';
-import { Ionicons } from '@expo/vector-icons';
 
 const INCIDENT_LABELS = {
   theft: 'Theft',
@@ -35,8 +34,42 @@ const STATUS_LABELS = {
   closed: 'Closed',
 };
 
+const PRIORITY_COLORS = {
+  low: '#4CAF50',
+  medium: '#FFC107',
+  high: '#FF9800',
+  urgent: '#F44336',
+};
+
+const PRIORITY_LIGHT_COLORS = {
+  low: '#eaf7ec',
+  medium: '#fff8df',
+  high: '#fff1e6',
+  urgent: '#fdebec',
+};
+
+const STATUS_TRANSITIONS = {
+  submitted:    ['under_review', 'closed'],
+  under_review: ['investigating', 'submitted', 'closed'],
+  investigating:['resolved', 'under_review', 'closed'],
+  resolved:     ['closed', 'submitted'],
+  closed:       ['submitted'],
+};
+
+const STATUS_ACTION_CONFIG = {
+  under_review:  { label: 'Mark Under Review', color: '#3B82F6' },
+  investigating: { label: 'Mark In Progress',  color: '#F59E0B' },
+  resolved:      { label: 'Mark Completed',    color: '#10B981' },
+  submitted:     { label: 'Re-open Report',    color: '#8B5CF6' },
+  closed:        { label: 'Close Report',      color: '#6B7280' },
+};
+
 const ReportDetailScreen = ({ route, navigation }) => {
   const reportId = route?.params?.id || route?.params?.reportId;
+  const source = route?.params?.source;
+  const reportIds = Array.isArray(route?.params?.reportIds) ? route.params.reportIds : [];
+  const currentAlertIndex = reportIds.findIndex((id) => id === reportId);
+  const canCycleReports = source === 'alerts' && reportIds.length > 1 && currentAlertIndex >= 0;
 
   const [report, setReport] = useState(null);
   const [history, setHistory] = useState([]);
@@ -45,6 +78,7 @@ const ReportDetailScreen = ({ route, navigation }) => {
   const [historyLoading, setHistoryLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [statusUpdating, setStatusUpdating] = useState(false);
 
   const fetchHistory = useCallback(async () => {
     setHistoryLoading(true);
@@ -109,7 +143,105 @@ const ReportDetailScreen = ({ route, navigation }) => {
     Alert.alert('Edit Report', 'Editing is not available from this preview screen yet.');
   };
 
+  const handleBackToAlerts = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+      return;
+    }
+    navigation.navigate('AlertsTab');
+  };
+
+  const handlePreviousReport = () => {
+    if (!canCycleReports) {
+      return;
+    }
+
+    const previousIndex = (currentAlertIndex - 1 + reportIds.length) % reportIds.length;
+    const previousId = reportIds[previousIndex];
+
+    navigation.replace('ReportDetail', {
+      id: previousId,
+      source: 'alerts',
+      reportIds,
+      startIndex: previousIndex,
+    });
+  };
+
+  const handleNextReport = () => {
+    if (!canCycleReports) {
+      return;
+    }
+
+    const nextIndex = (currentAlertIndex + 1) % reportIds.length;
+    const nextId = reportIds[nextIndex];
+
+    navigation.replace('ReportDetail', {
+      id: nextId,
+      source: 'alerts',
+      reportIds,
+      startIndex: nextIndex,
+    });
+  };
+
   const canEdit = report && currentUser && report.user_id === currentUser.id;
+  const isOfficer = currentUser?.user_type === 'officer' || currentUser?.user_type === 'admin';
+  const validNextStatuses = report ? (STATUS_TRANSITIONS[report.status] || []) : [];
+
+  const handleStatusUpdate = (newStatus) => {
+    const config = STATUS_ACTION_CONFIG[newStatus];
+    Alert.alert(
+      config.label,
+      `Change status to "${STATUS_LABELS[newStatus] || newStatus}"?`,
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Confirm',
+          onPress: async () => {
+            setStatusUpdating(true);
+            try {
+              await apiClient.patch(`/reports/${reportId}/status`, { status: newStatus });
+              setRefreshing(true);
+              setHistory([]);
+              fetchReportData();
+            } catch (e) {
+              Alert.alert('Error', e.response?.data?.message || 'Failed to update status.');
+            } finally {
+              setStatusUpdating(false);
+            }
+          },
+        },
+      ]
+    );
+  };
+
+  const handleRemoveReport = () => {
+    Alert.alert(
+      'Remove Report',
+      'This will close the report and remove it from active alerts.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Remove',
+          style: 'destructive',
+          onPress: async () => {
+            setStatusUpdating(true);
+            try {
+              await apiClient.delete(`/reports/${reportId}`);
+              Alert.alert('Removed', 'Report has been removed.', [
+                { text: 'OK', onPress: () => {
+                  if (navigation.canGoBack()) navigation.goBack();
+                  else navigation.navigate('AlertsTab');
+                }},
+              ]);
+            } catch (e) {
+              Alert.alert('Error', e.response?.data?.message || 'Failed to remove report.');
+              setStatusUpdating(false);
+            }
+          },
+        },
+      ]
+    );
+  };
 
   // Pre-format history timestamps once instead of on every render
   const formattedHistory = useMemo(
@@ -135,7 +267,7 @@ const ReportDetailScreen = ({ route, navigation }) => {
           }
         >
           <View style={styles.emptyState}>
-            <Ionicons name="warning-outline" size={64} color="#F59E0B" />
+            <Text style={styles.emptyIcon}>⚠️</Text>
             <Text style={styles.emptyTitle}>Could not load report</Text>
             <Text style={styles.emptySubtitle}>{error}</Text>
           </View>
@@ -155,6 +287,23 @@ const ReportDetailScreen = ({ route, navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor="#007AFF" />
         }
       >
+        {source === 'alerts' && report?.priority ? (
+          <View
+            style={[
+              styles.priorityAlertBanner,
+              {
+                backgroundColor: PRIORITY_COLORS[report.priority] || '#9CA3AF',
+                borderColor: PRIORITY_COLORS[report.priority] || '#9CA3AF',
+              },
+            ]}
+          >
+            <Text style={styles.priorityAlertBannerText}>
+              {formatPriorityLabel(report.priority)} Priority Alert
+            </Text>
+            <Text style={styles.priorityAlertBannerSubtext}>Opened from Alerts</Text>
+          </View>
+        ) : null}
+
         <View style={styles.headerRow}>
           <View>
             <Text style={styles.title}>{report.title}</Text>
@@ -167,7 +316,18 @@ const ReportDetailScreen = ({ route, navigation }) => {
           )}
         </View>
 
-        <View style={styles.card}>
+        <View
+          style={[
+            styles.card,
+            source === 'alerts' && report?.priority
+              ? {
+                  backgroundColor: PRIORITY_LIGHT_COLORS[report.priority] || '#fff',
+                  borderColor: PRIORITY_COLORS[report.priority] || '#e5e7eb',
+                  borderWidth: 1,
+                }
+              : null,
+          ]}
+        >
           <Text style={styles.sectionTitle}>Incident Details</Text>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Type</Text>
@@ -209,6 +369,42 @@ const ReportDetailScreen = ({ route, navigation }) => {
           )}
         </View>
 
+        {isOfficer ? (
+          <View style={styles.officerCard}>
+            <Text style={styles.officerCardTitle}>Officer Actions</Text>
+            {statusUpdating ? (
+              <ActivityIndicator size="small" color="#007AFF" style={{ marginVertical: 12 }} />
+            ) : (
+              <>
+                {validNextStatuses
+                  .filter((s) => s !== 'closed')
+                  .map((nextStatus) => {
+                    const cfg = STATUS_ACTION_CONFIG[nextStatus];
+                    return (
+                      <TouchableOpacity
+                        key={nextStatus}
+                        style={[styles.officerActionButton, { backgroundColor: cfg.color }]}
+                        onPress={() => handleStatusUpdate(nextStatus)}
+                        disabled={statusUpdating}
+                      >
+                        <Text style={styles.officerActionButtonText}>{cfg.label}</Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                {report.status !== 'closed' ? (
+                  <TouchableOpacity
+                    style={styles.officerRemoveButton}
+                    onPress={handleRemoveReport}
+                    disabled={statusUpdating}
+                  >
+                    <Text style={styles.officerRemoveButtonText}>Remove Report</Text>
+                  </TouchableOpacity>
+                ) : null}
+              </>
+            )}
+          </View>
+        ) : null}
+
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>Status History</Text>
           {historyLoading ? (
@@ -235,6 +431,32 @@ const ReportDetailScreen = ({ route, navigation }) => {
             ))
           )}
         </View>
+
+        {source === 'alerts' ? (
+          <View style={styles.alertNavSection}>
+            <TouchableOpacity style={styles.backButton} onPress={handleBackToAlerts}>
+              <Text style={styles.backButtonText}>← Back to Alerts</Text>
+            </TouchableOpacity>
+
+            <View style={styles.navButtonsRow}>
+              <TouchableOpacity
+                style={[styles.previousButton, !canCycleReports && styles.nextButtonDisabled]}
+                onPress={handlePreviousReport}
+                disabled={!canCycleReports}
+              >
+                <Text style={styles.previousButtonText}>← Previous</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={[styles.nextButton, !canCycleReports && styles.nextButtonDisabled]}
+                onPress={handleNextReport}
+                disabled={!canCycleReports}
+              >
+                <Text style={styles.nextButtonText}>Next →</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   );
@@ -249,6 +471,11 @@ function formatDateTime(isoString) {
 function formatCoordinates(lat, lng) {
   if (lat == null || lng == null) return null;
   return `${Number(lat).toFixed(5)}, ${Number(lng).toFixed(5)}`;
+}
+
+function formatPriorityLabel(priority) {
+  if (!priority) return 'Unknown';
+  return priority.charAt(0).toUpperCase() + priority.slice(1);
 }
 
 const styles = StyleSheet.create({
@@ -271,6 +498,27 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 12,
+  },
+  priorityAlertBanner: {
+    borderRadius: 14,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    marginBottom: 12,
+    borderWidth: 1,
+  },
+  priorityAlertBannerText: {
+    color: '#fff',
+    fontSize: 13,
+    fontWeight: '800',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
+  },
+  priorityAlertBannerSubtext: {
+    color: '#fff',
+    fontSize: 12,
+    opacity: 0.95,
+    marginTop: 2,
+    fontWeight: '600',
   },
   title: {
     fontSize: 28,
@@ -387,6 +635,92 @@ const styles = StyleSheet.create({
     color: '#374151',
     fontSize: 14,
     lineHeight: 20,
+  },
+  alertNavSection: {
+    marginBottom: 10,
+    gap: 10,
+  },
+  navButtonsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  backButton: {
+    backgroundColor: '#e5e7eb',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: '#111827',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  previousButton: {
+    flex: 1,
+    backgroundColor: '#1f2937',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  previousButtonText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  nextButton: {
+    flex: 1,
+    backgroundColor: '#007AFF',
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+  },
+  nextButtonDisabled: {
+    backgroundColor: '#9ca3af',
+  },
+  nextButtonText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
+  },
+  officerCard: {
+    backgroundColor: '#1e293b',
+    borderRadius: 18,
+    padding: 16,
+    marginBottom: 16,
+  },
+  officerCardTitle: {
+    fontSize: 14,
+    fontWeight: '800',
+    color: '#94a3b8',
+    letterSpacing: 0.8,
+    textTransform: 'uppercase',
+    marginBottom: 12,
+  },
+  officerActionButton: {
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  officerActionButtonText: {
+    color: '#fff',
+    fontWeight: '700',
+    fontSize: 15,
+  },
+  officerRemoveButton: {
+    borderRadius: 12,
+    paddingVertical: 14,
+    alignItems: 'center',
+    marginTop: 4,
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#ef4444',
+  },
+  officerRemoveButtonText: {
+    color: '#ef4444',
+    fontWeight: '700',
+    fontSize: 15,
   },
 });
 

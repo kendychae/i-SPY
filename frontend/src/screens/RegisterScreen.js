@@ -1,4 +1,4 @@
-﻿import React, { useState, useContext } from 'react';
+﻿import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -11,13 +11,12 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { authService } from '../services/authService';
+import apiClient from '../services/api';
 import { validateRegister } from '../utils/validation';
-import { AuthContext } from '../App';
 
 const RegisterScreen = ({ navigation }) => {
-  const { setIsAuthenticated } = useContext(AuthContext);
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,6 +24,7 @@ const RegisterScreen = ({ navigation }) => {
     firstName: '',
     lastName: '',
     phoneNumber: '',
+    userType: 'citizen',
   });
   const [errors, setErrors] = useState({
     email: '',
@@ -38,6 +38,7 @@ const RegisterScreen = ({ navigation }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [idImage, setIdImage] = useState(null);
 
   const updateField = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -46,7 +47,106 @@ const RegisterScreen = ({ navigation }) => {
     }
   };
 
+  const handlePickIdImage = async () => {
+    try {
+      const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (!permission.granted) {
+        Alert.alert('Permission Needed', 'Please allow photo library access to upload your ID.');
+        return;
+      }
 
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.8,
+      });
+
+      if (!result.canceled && result.assets?.length) {
+        setIdImage(result.assets[0]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Unable to pick image. Please try again.');
+    }
+  };
+
+  /**
+   * Compress an image URI to a Blob under maxBytes using a canvas (web only).
+   * Iteratively lowers JPEG quality until the file fits.
+   */
+  const compressImageWeb = (uri, maxBytes = 4 * 1024 * 1024) =>
+    new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => {
+        const MAX_DIM = 1600;
+        let { width, height } = img;
+        if (width > MAX_DIM || height > MAX_DIM) {
+          if (width > height) { height = Math.round((height * MAX_DIM) / width); width = MAX_DIM; }
+          else { width = Math.round((width * MAX_DIM) / height); height = MAX_DIM; }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+        let quality = 0.7;
+        const tryCompress = () => {
+          canvas.toBlob((blob) => {
+            if (!blob) { reject(new Error('Canvas compression failed')); return; }
+            if (blob.size <= maxBytes || quality <= 0.2) { resolve(blob); return; }
+            quality -= 0.1;
+            tryCompress();
+          }, 'image/jpeg', quality);
+        };
+        tryCompress();
+      };
+      img.onerror = () => reject(new Error('Failed to load image for compression'));
+      img.src = uri;
+    });
+
+  const uploadIdDocument = async () => {
+    if (!idImage?.uri) {
+      throw new Error('Please upload an ID image before creating your account.');
+    }
+
+    const formDataUpload = new FormData();
+    const MAX_SIZE = 4 * 1024 * 1024; // 4MB target
+
+    if (Platform.OS === 'web') {
+      const blob = await compressImageWeb(idImage.uri, MAX_SIZE);
+      const filename = idImage.fileName || `id-${Date.now()}.jpg`;
+      formDataUpload.append('idDocument', blob, filename);
+    } else {
+      // Re-pick at lower quality if the file is large
+      let uri = idImage.uri;
+      if ((idImage.fileSize || 0) > MAX_SIZE) {
+        const recompressed = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 0.4,
+        });
+        if (!recompressed.canceled && recompressed.assets?.length) {
+          uri = recompressed.assets[0].uri;
+        }
+      }
+      formDataUpload.append('idDocument', {
+        uri,
+        name: idImage.fileName || `id-${Date.now()}.jpg`,
+        type: idImage.mimeType || 'image/jpeg',
+      });
+    }
+
+    const uploadResponse = await apiClient.post('/auth/upload-id', formDataUpload, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    if (!uploadResponse.data?.success || !uploadResponse.data?.data?.idDocumentUrl) {
+      throw new Error(uploadResponse.data?.message || 'Failed to upload ID document.');
+    }
+
+    return uploadResponse.data.data.idDocumentUrl;
+  };
 
   const handleRegister = async () => {
     const { valid, errors: validationErrors } = validateRegister(formData);
@@ -59,25 +159,46 @@ const RegisterScreen = ({ navigation }) => {
       return;
     }
 
+    if (!['citizen', 'officer'].includes(formData.userType)) {
+      setStatusMessage('Please choose account type: Citizen or Officer.');
+      setStatusType('error');
+      Alert.alert('Error', 'Please choose account type: Citizen or Officer.');
+      return;
+    }
+
+    if (!idImage?.uri) {
+      setStatusMessage('Please upload an image of your ID.');
+      setStatusType('error');
+      Alert.alert('ID Required', 'Please upload an image of your ID before creating an account.');
+      return;
+    }
+
     setStatusMessage('Creating account...');
     setStatusType('loading');
     setLoading(true);
 
     try {
+      const idDocumentUrl = await uploadIdDocument();
+
       const result = await authService.register({
         email: formData.email.trim(),
         password: formData.password,
         firstName: formData.firstName.trim(),
         lastName: formData.lastName.trim(),
         phoneNumber: formData.phoneNumber.trim() || undefined,
-        userType: 'citizen',
+        userType: formData.userType,
+        idDocumentUrl,
       });
 
       if (result.success) {
-        setIsAuthenticated(true);
-        setStatusMessage('Account created successfully!');
+        setStatusMessage('Account submitted for admin verification. You can log in after approval.');
         setStatusType('success');
-        Alert.alert('Success', 'Account created successfully!');
+        Alert.alert('Account Submitted', 'Your account is pending admin verification. Please log in after approval.', [
+          {
+            text: 'OK',
+            onPress: () => navigation.goBack(),
+          },
+        ]);
       } else {
         setStatusMessage(result.message || 'Unable to create account');
         setStatusType('error');
@@ -152,6 +273,57 @@ const RegisterScreen = ({ navigation }) => {
             keyboardType="phone-pad"
             editable={!loading}
           />
+
+          <Text style={styles.sectionLabel}>Account Type *</Text>
+          <View style={styles.roleRow}>
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                formData.userType === 'citizen' && styles.roleButtonActive,
+              ]}
+              onPress={() => updateField('userType', 'citizen')}
+              disabled={loading}
+            >
+              <Text
+                style={[
+                  styles.roleButtonText,
+                  formData.userType === 'citizen' && styles.roleButtonTextActive,
+                ]}
+              >
+                Citizen
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={[
+                styles.roleButton,
+                formData.userType === 'officer' && styles.roleButtonActive,
+              ]}
+              onPress={() => updateField('userType', 'officer')}
+              disabled={loading}
+            >
+              <Text
+                style={[
+                  styles.roleButtonText,
+                  formData.userType === 'officer' && styles.roleButtonTextActive,
+                ]}
+              >
+                Officer
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.sectionLabel}>Upload ID Image *</Text>
+          <TouchableOpacity
+            style={styles.uploadButton}
+            onPress={handlePickIdImage}
+            disabled={loading}
+          >
+            <Text style={styles.uploadButtonText}>
+              {idImage?.fileName ? `Selected: ${idImage.fileName}` : 'Choose ID Image'}
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.uploadHint}>Required for admin verification before account access.</Text>
 
           <View style={styles.passwordInputContainer}>
             <TextInput
@@ -261,6 +433,58 @@ const styles = StyleSheet.create({
   },
   form: {
     width: '100%',
+  },
+  sectionLabel: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1a1a1a',
+    marginBottom: 8,
+    marginTop: -4,
+  },
+  roleRow: {
+    flexDirection: 'row',
+    gap: 12,
+    marginBottom: 16,
+  },
+  roleButton: {
+    flex: 1,
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  roleButtonActive: {
+    backgroundColor: '#e9f2ff',
+    borderColor: '#007AFF',
+  },
+  roleButtonText: {
+    color: '#374151',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  roleButtonTextActive: {
+    color: '#0056b3',
+  },
+  uploadButton: {
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#d1d5db',
+    borderRadius: 12,
+    padding: 14,
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  uploadButtonText: {
+    color: '#1f2937',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  uploadHint: {
+    color: '#6b7280',
+    fontSize: 12,
+    marginBottom: 14,
   },
   input: {
     backgroundColor: '#fff',

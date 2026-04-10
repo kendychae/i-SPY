@@ -11,7 +11,6 @@ import {
 } from 'react-native';
 import MapView, { Marker, Circle, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
-import { Ionicons } from '@expo/vector-icons';
 import api from '../services/api';
 
 const { width, height } = Dimensions.get('window');
@@ -30,16 +29,16 @@ const MapScreen = ({ navigation }) => {
   const [radius, setRadius] = useState(5000); // 5km default
 
   // Incident type icons for markers
-  const incidentIconNames = {
-    theft: 'alert-circle-outline',
-    vandalism: 'hammer-outline',
-    assault: 'warning-outline',
-    suspicious_activity: 'eye-outline',
-    traffic_violation: 'car-outline',
-    noise_complaint: 'volume-high-outline',
-    fire: 'flame-outline',
-    medical_emergency: 'medkit-outline',
-    other: 'information-circle-outline',
+  const incidentIcons = {
+    theft: '🚨',
+    vandalism: '🔨',
+    assault: '⚠️',
+    suspicious_activity: '👀',
+    traffic_violation: '🚗',
+    noise_complaint: '🔊',
+    fire: '🔥',
+    medical_emergency: '🚑',
+    other: '📌',
   };
 
   // Priority colors for markers
@@ -212,7 +211,7 @@ const MapScreen = ({ navigation }) => {
   if (errorMsg || !location) {
     return (
       <View style={styles.errorContainer}>
-        <Ionicons name="location-outline" size={64} color="#EF4444" />
+        <Text style={styles.errorIcon}>📍</Text>
         <Text style={styles.errorText}>
           {errorMsg || 'Unable to load map'}
         </Text>
@@ -274,11 +273,9 @@ const MapScreen = ({ navigation }) => {
                   },
                 ]}
               >
-                <Ionicons
-                  name={incidentIconNames[report.incident_type] || 'information-circle-outline'}
-                  size={18}
-                  color="#FFFFFF"
-                />
+                <Text style={styles.markerIcon}>
+                  {incidentIcons[report.incident_type] || '📌'}
+                </Text>
               </View>
             </View>
           </Marker>
@@ -304,7 +301,7 @@ const MapScreen = ({ navigation }) => {
         ]}
         onPress={handleRecenterPress}
       >
-        <Ionicons name="locate" size={24} color={followUser ? '#FFFFFF' : '#1F2937'} />
+        <Text style={styles.recenterIcon}>📍</Text>
       </TouchableOpacity>
 
       {/* Refresh button */}
@@ -312,7 +309,7 @@ const MapScreen = ({ navigation }) => {
         style={styles.refreshButton}
         onPress={handleRefresh}
       >
-        <Ionicons name="refresh-outline" size={20} color="#1F2937" />
+        <Text style={styles.refreshIcon}>🔄</Text>
       </TouchableOpacity>
 
       {/* Reports count badge */}
@@ -333,12 +330,9 @@ const MapScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <View style={styles.reportHeader}>
-            <Ionicons
-              name={incidentIconNames[selectedReport.incident_type] || 'information-circle-outline'}
-              size={32}
-              color={priorityColors[selectedReport.priority] || '#2196F3'}
-              style={{ marginRight: 12 }}
-            />
+            <Text style={styles.reportIcon}>
+              {incidentIcons[selectedReport.incident_type] || '📌'}
+            </Text>
             <View style={styles.reportTitleContainer}>
               <Text style={styles.reportTitle}>{selectedReport.title}</Text>
               <Text style={styles.reportType}>

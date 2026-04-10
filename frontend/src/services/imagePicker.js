@@ -146,14 +146,14 @@ export const showImagePickerOptions = (options = {}) => {
       options.message || 'Choose a photo from your library or take a new one',
       [
         {
-          text: 'Take Photo',
+          text: '📷 Take Photo',
           onPress: async () => {
             const photo = await takePhoto(options);
             resolve(photo ? [photo] : null);
           },
         },
         {
-          text: 'Choose from Gallery',
+          text: '🖼️ Choose from Gallery',
           onPress: async () => {
             const photos = await selectFromGallery(options);
             resolve(photos);

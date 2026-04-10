@@ -13,7 +13,6 @@ import {
 import { authService } from '../services/authService';
 import { validateLogin } from '../utils/validation';
 import { AuthContext } from '../App';
-import { Ionicons } from '@expo/vector-icons';
 
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -80,7 +79,7 @@ const LoginScreen = ({ navigation }) => {
       <View style={styles.content}>
         {/* Logo/Title Section */}
         <View style={styles.header}>
-          <Ionicons name="shield-checkmark" size={80} color="#007AFF" />
+          <Text style={styles.logo}>🔍</Text>
           <Text style={styles.title}>VIGILUX</Text>
           <Text style={styles.subtitle}>Neighborhood Watch</Text>
         </View>
@@ -214,6 +213,7 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   logo: {
+    fontSize: 72,
     marginBottom: 8,
   },
   title: {

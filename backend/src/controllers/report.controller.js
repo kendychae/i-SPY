@@ -22,6 +22,19 @@ const createReport = async (req, res) => {
 
     const userId = req.user.userId;
 
+    // Block unverified accounts from creating reports
+    const verifiedCheck = await client.query(
+      'SELECT is_verified FROM users WHERE id = $1',
+      [userId]
+    );
+    if (verifiedCheck.rows.length === 0 || !verifiedCheck.rows[0].is_verified) {
+      return res.status(403).json({
+        success: false,
+        message: 'Your account must be verified by an admin before you can submit reports.',
+        code: 'ACCOUNT_NOT_VERIFIED',
+      });
+    }
+
     // Validate required fields
     const errors = [];
 

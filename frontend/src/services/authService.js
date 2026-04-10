@@ -13,7 +13,9 @@ export const authService = {
       
       if (response.data.success) {
         const { user, tokens } = response.data.data;
-        await storeAuthData(tokens, user);
+        if (tokens?.accessToken && tokens?.refreshToken) {
+          await storeAuthData(tokens, user);
+        }
         return { success: true, user };
       }
       
@@ -54,17 +56,14 @@ export const authService = {
    * Logout user
    */
   logout: async () => {
-    try {
-      await deleteFcmTokenFromBackend();
-      await apiClient.post('/auth/logout');
-      await clearAuthData();
-      return { success: true };
-    } catch (error) {
-      // Clear local data even if server request fails
-      await deleteFcmTokenFromBackend();
-      await clearAuthData();
-      return { success: true };
-    }
+    // Clear local auth data immediately so logout is instant regardless of backend
+    await clearAuthData().catch(() => {});
+
+    // Best-effort backend cleanup — do not block or await
+    deleteFcmTokenFromBackend().catch(() => {});
+    apiClient.post('/auth/logout').catch(() => {});
+
+    return { success: true };
   },
 
   /**

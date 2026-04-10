@@ -11,6 +11,7 @@ import {
   Animated,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 import FilterChips from '../components/FilterChips';
 
@@ -24,6 +25,30 @@ const HomeScreen = ({ navigation }) => {
   const [reports, setReports]             = useState([]);
   const [loading, setLoading]             = useState(false);
   const [searched, setSearched]           = useState(false);
+  const [latestReports, setLatestReports] = useState([]);
+  const [loadingRecent, setLoadingRecent] = useState(false);
+
+  const fetchLatestReports = useCallback(async () => {
+    try {
+      setLoadingRecent(true);
+      const response = await api.get('/reports', {
+        params: { limit: 3, sort: 'created_at', order: 'desc' },
+      });
+      if (response.data?.success) {
+        setLatestReports(response.data.data || []);
+      }
+    } catch (_) {
+      setLatestReports([]);
+    } finally {
+      setLoadingRecent(false);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchLatestReports();
+    }, [fetchLatestReports])
+  );
 
   const debounceTimer = useRef(null);
   const searchBarHeight = useRef(new Animated.Value(0)).current;
@@ -213,9 +238,35 @@ const HomeScreen = ({ navigation }) => {
 
               <View style={styles.section}>
                 <Text style={styles.sectionTitle}>Recent Activity</Text>
-                <View style={styles.placeholder}>
-                  <Text style={styles.placeholderText}>No recent activity</Text>
-                </View>
+                {loadingRecent ? (
+                  <View style={styles.placeholder}>
+                    <ActivityIndicator size="small" color="#007AFF" />
+                  </View>
+                ) : latestReports.length === 0 ? (
+                  <View style={styles.placeholder}>
+                    <Text style={styles.placeholderText}>No recent reports</Text>
+                  </View>
+                ) : (
+                  latestReports.map((item) => (
+                    <TouchableOpacity
+                      key={item.id}
+                      style={styles.recentCard}
+                      onPress={() => navigation.navigate('ReportDetail', { id: item.id })}
+                      activeOpacity={0.85}
+                    >
+                      <View style={styles.reportCardHeader}>
+                        <Text style={styles.reportTitle} numberOfLines={1}>{item.title}</Text>
+                        <View style={[styles.priorityDot, { backgroundColor: PRIORITY_COLORS[item.priority] || '#607D8B' }]} />
+                      </View>
+                      <Text style={styles.reportType}>
+                        {(item.incident_type || '').replace(/_/g, ' ').toUpperCase()}
+                      </Text>
+                      <Text style={styles.reportDate}>
+                        {item.created_at ? new Date(item.created_at).toLocaleDateString() : ''}
+                      </Text>
+                    </TouchableOpacity>
+                  ))
+                )}
               </View>
             </View>
           }
@@ -413,6 +464,19 @@ const styles = StyleSheet.create({
   reportDate: {
     fontSize: 11,
     color: '#B0BEC5',
+  },
+  recentCard: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 12,
+    marginBottom: 8,
+    borderWidth: 1,
+    borderColor: '#F0F0F0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
   },
 
   // Empty state
